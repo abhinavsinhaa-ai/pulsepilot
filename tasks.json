@@ -7,3 +7,5 @@
     { "name": "Revision", "hours": 1, "priority": 2 }
   ]
 }
+```json
+{ "name": "English", "hours": 1, "priority": 1 }
