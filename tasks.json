@@ -1,0 +1,9 @@
+{
+  "available_hours": 6,
+  "tasks": [
+    { "name": "Math", "hours": 2, "priority": 5 },
+    { "name": "Physics", "hours": 2, "priority": 4 },
+    { "name": "Chemistry", "hours": 1, "priority": 3 },
+    { "name": "Revision", "hours": 1, "priority": 2 }
+  ]
+}
