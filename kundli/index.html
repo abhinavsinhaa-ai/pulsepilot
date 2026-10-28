@@ -1,0 +1,1996 @@
+<title>Janma Kundli</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap">
+<style>
+/* Layout: one reading column that opens on the kundli itself (a night-indigo slate ruled in brass),
+   then moves from summary (life areas) to answers, timing, and reference tables. */
+:root {
+  --paper: #F1F0F5;
+  --card: #FFFFFF;
+  --ink: #1A1838;
+  --ink-2: #55526E;
+  --ink-3: #7C7996;
+  --rule: #DDDBE7;
+  --kesar: #B4531A;
+  --kesar-soft: #F8E7DA;
+  --kesar-ink: #8E3E10;
+  --night: #1D1B46;
+  --night-2: #2A2860;
+  --brass: #D7AC55;
+  --parchment: #F4EEDD;
+  --good: #2C7A50;
+  --good-soft: #E1F0E7;
+  --steady: #5B5A8C;
+  --steady-soft: #E7E6F3;
+  --tier-golden: #C7651F;
+  --tier-rising: #E3A15F;
+  --tier-growth: #8E8BC0;
+  --tier-foundation: #C9C7DC;
+  --focus: #3D5AFE;
+  --font-display: "Tiro Devanagari Sanskrit", "Iowan Old Style", Georgia, serif;
+  --font-body: "Mukta", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --r-sm: 10px; --r-md: 14px; --r-lg: 20px;
+  --shadow: 0 1px 2px rgba(26, 24, 56, .06), 0 6px 24px rgba(26, 24, 56, .06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E0D1D; --card: #17162D; --ink: #ECEAF7; --ink-2: #ABA8C6; --ink-3: #8481A3; --rule: #2B2948;
+    --kesar: #F0914C; --kesar-soft: #3A2414; --kesar-ink: #F7B888; --night: #18163D; --night-2: #26245A;
+    --brass: #E1B962; --parchment: #F4EEDD; --good: #67C892; --good-soft: #15301F; --steady: #A9A7E0; --steady-soft: #24234A;
+    --tier-golden: #F0914C; --tier-rising: #C9844A; --tier-growth: #6E6BA8; --tier-foundation: #3B3963; --focus: #8EA2FF;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E0D1D; --card: #17162D; --ink: #ECEAF7; --ink-2: #ABA8C6; --ink-3: #8481A3; --rule: #2B2948;
+  --kesar: #F0914C; --kesar-soft: #3A2414; --kesar-ink: #F7B888; --night: #18163D; --night-2: #26245A;
+  --brass: #E1B962; --parchment: #F4EEDD; --good: #67C892; --good-soft: #15301F; --steady: #A9A7E0; --steady-soft: #24234A;
+  --tier-golden: #F0914C; --tier-rising: #C9844A; --tier-growth: #6E6BA8; --tier-foundation: #3B3963; --focus: #8EA2FF;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; margin: 0; letter-spacing: -0.005em; }
+h2 { font-size: clamp(28px, 4vw, 36px); line-height: 1.15; }
+h3 { font-size: 22px; line-height: 1.2; }
+p { margin: 0; }
+a { color: var(--kesar-ink); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
+.muted { color: var(--ink-2); }
+.small { font-size: 14.5px; }
+.num { font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+/* top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.bar .wrap { display: flex; align-items: center; gap: 20px; min-height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; white-space: nowrap; }
+.brand svg { flex: none; }
+.nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-left: auto; min-width: 0; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a { text-decoration: none; color: var(--ink-2); font-size: 15px; font-weight: 500; padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: var(--steady-soft); }
+
+section { padding-block: 44px; }
+section + section { border-top: 1px solid var(--rule); }
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+.sec-head p { max-width: 62ch; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 40px; align-items: start; padding-block: 36px 44px; }
+.hero h1 { font-size: clamp(40px, 6vw, 60px); line-height: 1.02; margin-top: 8px; }
+.birthline { margin-top: 10px; color: var(--ink-2); font-size: 16.5px; }
+.chip { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--steady-soft); color: var(--steady); line-height: 1.5; }
+.chip.kesar { background: var(--kesar-soft); color: var(--kesar-ink); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 26px 0 0; }
+.facts div { padding: 12px 0; border-top: 1px solid var(--rule); min-width: 0; }
+.facts dt { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.facts dd { margin: 2px 0 0; font-size: 18.5px; font-weight: 500; }
+.facts dd span { display: block; font-size: 14.5px; font-weight: 400; color: var(--ink-2); }
+.note { margin-top: 18px; padding: 12px 14px; border-radius: var(--r-md); background: var(--kesar-soft); color: var(--kesar-ink); font-size: 15px; }
+.example-note { background: var(--steady-soft); color: var(--steady); }
+
+.slate { background: var(--night); color: var(--parchment); border-radius: var(--r-lg); padding: 16px 16px 14px; box-shadow: var(--shadow); }
+.slate-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.slate-title { font-family: var(--font-display); font-size: 19px; color: var(--parchment); }
+.seg { display: inline-flex; background: var(--night-2); border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: transparent; color: #CFC8B4; font-size: 14px; font-weight: 600; padding: 6px 11px; border-radius: 8px; cursor: pointer; min-height: 34px; }
+.seg button[aria-pressed="true"] { background: var(--brass); color: #1D1B46; }
+.chart-svg { display: block; width: 100%; height: auto; max-width: 100%; }
+.slate-foot { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font-size: 13px; color: #BDB6A2; }
+
+/* birth details form */
+.form { display: grid; grid-template-columns: 1.3fr 1fr .9fr 1.1fr 1.6fr; gap: 14px; align-items: end; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; position: relative; }
+.field label, .field .lbl { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.field input, .field select, .field textarea { width: 100%; background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); padding: 10px 12px; min-height: 46px; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--kesar); outline: none; box-shadow: 0 0 0 3px var(--kesar-soft); }
+.field input:disabled { opacity: .55; }
+.form-row2 { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between; margin-top: 16px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--r-sm); padding: 11px 20px; min-height: 46px; font-weight: 600; cursor: pointer; transition: transform .1s ease, background .15s ease; }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--kesar); color: #fff; }
+.btn.primary:hover { filter: brightness(.95); }
+.btn.ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--rule); }
+.btn.ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+.btn:disabled { opacity: .5; cursor: default; }
+details.adv summary { cursor: pointer; color: var(--ink-2); font-size: 15px; font-weight: 500; list-style: none; }
+details.adv summary::-webkit-details-marker { display: none; }
+details.adv summary::before { content: "+ "; }
+details.adv[open] summary::before { content: "– "; }
+.adv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 180px)); gap: 12px; margin-top: 12px; }
+.combo-list { position: absolute; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); box-shadow: var(--shadow); z-index: 20; max-height: 300px; overflow-y: auto; }
+.combo-list li { padding: 9px 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
+.combo-list li small { color: var(--ink-3); white-space: nowrap; }
+.combo-list li[aria-selected="true"], .combo-list li:hover { background: var(--kesar-soft); }
+.form-error { color: var(--kesar-ink); font-size: 15px; font-weight: 500; }
+
+/* life areas */
+.areas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.area { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.area-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 8px; }
+.area-name { font-weight: 600; font-size: 16px; }
+.area-score { font-family: var(--font-display); font-size: 34px; line-height: 1; }
+.meter { height: 6px; border-radius: 99px; background: var(--steady-soft); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--kesar); border-radius: 99px; }
+.area-basis { font-size: 13.5px; color: var(--ink-3); line-height: 1.4; }
+
+/* questions */
+.groups { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.groups button { border: 1px solid var(--rule); background: var(--card); color: var(--ink-2); border-radius: 999px; padding: 7px 14px; min-height: 40px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .1s ease; }
+.groups button:active { transform: scale(.97); }
+.groups button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.qlist { display: flex; flex-direction: column; gap: 10px; }
+.q { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); }
+.q summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: center; padding: 16px 18px; min-height: 56px; }
+.q summary::-webkit-details-marker { display: none; }
+.q summary h3 { font-family: var(--font-body); font-size: 18px; font-weight: 600; line-height: 1.35; }
+.q summary .verdict { justify-self: end; text-align: right; }
+.q summary .verdict .chip { white-space: normal; }
+.q summary .chev { grid-column: 2; grid-row: 1; display: none; }
+.q[open] summary { border-bottom: 1px solid var(--rule); }
+.qbody { padding: 16px 18px 18px; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px 28px; }
+.qbody .prose { display: flex; flex-direction: column; gap: 10px; max-width: 66ch; }
+.why { background: var(--paper); border-radius: var(--r-sm); padding: 12px 14px; align-self: start; min-width: 0; }
+.why h4 { margin: 0 0 6px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.why ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; color: var(--ink-2); }
+.timing { margin-top: 4px; display: flex; flex-direction: column; gap: 6px; }
+.timing div { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; padding: 8px 12px; border-radius: var(--r-sm); background: var(--paper); }
+.timing b { font-weight: 600; }
+
+/* timeline */
+.tl { display: flex; flex-direction: column; gap: 6px; }
+.tl-axis { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; font-size: 12.5px; color: var(--ink-3); }
+.tl-ticks { position: relative; height: 18px; }
+.tl-ticks span { position: absolute; transform: translateX(-50%); }
+.tl-row { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); }
+.tl-row.current { border-color: var(--kesar); box-shadow: 0 0 0 1px var(--kesar); }
+.tl-row summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; align-items: center; padding: 10px 12px; min-height: 52px; }
+.tl-row summary::-webkit-details-marker { display: none; }
+.tl-name { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.tl-name b { font-weight: 600; }
+.tl-name span { font-size: 13.5px; color: var(--ink-3); }
+.tl-track { position: relative; height: 22px; border-radius: 6px; background: var(--paper); }
+.tl-seg { position: absolute; top: 3px; bottom: 3px; border-radius: 4px; }
+.tl-now { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 2px; }
+.tl-now::after { content: "now"; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--ink); }
+.tl-detail { padding: 2px 12px 14px; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; }
+.tl-detail .prose { color: var(--ink-2); font-size: 15.5px; }
+.subs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+.subs div { font-size: 14px; padding: 7px 10px; border-radius: 8px; background: var(--paper); display: flex; justify-content: space-between; gap: 8px; }
+.subs div.cur { outline: 2px solid var(--kesar); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* launch dates */
+.days { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.day { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.day-date { display: flex; align-items: baseline; gap: 10px; }
+.day-date b { font-family: var(--font-display); font-size: 30px; font-weight: 400; line-height: 1; }
+.day-date span { color: var(--ink-2); font-weight: 500; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 12px; font-size: 14.5px; }
+.kv dt { color: var(--ink-3); }
+.kv dd { margin: 0; }
+.day ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-2); }
+.launch-city { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+.launch-city .field { width: min(320px, 100%); }
+
+/* yogas */
+.yogas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.yoga { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.yoga-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.yoga-top b { font-family: var(--font-display); font-weight: 400; font-size: 20px; }
+.yoga p { color: var(--ink-2); font-size: 15.5px; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--r-md); background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 15px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td .sbar { display: inline-block; width: 70px; height: 5px; border-radius: 9px; background: var(--steady-soft); vertical-align: middle; margin-right: 8px; overflow: hidden; }
+td .sbar i { display: block; height: 100%; background: var(--kesar); }
+.ref-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; }
+.sav { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.sav div { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 8px; text-align: center; }
+.sav div b { display: block; font-family: var(--font-display); font-size: 24px; font-weight: 400; line-height: 1.1; }
+.sav div span { font-size: 12.5px; color: var(--ink-3); }
+.sav div.hi { background: var(--kesar-soft); border-color: transparent; }
+.sav div.hi span { color: var(--kesar-ink); }
+.panch { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+.panch div { padding: 9px 0; border-top: 1px solid var(--rule); }
+.panch dt { font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.panch dd { margin: 0; font-weight: 500; }
+
+/* ask */
+.ask { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.ask textarea { min-height: 96px; resize: vertical; }
+.sugg { display: flex; flex-wrap: wrap; gap: 8px; }
+.sugg button { border: 1px dashed var(--rule); background: transparent; color: var(--ink-2); border-radius: 999px; padding: 6px 12px; min-height: 38px; font-size: 14.5px; cursor: pointer; text-align: left; }
+.sugg button:hover { border-color: var(--kesar); color: var(--ink); }
+.answer { white-space: pre-wrap; background: var(--paper); border-radius: var(--r-md); padding: 14px 16px; line-height: 1.6; }
+.answer:empty { display: none; }
+
+footer { padding-block: 36px 60px; border-top: 1px solid var(--rule); color: var(--ink-2); font-size: 15px; }
+footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; max-width: 80ch; }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .form .f-place { grid-column: 1 / -1; }
+  .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .qbody { grid-template-columns: minmax(0, 1fr); }
+  .ref-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  body { font-size: 16.5px; }
+  .nav { display: none; }
+  section { padding-block: 34px; }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .form { grid-template-columns: minmax(0, 1fr); }
+  .adv-grid { grid-template-columns: minmax(0, 1fr); }
+  .days, .yogas { grid-template-columns: minmax(0, 1fr); }
+  .q summary { grid-template-columns: minmax(0, 1fr); }
+  .q summary .verdict { justify-self: start; text-align: left; }
+  .tl-axis { grid-template-columns: minmax(0, 1fr); }
+  .tl-axis > span:first-child { display: none; }
+  .tl-row summary, .tl-detail { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .tl-detail > span { display: none; }
+  .subs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .slate { padding: 12px 10px 12px; }
+}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="3" fill="none" stroke="var(--kesar)" stroke-width="1.6"/><path d="M1 1 L25 25 M25 1 L1 25 M13 1 L25 13 L13 25 L1 13 Z" fill="none" stroke="var(--kesar)" stroke-width="1.2"/></svg>
+      Janma Kundli
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#chart">Chart</a><a href="#details">Birth details</a><a href="#areas">Life areas</a><a href="#questions">Questions</a><a href="#timeline">Timeline</a><a href="#dates">Launch dates</a><a href="#yogas">Yogas</a><a href="#positions">Positions</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="hero" id="chart">
+      <div>
+        <div class="eyebrow" id="hero-eyebrow">Vedic birth chart</div>
+        <h1 id="hero-name">Your kundli</h1>
+        <p class="birthline" id="hero-birth"></p>
+        <dl class="facts" id="hero-facts"></dl>
+        <p class="note" id="hero-note" hidden></p>
+      </div>
+      <div class="slate" aria-label="Birth chart">
+        <div class="slate-top">
+          <div class="slate-title" id="slate-title">Rashi chart (D1)</div>
+          <div class="seg" role="group" aria-label="Chart type">
+            <button type="button" data-chart="d1" aria-pressed="true">D1</button>
+            <button type="button" data-chart="d9" aria-pressed="false">Navamsa</button>
+            <button type="button" data-chart="moon" aria-pressed="false">Moon</button>
+          </div>
+        </div>
+        <div id="chart-box"></div>
+        <div class="slate-foot"><span>North Indian style. Numbers are signs (1 Mesha to 12 Meena).</span><span>R retrograde · ↑ exalted · ↓ debilitated</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="details">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Edit any time</div><h2>Birth details</h2></div>
+        <p class="muted small">Everything recalculates in your browser. Your details are remembered on this device only.</p>
+      </div>
+      <form id="form" novalidate>
+        <div class="form">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" autocomplete="name" placeholder="Full name"></div>
+          <div class="field"><label for="f-date">Date of birth</label><input id="f-date" type="date" min="1900-01-01" max="2100-12-31" required></div>
+          <div class="field"><label for="f-time">Time of birth</label><input id="f-time" type="time" required></div>
+          <div class="field"><label for="f-mode">How sure is the time?</label>
+            <select id="f-mode"><option value="exact">Exact (birth certificate)</option><option value="approx">Approximate</option><option value="unknown">Don't know</option></select></div>
+          <div class="field f-place"><label for="f-place">Place of birth</label>
+            <input id="f-place" role="combobox" aria-expanded="false" aria-controls="place-list" aria-autocomplete="list" autocomplete="off" placeholder="Start typing a city">
+            <ul class="combo-list" id="place-list" role="listbox" hidden></ul></div>
+        </div>
+        <div class="form-row2">
+          <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+            <div class="field" style="flex-direction:row;align-items:center;gap:10px"><label for="f-gender" style="white-space:nowrap">Gender</label>
+              <select id="f-gender" style="min-height:40px;padding:6px 10px;width:auto"><option value="male">Male</option><option value="female">Female</option><option value="other">Prefer not to say</option></select></div>
+            <details class="adv" id="adv"><summary>Coordinates and time zone</summary>
+              <div class="adv-grid">
+                <div class="field"><label for="f-lat">Latitude (N +)</label><input id="f-lat" inputmode="decimal"></div>
+                <div class="field"><label for="f-lon">Longitude (E +)</label><input id="f-lon" inputmode="decimal"></div>
+                <div class="field"><label for="f-off">UTC offset, hours</label><input id="f-off" inputmode="decimal" placeholder="Auto from city"></div>
+              </div>
+            </details>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <span class="form-error" id="form-error" role="alert"></span>
+            <button type="button" class="btn ghost" id="btn-reset">Reset</button>
+            <button type="submit" class="btn primary">Update chart</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="areas">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">At a glance</div><h2>Life areas</h2></div>
+        <p class="muted small">Scored from Ashtakavarga bindus, house lords, occupants and yogas. 28 bindus is the classical average for a house.</p>
+      </div>
+      <div class="areas" id="areas-grid"></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Ask the chart</div><h2>Your questions, answered</h2></div>
+        <p class="muted small">The questions people ask astrologers most, answered from your own placements. Each answer lists the chart factors behind it.</p>
+      </div>
+      <div class="groups" role="group" aria-label="Question topics" id="groups"></div>
+      <div class="qlist" id="qlist"></div>
+    </div>
+  </section>
+
+  <section id="ask-sec" hidden>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Anything else</div><h2>Ask your own question</h2></div>
+        <p class="muted small">Claude reads your full chart data and answers from it. Uses your Claude account.</p>
+      </div>
+      <div class="ask">
+        <div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" placeholder="Ask about money, work, love, timing or anything in your chart"></textarea></div>
+        <div class="sugg" id="sugg"></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button type="button" class="btn primary" id="ask-btn">Ask</button>
+          <button type="button" class="btn ghost" id="ask-stop" hidden>Stop</button>
+          <span class="muted small" id="ask-status" role="status"></span>
+        </div>
+        <div class="answer" id="ask-out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Vimshottari dasha</div><h2>Life timeline</h2></div>
+        <p class="muted small">Your life in planetary chapters, from birth. Open a chapter to see what it brings and its sub-periods.</p>
+      </div>
+      <div class="tl" id="tl"></div>
+      <div class="legend"><span><i style="background:var(--tier-golden)"></i>Golden</span><span><i style="background:var(--tier-rising)"></i>Rising</span><span><i style="background:var(--tier-growth)"></i>Growth</span><span><i style="background:var(--tier-foundation)"></i>Foundation</span></div>
+    </div>
+  </section>
+
+  <section id="dates">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Muhurta</div><h2>Best dates to launch</h2></div>
+        <p class="muted small">Days in the next 60 that pass the classical checks for opening a business: tithi, vaar, nakshatra, Tarabala and Chandrabala from your birth star, with Bhadra avoided.</p>
+      </div>
+      <div class="launch-city">
+        <div class="field"><label for="f-lcity">Launch city</label>
+          <input id="f-lcity" role="combobox" aria-expanded="false" aria-controls="lcity-list" aria-autocomplete="list" autocomplete="off">
+          <ul class="combo-list" id="lcity-list" role="listbox" hidden></ul></div>
+        <p class="muted small" id="dates-sum" style="padding-bottom:10px"></p>
+      </div>
+      <div class="days" id="days" style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <section id="yogas">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Classical combinations</div><h2>Yogas in your chart</h2></div>
+        <p class="muted small">Detected using the rules in Brihat Parashara Hora Shastra and Phaladeepika.</p>
+      </div>
+      <div class="yogas" id="yoga-list"></div>
+    </div>
+  </section>
+
+  <section id="positions">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Reference</div><h2>Planet positions</h2></div>
+        <p class="muted small" id="ayan-note"></p>
+      </div>
+      <div class="tbl-wrap"><table id="ptable"></table></div>
+      <div class="ref-grid">
+        <div>
+          <h3 style="margin-bottom:12px">Ashtakavarga by house</h3>
+          <div class="sav" id="sav"></div>
+          <p class="muted small" style="margin-top:10px" id="sav-note"></p>
+        </div>
+        <div>
+          <h3 style="margin-bottom:12px">Birth panchang</h3>
+          <dl class="panch" id="panch"></dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="eyebrow">How this is calculated</div>
+    <ul>
+      <li>Planet positions from astronomy-engine, checked against Swiss Ephemeris to within 20 arcseconds.</li>
+      <li>Lahiri (Chitrapaksha) ayanamsa, whole-sign houses, mean node for Rahu and Ketu.</li>
+      <li>Vimshottari dasha with 365.25-day years. Parashari Ashtakavarga. Yogas from BPHS and Phaladeepika.</li>
+      <li>Muhurta at local sunrise with Rahu Kaal and Abhijit muhurta from the day's real sunrise and sunset.</li>
+    </ul>
+    <p style="margin-top:14px">Jyotish is a lens for reflection. Read it, think, then decide for yourself.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<script>window.CITY_TZ=["Asia/Kolkata","Asia/Kabul","Europe/Tirane","Africa/Algiers","Africa/Luanda","America/Argentina/Tucuman","America/Argentina/Cordoba","America/Argentina/Mendoza","America/Argentina/Buenos_Aires","Asia/Yerevan","Australia/Sydney","Australia/Adelaide","Australia/Brisbane","Australia/Perth","Australia/Melbourne","Europe/Vienna","Asia/Baku","Asia/Dhaka","Europe/Minsk","Europe/Brussels","Africa/Porto-Novo","America/La_Paz","Europe/Sarajevo","America/Sao_Paulo","America/Recife","America/Fortaleza","America/Manaus","America/Maceio","America/Belem","America/Cuiaba","America/Campo_Grande","America/Bahia","Europe/Sofia","Africa/Ouagadougou","Asia/Phnom_Penh","Africa/Douala","America/Toronto","America/Winnipeg","America/Edmonton","America/Montreal","America/Vancouver","Africa/Bangui","Africa/Ndjamena","America/Santiago","Asia/Shanghai","Asia/Chongqing","Asia/Urumqi","Asia/Harbin","America/Bogota","Africa/Brazzaville","Africa/Lubumbashi","Africa/Kinshasa","America/Costa_Rica","Europe/Zagreb","America/Havana","Europe/Prague","Europe/Copenhagen","Africa/Djibouti","America/Santo_Domingo","America/Guayaquil","Africa/Cairo","America/El_Salvador","Africa/Asmara","Africa/Addis_Ababa","Europe/Helsinki","Europe/Paris","Africa/Libreville","Asia/Tbilisi","Europe/Berlin","Africa/Accra","Europe/Athens","America/Guatemala","Africa/Conakry","America/Port-au-Prince","America/Tegucigalpa","Asia/Hong_Kong","Europe/Budapest","Asia/Jakarta","Asia/Makassar","Asia/Pontianak","Asia/Tehran","Asia/Baghdad","Europe/Dublin","Asia/Jerusalem","Europe/Rome","Africa/Abidjan","America/Jamaica","Asia/Tokyo","Asia/Amman","Asia/Almaty","Africa/Nairobi","Asia/Kuwait","Asia/Bishkek","Asia/Vientiane","Europe/Riga","Asia/Beirut","Africa/Monrovia","Africa/Tripoli","Europe/Vilnius","Asia/Macau","Indian/Antananarivo","Africa/Blantyre","Asia/Kuala_Lumpur","Asia/Kuching","Africa/Bamako","Africa/Nouakchott","America/Mexico_City","America/Monterrey","America/Ojinaga","America/Tijuana","America/Mazatlan","America/Hermosillo","America/Chihuahua","America/Merida","Europe/Chisinau","Asia/Ulaanbaatar","Africa/Casablanca","Africa/Maputo","Asia/Rangoon","Asia/Kathmandu","Europe/Amsterdam","Pacific/Auckland","America/Managua","Africa/Niamey","Africa/Lagos","Asia/Pyongyang","Europe/Oslo","Asia/Muscat","Asia/Karachi","America/Panama","America/Asuncion","America/Lima","Asia/Manila","Europe/Warsaw","Europe/Lisbon","America/Puerto_Rico","Asia/Qatar","Europe/Bucharest","Europe/Samara","Europe/Moscow","Asia/Yekaterinburg","Europe/Saratov","Europe/Ulyanovsk","Asia/Omsk","Asia/Novokuznetsk","Asia/Vladivostok","Europe/Volgograd","Asia/Barnaul","Asia/Novosibirsk","Asia/Irkutsk","Asia/Krasnoyarsk","Africa/Kigali","Asia/Riyadh","Africa/Dakar","Europe/Belgrade","Asia/Singapore","Africa/Mogadishu","Africa/Johannesburg","Asia/Seoul","Europe/Madrid","Africa/Khartoum","Europe/Stockholm","Europe/Zurich","Asia/Damascus","Asia/Taipei","Asia/Dushanbe","Africa/Dar_es_Salaam","Asia/Bangkok","Africa/Lome","Africa/Tunis","Europe/Istanbul","Asia/Ashgabat","Africa/Kampala","Europe/Kiev","Europe/Zaporozhye","Asia/Dubai","Europe/London","America/Phoenix","America/Chicago","America/Los_Angeles","America/New_York","America/Kentucky/Louisville","America/Denver","America/Indiana/Indianapolis","Pacific/Honolulu","America/Detroit","America/Montevideo","Asia/Tashkent","Asia/Samarkand","America/Caracas","Asia/Ho_Chi_Minh","Asia/Aden","Africa/Lusaka","Africa/Harare","Pacific/Fiji","Indian/Mauritius","Asia/Colombo"];
+window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|0~Kolkata|West Bengal|IN|22.495|88.325|0~Bengaluru (Bangalore)|Karnataka|IN|12.97|77.56|0~Chennai|Tamil Nadu|IN|13.09|80.28|0~Hyderabad|Andhra Pradesh|IN|17.4|78.48|0~Ahmedabad|Dadra and Nagar Haveli|IN|23.03|72.58|0~Pune|Maharashtra|IN|18.53|73.85|0~Surat|Dadra and Nagar Haveli|IN|21.2|72.84|0~Kanpur|Uttar Pradesh|IN|26.46|80.32|0~Haora|West Bengal|IN|22.58|88.33|0~Jaipur|Rajasthan|IN|26.921|75.81|0~Lucknow|Uttar Pradesh|IN|26.855|80.915|0~Nagpur|Maharashtra|IN|21.17|79.09|0~Indore|Madhya Pradesh|IN|22.715|75.865|0~Patna|Bihar|IN|25.625|85.13|0~Bhopal|Madhya Pradesh|IN|23.25|77.41|0~Ludhiana|Punjab|IN|30.928|75.872|0~Vadodara|Dadra and Nagar Haveli|IN|22.31|73.18|0~Agra|Uttar Pradesh|IN|27.17|78.015|0~Faridabad|Haryana|IN|28.433|77.317|0~Nasik|Maharashtra|IN|20|73.78|0~Asansol|West Bengal|IN|23.683|86.983|0~Coimbatore|Tamil Nadu|IN|11|76.95|0~Meerut|Uttar Pradesh|IN|29|77.7|0~Vishakhapatnam|Andhra Pradesh|IN|17.73|83.305|0~Ghaziabad|Uttar Pradesh|IN|28.66|77.408|0~Varanasi|Uttar Pradesh|IN|25.33|83|0~Rajkot|Dadra and Nagar Haveli|IN|22.31|70.8|0~Jabalpur|Madhya Pradesh|IN|23.175|79.955|0~Amritsar|Punjab|IN|31.64|74.87|0~Prayagraj (Allahabad)|Uttar Pradesh|IN|25.455|81.84|0~Madurai|Tamil Nadu|IN|9.92|78.12|0~Kochi|Kerala|IN|10.015|76.224|0~Srinagar|Jammu and Kashmir|IN|34.1|74.815|0~Warangal|Andhra Pradesh|IN|18.01|79.58|0~Sholapur|Maharashtra|IN|17.67|75.9|0~Vijayawada|Andhra Pradesh|IN|16.52|80.63|0~Jodhpur|Rajasthan|IN|26.292|73.017|0~Jamshedpur|Jharkhand|IN|22.788|86.198|0~Chandigarh|Chandigarh|IN|30.72|76.78|0~Ranchi|Jharkhand|IN|23.37|85.33|0~Gwalior|Madhya Pradesh|IN|26.23|78.18|0~Mysuru (Mysore)|Karnataka|IN|12.31|76.66|0~Thiruvananthapuram|Kerala|IN|8.5|76.95|0~Tiruchirappalli|Tamil Nadu|IN|10.81|78.69|0~Hubli|Karnataka|IN|15.36|75.125|0~Salem|Tamil Nadu|IN|11.67|78.18|0~Jullundur|Punjab|IN|31.335|75.569|0~Bhubaneshwar|Orissa|IN|20.27|85.827|0~Kota|Rajasthan|IN|25.18|75.835|0~Bareilly|Uttar Pradesh|IN|28.345|79.42|0~Aligarh|Uttar Pradesh|IN|27.892|78.062|0~Raipur|Chhattisgarh|IN|21.235|81.635|0~Bhiwandi|Maharashtra|IN|19.35|73.13|0~Dhanbad|Jharkhand|IN|23.8|86.42|0~Gorakhpur|Uttar Pradesh|IN|26.75|83.38|0~Kolhapur|Maharashtra|IN|16.7|74.22|0~Dehra Dun|Uttaranchal|IN|30.32|78.05|0~Jammu|Jammu and Kashmir|IN|32.712|74.847|0~Belgaum|Karnataka|IN|15.865|74.505|0~Mangaluru (Mangalore)|Karnataka|IN|12.9|74.85|0~Nanded|Maharashtra|IN|19.17|77.3|0~Cuttack|Orissa|IN|20.47|85.89|0~Malegaon|Maharashtra|IN|20.56|74.525|0~Raurkela|Orissa|IN|22.23|84.83|0~Ajmer|Rajasthan|IN|26.45|74.64|0~Nellore|Andhra Pradesh|IN|14.44|79.99|0~Siliguri|West Bengal|IN|26.72|88.455|0~Guwahati|Assam|IN|26.16|91.77|0~Bikaner|Rajasthan|IN|28.03|73.33|0~Ujjain|Madhya Pradesh|IN|23.19|75.79|0~Bhatpara|West Bengal|IN|22.85|88.52|0~Gulbarga|Karnataka|IN|17.35|76.82|0~Chandrapur|Maharashtra|IN|19.97|79.3|0~Udaipur|Rajasthan|IN|24.6|73.73|0~Tuticorin|Tamil Nadu|IN|8.82|78.13|0~Gaya|Bihar|IN|24.8|85|0~Dhule|Maharashtra|IN|20.9|74.77|0~Bellary|Karnataka|IN|15.15|76.915|0~Latur|Maharashtra|IN|18.4|76.57|0~Bhagalpur|Bihar|IN|25.23|86.98|0~Tumkur|Karnataka|IN|13.33|77.1|0~Kurnool|Andhra Pradesh|IN|15.83|78.03|0~Rajapalaiyam|Tamil Nadu|IN|9.42|77.58|0~Parbhani|Maharashtra|IN|19.27|76.76|0~Muzaffarpur|Bihar|IN|26.12|85.38|0~Mathura|Uttar Pradesh|IN|27.5|77.67|0~Patiala|Punjab|IN|30.32|76.385|0~Brahmapur|Orissa|IN|19.32|84.8|0~New Delhi|Delhi|IN|28.6|77.2|0~Barddhaman|West Bengal|IN|23.25|87.865|0~Bhuj|Dadra and Nagar Haveli|IN|23.25|69.81|0~Ratlam|Madhya Pradesh|IN|23.35|75.03|0~Bijapur|Karnataka|IN|16.835|75.71|0~Tirupati|Andhra Pradesh|IN|13.65|79.42|0~Bidar|Karnataka|IN|17.923|77.518|0~Hospet|Karnataka|IN|15.28|76.375|0~Raichur|Karnataka|IN|16.21|77.355|0~Khammam|Andhra Pradesh|IN|17.28|80.16|0~Pondicherry|Puducherry|IN|11.935|79.83|0~Nagercoil|Tamil Nadu|IN|8.18|77.43|0~Mandya|Karnataka|IN|12.57|76.92|0~Pali|Rajasthan|IN|25.79|73.33|0~Dindigul|Tamil Nadu|IN|10.38|78|0~Haldia|West Bengal|IN|22.026|88.058|0~Purnia|Bihar|IN|25.785|87.48|0~Gurugram (Gurgaon)|Haryana|IN|28.45|77.02|0~Burhanpur|Madhya Pradesh|IN|21.3|76.13|0~Machilipatnam|Andhra Pradesh|IN|16.2|81.18|0~Ongole|Andhra Pradesh|IN|15.56|80.05|0~Proddatur|Andhra Pradesh|IN|14.75|78.57|0~Porbandar|Dadra and Nagar Haveli|IN|21.67|69.67|0~Bahraich|Uttar Pradesh|IN|27.62|81.67|0~Bhusawal|Maharashtra|IN|21.02|75.83|0~Nandyal|Andhra Pradesh|IN|15.52|78.48|0~Alappuzha|Kerala|IN|9.5|76.37|0~Simla|Himachal Pradesh|IN|31.1|77.167|0~Sirsa|Haryana|IN|29.49|75.03|0~Chirala|Andhra Pradesh|IN|15.86|80.34|0~Medinipur|West Bengal|IN|22.33|87.15|0~Tonk|Rajasthan|IN|26.15|75.79|0~Fatehpur|Uttar Pradesh|IN|25.88|80.8|0~Sitapur|Uttar Pradesh|IN|27.63|80.75|0~Navsari|Dadra and Nagar Haveli|IN|20.85|72.92|0~Budaun|Uttar Pradesh|IN|28.03|79.09|0~Cuddalore|Tamil Nadu|IN|11.72|79.77|0~Hoshiarpur|Punjab|IN|31.52|75.98|0~Kanchipuram|Tamil Nadu|IN|12.834|79.717|0~Faizabad|Uttar Pradesh|IN|26.75|82.17|0~Hindupur|Andhra Pradesh|IN|13.78|77.49|0~Krishnanagar|West Bengal|IN|23.38|88.53|0~Kumbakonam|Tamil Nadu|IN|10.98|79.4|0~Tiruvannamalai|Tamil Nadu|IN|12.26|79.1|0~Kolar|Karnataka|IN|13.134|78.133|0~Pilibhit|Uttar Pradesh|IN|28.64|79.81|0~Abohar|Punjab|IN|30.12|74.29|0~Alipur Duar|West Bengal|IN|26.484|89.567|0~Hathras|Uttar Pradesh|IN|27.6|78.05|0~Baramula|Jammu and Kashmir|IN|34.2|74.35|0~Valparai|Tamil Nadu|IN|10.32|76.97|0~Aurangabad|Bihar|IN|24.77|84.38|0~Vizianagaram|Andhra Pradesh|IN|18.12|83.5|0~Karur|Tamil Nadu|IN|10.95|78.083|0~Sopur|Jammu and Kashmir|IN|34.3|74.467|0~Tezpur|Assam|IN|26.634|92.8|0~Daman|Dadra and Nagar Haveli|IN|20.417|72.85|0~Silvassa|Dadra and Nagar Haveli|IN|20.267|73.017|0~Diu|Dadra and Nagar Haveli|IN|20.72|70.99|0~Dispur|Assam|IN|26.144|91.767|0~Kavaratti|Lakshadweep|IN|10.563|72.637|0~Noida|Uttar Pradesh|IN|28.535|77.391|0~Greater Noida|Uttar Pradesh|IN|28.474|77.504|0~Thane|Maharashtra|IN|19.218|72.978|0~Navi Mumbai|Maharashtra|IN|19.033|73.03|0~Kalyan|Maharashtra|IN|19.244|73.135|0~Vasai-Virar|Maharashtra|IN|19.392|72.84|0~Panvel|Maharashtra|IN|18.989|73.118|0~Dehradun|Uttarakhand|IN|30.317|78.032|0~Rishikesh|Uttarakhand|IN|30.087|78.268|0~Haridwar|Uttarakhand|IN|29.946|78.164|0~Haldwani|Uttarakhand|IN|29.218|79.513|0~Nainital|Uttarakhand|IN|29.38|79.464|0~Roorkee|Uttarakhand|IN|29.854|77.888|0~Bhubaneswar|Odisha|IN|20.296|85.825|0~Puri|Odisha|IN|19.814|85.831|0~Berhampur|Odisha|IN|19.315|84.794|0~Sambalpur|Odisha|IN|21.467|83.981|0~Rourkela|Odisha|IN|22.26|84.854|0~Shimla|Himachal Pradesh|IN|31.105|77.173|0~Panaji|Goa|IN|15.491|73.828|0~Margao|Goa|IN|15.283|73.986|0~Visakhapatnam|Andhra Pradesh|IN|17.687|83.219|0~Kakinada|Andhra Pradesh|IN|16.989|82.248|0~Guntur|Andhra Pradesh|IN|16.307|80.436|0~Rajahmundry|Andhra Pradesh|IN|17|81.804|0~Kadapa|Andhra Pradesh|IN|14.467|78.824|0~Anantapur|Andhra Pradesh|IN|14.682|77.601|0~Darbhanga|Bihar|IN|26.154|85.892|0~Begusarai|Bihar|IN|25.418|86.127|0~Arrah|Bihar|IN|25.556|84.66|0~Hajipur|Bihar|IN|25.686|85.215|0~Motihari|Bihar|IN|26.647|84.909|0~Bettiah|Bihar|IN|26.801|84.503|0~Chhapra|Bihar|IN|25.782|84.748|0~Saharsa|Bihar|IN|25.884|86.601|0~Sitamarhi|Bihar|IN|26.595|85.481|0~Bihar Sharif|Bihar|IN|25.198|85.515|0~Lakhisarai|Bihar|IN|25.172|86.095|0~Samastipur|Bihar|IN|25.856|85.787|0~Siwan|Bihar|IN|26.22|84.357|0~Buxar|Bihar|IN|25.565|83.978|0~Sasaram|Bihar|IN|24.952|84.031|0~Kishanganj|Bihar|IN|26.105|87.952|0~Katihar|Bihar|IN|25.539|87.571|0~Munger|Bihar|IN|25.371|86.473|0~Raxaul|Bihar|IN|26.98|84.85|0~Mohali|Punjab|IN|30.705|76.718|0~Jalandhar|Punjab|IN|31.326|75.576|0~Bathinda|Punjab|IN|30.211|74.945|0~Pathankot|Punjab|IN|32.264|75.642|0~Panchkula|Haryana|IN|30.694|76.861|0~Kurukshetra|Haryana|IN|29.97|76.878|0~Bhiwani|Haryana|IN|28.797|76.132|0~Rewari|Haryana|IN|28.199|76.619|0~Sonipat|Haryana|IN|28.993|77.015|0~Panipat|Haryana|IN|29.391|76.963|0~Karnal|Haryana|IN|29.686|76.99|0~Rohtak|Haryana|IN|28.895|76.607|0~Hisar|Haryana|IN|29.149|75.722|0~Ambala|Haryana|IN|30.378|76.777|0~Nashik|Maharashtra|IN|19.997|73.79|0~Solapur|Maharashtra|IN|17.66|75.906|0~Amravati|Maharashtra|IN|20.937|77.78|0~Akola|Maharashtra|IN|20.7|77.008|0~Satara|Maharashtra|IN|17.68|74.018|0~Sangli|Maharashtra|IN|16.852|74.582|0~Ahmednagar|Maharashtra|IN|19.095|74.748|0~Puducherry|Puducherry|IN|11.942|79.808|0~Durgapur|West Bengal|IN|23.52|87.312|0~Howrah|West Bengal|IN|22.596|88.264|0~Kharagpur|West Bengal|IN|22.346|87.232|0~Bokaro|Jharkhand|IN|23.669|86.151|0~Hazaribagh|Jharkhand|IN|23.992|85.364|0~Deoghar|Jharkhand|IN|24.485|86.695|0~Ayodhya|Uttar Pradesh|IN|26.792|82.2|0~Vrindavan|Uttar Pradesh|IN|27.565|77.659|0~Muzaffarnagar|Uttar Pradesh|IN|29.473|77.709|0~Saharanpur|Uttar Pradesh|IN|29.968|77.555|0~Moradabad|Uttar Pradesh|IN|28.839|78.773|0~Rampur|Uttar Pradesh|IN|28.802|79.027|0~Jhansi|Uttar Pradesh|IN|25.448|78.569|0~Mirzapur|Uttar Pradesh|IN|25.146|82.569|0~Sultanpur|Uttar Pradesh|IN|26.265|82.073|0~Azamgarh|Uttar Pradesh|IN|26.074|83.186|0~Ballia|Uttar Pradesh|IN|25.76|84.147|0~Deoria|Uttar Pradesh|IN|26.502|83.779|0~Ghazipur|Uttar Pradesh|IN|25.588|83.578|0~Jaunpur|Uttar Pradesh|IN|25.746|82.684|0~Firozabad|Uttar Pradesh|IN|27.159|78.396|0~Etawah|Uttar Pradesh|IN|26.786|79.016|0~Shahjahanpur|Uttar Pradesh|IN|27.883|79.909|0~Hapur|Uttar Pradesh|IN|28.731|77.776|0~Bulandshahr|Uttar Pradesh|IN|28.407|77.85|0~Sikar|Rajasthan|IN|27.609|75.14|0~Bhilwara|Rajasthan|IN|25.341|74.631|0~Bharatpur|Rajasthan|IN|27.215|77.493|0~Alwar|Rajasthan|IN|27.553|76.635|0~Sri Ganganagar|Rajasthan|IN|29.904|73.877|0~Satna|Madhya Pradesh|IN|24.601|80.832|0~Rewa|Madhya Pradesh|IN|24.536|81.304|0~Sagar|Madhya Pradesh|IN|23.839|78.738|0~Bhilai|Chhattisgarh|IN|21.194|81.351|0~Durg|Chhattisgarh|IN|21.19|81.285|0~Bilaspur|Chhattisgarh|IN|22.08|82.141|0~Karimnagar|Telangana|IN|18.439|79.129|0~Nizamabad|Telangana|IN|18.672|78.094|0~Thanjavur|Tamil Nadu|IN|10.787|79.138|0~Erode|Tamil Nadu|IN|11.341|77.717|0~Tiruppur|Tamil Nadu|IN|11.108|77.341|0~Tirunelveli|Tamil Nadu|IN|8.714|77.757|0~Vellore|Tamil Nadu|IN|12.916|79.132|0~Hosur|Tamil Nadu|IN|12.741|77.825|0~Kozhikode|Kerala|IN|11.259|75.78|0~Thrissur|Kerala|IN|10.528|76.214|0~Kollam|Kerala|IN|8.893|76.614|0~Udupi|Karnataka|IN|13.341|74.742|0~Davangere|Karnataka|IN|14.464|75.922|0~Shimoga|Karnataka|IN|13.93|75.568|0~Kalaburagi|Karnataka|IN|17.33|76.834|0~Gandhinagar|Gujarat|IN|23.216|72.637|0~Bhavnagar|Gujarat|IN|21.765|72.152|0~Jamnagar|Gujarat|IN|22.471|70.058|0~Anand|Gujarat|IN|22.564|72.929|0~Leh|Ladakh|IN|34.153|77.577|0~Gangtok|Sikkim|IN|27.339|88.606|0~Shillong|Meghalaya|IN|25.579|91.893|0~Imphal|Manipur|IN|24.817|93.937|0~Agartala|Tripura|IN|23.831|91.287|0~Aizawl|Mizoram|IN|23.727|92.718|0~Kohima|Nagaland|IN|25.675|94.109|0~Itanagar|Arunachal Pradesh|IN|27.084|93.605|0~Port Blair|Andaman and Nicobar|IN|11.623|92.727|0~Dibrugarh|Assam|IN|27.473|94.912|0~Silchar|Assam|IN|24.833|92.779|0~Jorhat|Assam|IN|26.751|94.204|0~Tokyo||JP|35.685|139.751|87~Mexico City|Distrito Federal|MX|19.442|-99.131|106~Shanghai||CN|31.216|121.437|44~Sao Paulo|São Paulo|BR|-23.559|-46.625|23~New York||US|40.75|-73.98|180~Karachi|Sind|PK|24.87|66.99|128~Buenos Aires|Ciudad de Buenos Aires|AR|-34.603|-58.398|8~Moscow|Moskva|RU|55.752|37.616|139~Istanbul||TR|41.105|29.01|170~Dhaka||BD|23.723|90.409|17~Cairo|Al Qahirah|EG|30.05|31.25|60~Seoul||KR|37.566|127|158~Beijing||CN|39.929|116.388|44~Jakarta|Jakarta Raya|ID|-6.174|106.829|77~Los Angeles|California|US|33.99|-118.18|179~London|Westminster|GB|51.5|-0.117|176~Tehran||IR|35.672|51.424|80~Lima||PE|-12.048|-77.05|131~Manila|Metropolitan Manila|PH|14.604|120.982|132~Bogota||CO|4.596|-74.083|48~Osaka||JP|34.75|135.46|87~Rio de Janeiro||BR|-22.925|-43.225|23~Kinshasa|Kinshasa City|CD|-4.33|15.315|51~Lahore|Punjab|PK|31.56|74.35|128~Guangzhou|Guangdong|CN|23.145|113.325|44~Chicago|Illinois|US|41.83|-87.75|178~Bangkok|Bangkok Metropolis|TH|13.75|100.517|167~Hong Kong||HK|22.305|114.185|75~Wuhan|Hubei|CN|30.58|114.27|44~Tianjin||CN|39.13|117.2|44~Sydney|New South Wales|AU|-33.92|151.185|10~Chongqing||CN|29.565|106.595|45~Baghdad||IQ|33.339|44.394|81~Paris|Île-de-France|FR|48.867|2.333|65~Melbourne|Victoria|AU|-37.82|144.975|14~Taipei|Taipei City|TW|25.036|121.568|164~Lagos||NG|6.443|3.392|124~Toronto|Ontario|CA|43.7|-79.42|36~Dongguan|Guangdong|CN|23.049|113.745|44~Ho Chi Minh City||VN|10.78|106.695|190~Riyadh|Ar Riyad|SA|24.641|46.773|152~Shenzhen|Guangdong|CN|22.552|114.122|44~Singapore||SG|1.293|103.856|155~Chittagong||BD|22.33|91.8|17~Shenyeng|Liaoning|CN|41.805|123.45|44~Houston|Texas|US|29.82|-95.34|178~Chengdu|Sichuan|CN|30.67|104.07|45~St. Petersburg|City of St. Petersburg|RU|59.939|30.316|139~Alexandria|Al Iskandariyah|EG|31.2|29.95|60~Belo Horizonte|Minas Gerais|BR|-19.915|-43.915|23~Yokohama|Kanagawa|JP|35.32|139.58|87~Rangoon|Yangon|MM|16.783|96.167|118~Xian|Shaanxi|CN|34.275|108.895|45~Luanda||AO|-8.838|13.234|4~Ankara||TR|39.927|32.864|170~Philadelphia|Pennsylvania|US|40|-75.17|180~Abidjan|Lagunes|CI|5.32|-4.04|85~Busan||KR|35.095|129.01|158~Harbin|Heilongjiang|CN|45.75|126.65|47~Nanjing|Jiangsu|CN|32.05|118.78|44~Khartoum||SD|15.588|32.534|160~Hechi|Guangxi|CN|23.097|109.609|45~Barcelona|Cataluña|ES|41.383|2.183|159~Berlin||DE|52.522|13.402|68~Casablanca|Grand Casablanca|MA|33.6|-7.616|116~Kabul||AF|34.517|69.183|1~Kano||NG|12|8.52|124~Brasilia|Distrito Federal|BR|-15.783|-47.916|23~Salvador|Bahia|BR|-12.97|-38.48|31~Montréal|Québec|CA|45.5|-73.583|39~Dallas|Texas|US|32.82|-96.84|178~Miami|Florida|US|25.788|-80.224|180~Fortaleza|Ceará|BR|-3.75|-38.58|25~Jeddah|Makkah|SA|21.517|39.219|152~Addis Ababa||ET|9.033|38.7|63~Guadalajara|Jalisco|MX|20.67|-103.33|106~Hanoi|Thái Nguyên|VN|21.033|105.85|190~Pyongyang|P'yongyang|KP|39.019|125.755|125~Santiago|Región Metropolitana de Santiago|CL|-33.45|-70.667|43~Nairobi||KE|-1.283|36.817|90~Changchun|Jilin|CN|43.865|125.34|47~Cape Town|Western Cape|ZA|-33.92|18.435|157~New Taipei|New Taipei City|TW|25.013|121.465|164~Taiyuan|Shanxi|CN|37.875|112.545|44~Dar es Salaam|Dar-Es-Salaam|TZ|-6.8|39.268|166~Madrid|Comunidad de Madrid|ES|40.4|-3.683|159~Quezon City|Metropolitan Manila|PH|14.65|121.03|132~Johannesburg|Gauteng|ZA|-26.17|28.03|157~Durban|KwaZulu-Natal|ZA|-29.865|30.98|157~Nagoya|Aichi|JP|35.155|136.915|87~El Giza|Al Jizah|EG|30.01|31.19|60~Algiers|Alger|DZ|36.763|3.051|3~Medellin|Antioquia|CO|6.275|-75.575|48~Porto Alegre|Rio Grande do Sul|BR|-30.05|-51.2|23~Surabaya|Jawa Timur|ID|-7.249|112.751|77~Dalian|Liaoning|CN|38.923|121.63|44~Recife|Pernambuco|BR|-8.076|-34.916|24~Faisalabad|Punjab|PK|31.41|73.11|128~Incheon|Inch'on-gwangyoksi|KR|37.476|126.642|158~Dakar||SM|14.716|-17.473|153~Boston|Massachusetts|US|42.33|-71.07|180~Detroit|Michigan|US|42.33|-83.08|185~Damascus||SY|33.5|36.3|163~Atlanta|Georgia|US|33.83|-84.4|180~Daegu|Taegu-gwangyoksi|KR|35.867|128.607|158~Izmir||TR|38.436|27.152|170~Washington, D.C.|District of Columbia|US|38.9|-77.009|180~Hangzhou|Zhejiang|CN|30.25|120.17|44~Phoenix|Arizona|US|33.54|-112.07|177~Zhangzhou|Fujian|CN|24.52|117.67|44~Jinan|Shandong|CN|36.675|116.995|44~Monterrey|Nuevo León|MX|25.67|-100.33|107~Guiyang|Guizhou|CN|26.58|106.72|45~Caracas|Distrito Capital|VE|10.501|-66.917|189~Changsha|Hunan|CN|28.2|112.97|44~Zhengzhou|Henan|CN|34.755|113.665|44~Mashhad|Razavi Khorasan|IR|36.27|59.57|80~Curitiba|Paraná|BR|-25.42|-49.32|23~Omdurman|Khartoum|SD|15.617|32.48|160~Lanzhou|Gansu|CN|36.056|103.792|45~Qingdao|Shandong|CN|36.09|120.33|44~Guayaquil|Guayas|EC|-2.22|-79.92|59~Ibadan|Oyo|NG|7.38|3.93|124~Cali|Valle del Cauca|CO|3.4|-76.5|48~Shijianzhuang|Hebei|CN|38.05|114.48|44~Sapporo|Hokkaido|JP|43.075|141.34|87~Kiev||UA|50.433|30.517|173~Xiangtan|Hunan|CN|27.85|112.9|44~Nanchong|Sichuan|CN|30.78|106.13|45~Aleppo|Aleppo (Halab)|SY|36.23|37.17|163~Kaohsiung|Kaohsiung City|TW|22.633|120.267|164~Jilin||CN|43.85|126.55|47~Milan|Lombardia|IT|45.47|9.205|84~Nanchang|Jiangxi|CN|28.68|115.88|44~Fukuoka||JP|33.595|130.41|87~San Francisco|California|US|37.74|-122.46|179~Havana|Ciudad de la Habana|CU|23.132|-82.364|54~Tashkent||UZ|41.312|69.295|187~Vienna|Wien|AT|48.2|16.367|15~Bandung|Jawa Barat|ID|-6.95|107.57|77~Accra|Greater Accra|GH|5.55|-0.217|69~Baku|Baki|AZ|40.395|49.862|16~Athens|Attiki|GR|37.983|23.733|70~Kunming|Yunnan|CN|25.07|102.68|45~Bekasi|Jakarta Raya|ID|-6.217|106.972|77~San Diego|California|US|32.82|-117.18|179~Medan|Sumatera Utara|ID|3.58|98.65|77~Denver|Colorado|US|39.739|-104.984|182~Sanaa|Amanat Al Asimah|YE|15.355|44.207|191~Campinas|São Paulo|BR|-22.9|-47.1|23~Fuzhou|Fujian|CN|26.08|119.3|44~Zibo|Shandong|CN|36.8|118.05|44~Saidu|N.W.F.P.|PK|34.75|72.35|128~Santa Cruz||BO|-17.754|-63.226|21~Bucharest||RO|44.433|26.1|137~Taichung|Taichung City|TW|24.152|120.682|164~Urumqi|Xinjiang Uygur|CN|43.805|87.575|46~Seattle|Washington|US|47.57|-122.34|179~Rawalpindi|Punjab|PK|33.6|73.04|128~Benoni|Gauteng|ZA|-26.15|28.33|157~Puebla||MX|19.05|-98.2|106~Belem|Pará|BR|-1.45|-48.48|28~Frankfurt|Hessen|DE|50.1|8.675|68~Beirut||LB|33.872|35.51|95~Stuttgart|Baden-Württemberg|DE|48.78|9.2|68~Shuyang|Jiangsu|CN|34.13|118.773|44~Maracaibo|Zulia|VE|10.73|-71.66|189~Hamburg||DE|53.55|10|68~Tel Aviv-Yafo|Tel Aviv|IL|32.08|34.77|83~Tangshan|Hebei|CN|39.624|118.194|44~Hefei|Anhui|CN|31.85|117.28|44~Warsaw|Masovian|PL|52.25|21|133~Minsk||BY|53.9|27.567|18~Rome|Lazio|IT|41.896|12.483|84~Rabat|Rabat - Salé - Zemmour - Zaer|MA|34.025|-6.836|116~Wanxian|Chongqing|CN|30.82|108.4|45~Budapest||HU|47.5|19.083|76~Lisbon|Lisboa|PT|38.723|-9.145|134~Xuzhou|Jiangsu|CN|34.28|117.18|44~Sendai|Miyagi|JP|38.287|141.022|87~Manaus|Amazonas|BR|-3.1|-60|26~Birmingham|West Midlands|GB|52.475|-1.92|176~Kyoto||JP|35.03|135.75|87~Taian|Shandong|CN|36.2|117.12|44~Douala|Littoral|CM|4.06|9.71|35~Naples|Campania|IT|40.84|14.245|84~Port-au-Prince|Ouest|HT|18.541|-72.336|73~Irvine|California|US|33.68|-117.83|179~George Town|Pulau Pinang|MY|5.414|100.329|102~Wenzhou|Zhejiang|CN|28.02|120.65|44~Haikou|Hainan|CN|20.05|110.32|45~Goiania|Goiás|BR|-16.72|-49.3|23~Palembang|Sumatera Selatan|ID|-2.98|104.75|77~Hiroshima||JP|34.388|132.443|87~Isfahan|Esfahan|IR|32.7|51.7|80~Tunis||TN|36.803|10.18|169~Valencia|Carabobo|VE|10.23|-67.98|189~Harare||ZW|-17.818|31.045|193~Luoyang|Henan|CN|34.68|112.47|44~Quito|Pichincha|EC|-0.215|-78.5|59~Xiamen|Fujian|CN|24.45|118.08|44~Antananarivo||MG|-18.917|47.517|100~Luzhou|Sichuan|CN|28.88|105.38|45~Pittsburgh|Pennsylvania|US|40.43|-80|180~Kobe|Hyogo|JP|34.68|135.17|87~Katowice|Silesian|PL|50.26|19.02|133~Barranquilla|Atlántico|CO|10.96|-74.8|48~Suzhou|Jiangsu|CN|31.3|120.62|44~Handan|Hebei|CN|36.58|114.48|44~Conakry||GN|9.532|-13.68|72~Minneapolis|Minnesota|US|44.98|-93.252|178~Nanning|Guangxi|CN|22.82|108.32|45~Multan|Punjab|PK|30.2|71.455|128~Santiago||DO|19.5|-70.67|58~Kumasi|Ashanti|GH|6.69|-1.63|69~Shantou|Guangdong|CN|23.37|116.67|44~Phnom Penh||KH|11.55|104.917|34~Tijuana|Baja California|MX|32.5|-117.08|109~Datong|Shanxi|CN|40.08|113.3|44~Vancouver|British Columbia|CA|49.273|-123.122|40~Daejeon||KR|36.336|127.425|158~Gujranwala|Punjab|PK|32.16|74.185|128~Kuala Lumpur|Selangor|MY|3.167|101.7|102~Khulna||BD|22.84|89.56|17~San Juan||PR|18.44|-66.13|135~Liuzhou|Guangxi|CN|24.28|109.25|45~Fushun|Liaoning|CN|41.865|123.87|44~Baltimore|Maryland|US|39.3|-76.62|180~Wuxi|Jiangsu|CN|31.58|120.3|44~Gwangju|Kwangju-gwangyoksi|KR|35.171|126.91|158~Bursa||TR|40.2|29.07|170~Suining|Sichuan|CN|30.533|105.533|45~Karaj|Tehran|IR|35.8|50.97|80~Hyderabad|Sind|PK|25.38|68.375|128~Anshan|Liaoning|CN|41.115|122.94|44~Yantai|Shandong|CN|37.53|121.4|44~Xinyang|Henan|CN|32.13|114.07|44~Ad Damman|Ash Sharqiyah|SA|26.428|50.1|152~Luan|Anhui|CN|31.75|116.48|44~Bamako||ML|12.65|-8|104~Brisbane|Queensland|AU|-27.455|153.035|12~Kampala||UG|0.317|32.583|172~Brussels||BE|50.833|4.333|19~Cordoba|Córdoba|AR|-31.4|-64.182|6~Kawasaki|Kanagawa|JP|35.53|139.705|87~Jinxi|Liaoning|CN|40.75|120.83|44~San Antonio|Texas|US|29.487|-98.507|178~Makkah||SA|21.43|39.82|152~Ciudad Juarez|Chihuahua|MX|31.69|-106.49|108~Semarang|Jawa Tengah|ID|-6.967|110.42|77~Kharkiv||UA|50|36.25|173~Pretoria|Gauteng|ZA|-25.707|28.229|157~Mannheim|Baden-Württemberg|DE|49.5|8.47|68~Yaounde|Centre|CM|3.867|11.517|35~Ningbo|Zhejiang|CN|29.88|121.55|44~Tampa|Florida|US|27.947|-82.459|180~Tainan|Tainan City|TW|23|120.2|164~Maputo||MZ|-25.955|32.589|117~Manchester||GB|53.5|-2.248|176~Davao|Davao Del Sur|PH|7.11|125.63|132~Tabriz|East Azarbaijan|IR|38.086|46.301|80~Leon|Guanajuato|MX|21.15|-101.7|106~Lusaka||ZM|-15.417|28.283|192~Haiphong|Quảng Ninh|VN|20.83|106.68|190~San Jose|California|US|37.3|-121.85|179~Yekaterinburg|Sverdlovsk|RU|56.85|60.6|140~Munich|Bayern|DE|48.13|11.575|68~Ujungpandang|Sulawesi Selatan|ID|-5.14|119.432|78~Qiqihar|Heilongjiang|CN|47.345|123.99|47~Peshawar|N.W.F.P.|PK|34.005|71.535|128~St. Louis|Missouri|US|38.635|-90.24|178~Brazzaville|Pool|CG|-4.259|15.285|49~Stockholm||SE|59.351|18.097|161~Turin|Piemonte|IT|45.07|7.67|84~Dubai|Dubay|AE|25.23|55.28|175~Hohhot|Nei Mongol|CN|40.82|111.66|45~Long Beach|California|US|33.787|-118.158|179~Nizhny Novgorod|Nizhegorod|RU|56.333|44|139~Adana||TR|36.995|35.32|170~Shiraz|Fars|IR|29.63|52.57|80~Huainan|Anhui|CN|32.63|116.98|44~Baotou|Nei Mongol|CN|40.652|109.822|45~Mosul|Ninawa|IQ|36.345|43.145|81~Maoming|Guangdong|CN|21.92|110.87|46~Ganzhou|Jiangxi|CN|25.92|114.95|44~Novosibirsk||RU|55.03|82.96|148~Tripoli|Tajura' wa an Nawahi al Arba|LY|32.893|13.18|97~Portland|Oregon|US|45.52|-122.68|179~Perth|Western Australia|AU|-31.955|115.84|13~La Paz||BO|-16.498|-68.15|21~Kaduna||NG|10.52|7.44|124~Linyi|Shandong|CN|35.08|118.33|44~Cilacap|Jawa Tengah|ID|-7.719|109.015|77~Cleveland|Ohio|US|41.47|-81.695|180~Mandalay||MM|21.97|96.085|118~Zaozhuang|Shandong|CN|34.88|117.57|44~Essen|Nordrhein-Westfalen|DE|51.45|7.017|68~Las Vegas|Nevada|US|36.21|-115.22|179~Changzhou|Jiangsu|CN|31.78|119.97|44~Xianyang|Shaanxi|CN|34.346|108.715|45~Lubumbashi|Katanga|CD|-11.68|27.48|50~Zhanjiang|Guangdong|CN|21.2|110.38|46~Indianapolis|Indiana|US|39.75|-86.17|183~Fort Lauderdale|Florida|US|26.136|-80.142|180~Lome|Maritime|TG|6.132|1.223|168~Belgrade|Grad Beograd|RS|44.819|20.468|154~Nanyang|Henan|CN|33|112.53|44~Yerevan|Erevan|AM|40.181|44.514|9~Marseille|Provence-Alpes-Côte-d'Azur|FR|43.29|5.375|65~Almaty||KZ|43.325|76.915|89~Rosario|Santa Fe|AR|-32.951|-60.666|6~Ft. Worth|Texas|US|32.74|-97.34|178~Doha|Ad Dawhah|QA|25.287|51.533|136~Omsk||RU|54.99|73.4|143~Kobenhavn|Hovedstaden|DK|55.679|12.563|56~Mbuji-Mayi|Kasaï-Oriental|CD|-6.15|23.6|50~Masan|Gyeongsangnam-do|KR|35.219|128.584|158~Santo Domingo|Distrito Nacional|DO|18.47|-69.9|58~Suwon|Gyeonggi-do|KR|37.258|127.011|158~Kuwait|Al Kuwayt|KW|29.37|47.978|91~Santos|São Paulo|BR|-23.954|-46.333|23~Amman||JO|31.95|35.933|88~Tbilisi||GE|41.725|44.791|67~Baoding|Hebei|CN|38.87|115.48|44~Sacramento|California|US|38.575|-121.47|179~Rostov||RU|47.235|39.713|139~Abbottabad|N.W.F.P.|PK|34.15|73.2|128~Sofia|Grad Sofiya|BG|42.683|23.317|32~Ankang|Shaanxi|CN|32.68|109.02|45~Zhuhai|Guangdong|CN|22.277|113.568|44~Port Harcourt|Rivers|NG|4.81|7.01|124~Chelyabinsk||RU|55.155|61.439|140~Toluca|México|MX|19.33|-99.67|106~Dublin||IE|53.333|-6.249|82~Kazan|Tatarstan|RU|55.75|49.126|139~Calgary|Alberta|CA|51.083|-114.08|38~Ulsan||KR|35.547|129.317|158~Medina|Al Madinah|SA|24.5|39.58|152~Guatemala||GT|14.621|-90.527|71~Vitoria|Espírito Santo|BR|-20.324|-40.366|23~Maracay|Aragua|VE|10.247|-67.596|189~Neijiang|Sichuan|CN|29.58|105.05|45~Columbus|Ohio|US|39.98|-82.99|180~Zhongli|Taoyuan|TW|24.965|121.217|164~Maceio|Alagoas|BR|-9.62|-35.73|27~Maanshan|Anhui|CN|31.73|118.48|44~Samara||RU|53.195|50.151|138~Niteroi|Rio de Janeiro|BR|-22.9|-43.1|23~Changde|Hunan|CN|29.03|111.68|44~Ouagadougou|Kadiogo|BF|12.37|-1.525|33~Leeds|West Yorkshire|GB|53.83|-1.58|176~Adelaide|South Australia|AU|-34.935|138.6|11~Kitakyushu|Fukuoka|JP|33.87|130.82|87~Mogadishu|Banaadir|SO|2.067|45.367|156~Songnam|Gyeonggi-do|KR|37.439|127.138|158~Huambo||AO|-12.75|15.76|4~Cologne|Nordrhein-Westfalen|DE|50.93|6.95|68~Milwaukee|Wisconsin|US|43.053|-87.92|178~Fez|Fès - Boulemane|MA|34.055|-5|116~Yichun|Jiangxi|CN|27.833|114.4|44~Natal|Amazonas|BR|-6.984|-60.27|26~Ottawa|Ontario|CA|45.417|-75.7|36~Weifang|Shandong|CN|36.72|119.1|44~San Bernardino|California|US|34.12|-117.3|179~Cincinnati|Ohio|US|39.162|-84.457|180~Ufa|Bashkortostan|RU|54.79|56.04|140~Shangqiu|Henan|CN|34.45|115.65|44~Barquisimeto|Lara|VE|10.05|-69.3|189~Xinyi|Jiangsu|CN|34.38|118.35|44~Seville|Andalucía|ES|37.405|-5.98|159~Kansas City|Missouri|US|39.107|-94.604|178~Mudangiang|Heilongjiang|CN|44.575|129.59|47~The Hague|Zuid-Holland|NL|52.08|4.27|120~Oakland|California|US|37.769|-122.221|179~Sharjah||AE|25.371|55.406|175~Dnipropetrovsk|Dnipropetrovs'k|UA|48.48|35|173~Daqing|Heilongjiang|CN|46.58|125|47~Lyon|Rhône-Alpes|FR|45.77|4.83|65~Charlotte|North Carolina|US|35.205|-80.83|180~Da Nang||VN|16.06|108.25|190~Gaziantep||TR|37.075|37.385|170~Asuncion|Asunción|PY|-25.296|-57.642|130~Jianmen|Hubei|CN|30.65|113.16|44~Florence|Toscana|IT|43.78|11.25|84~Qom||IR|34.65|50.95|80~Nezahualcoyotl|México|MX|19.41|-99.03|106~Benin City|Edo|NG|6.34|5.62|124~Baoshan|Yunnan|CN|25.12|99.15|45~Benxi|Liaoning|CN|41.33|123.75|44~Sheffield|South Yorkshire|GB|53.367|-1.5|176~Shangrao|Jiangxi|CN|28.47|117.97|44~Managua||NI|12.153|-86.268|122~Austin|Texas|US|30.267|-97.743|178~Ahvaz|Khuzestan|IR|31.28|48.72|80~Kelang|Selangor|MY|3.02|101.55|102~Jerusalem||IL|31.778|35.207|83~Monrovia|Montserrado|LR|6.311|-10.805|96~Huaiyin|Jiangsu|CN|33.58|119.03|44~Huaibei|Anhui|CN|33.95|116.75|44~Xining|Gansu|CN|36.62|101.77|45~Dusseldorf|Nordrhein-Westfalen|DE|51.22|6.78|68~Jacksonville|Florida|US|30.33|-81.67|180~Goyang|Gyeonggi-do|KR|37.653|126.837|158~Ikare|Ondo|NG|7.53|5.76|124~Tegucigalpa|Francisco Morazán|HN|14.102|-87.218|74~Xiantao|Hubei|CN|30.37|113.44|44~Zigong|Sichuan|CN|29.4|104.78|45~Kathmandu|Bhaktapur|NP|27.717|85.317|119~Zhuzhou|Hunan|CN|27.83|113.15|44~Hims|Homs (Hims)|SY|34.73|36.72|163~Hengyang|Hunan|CN|26.88|112.59|44~Hamamatsu|Shizuoka|JP|34.718|137.733|87~Cartagena|Bolívar|CO|10.4|-75.514|48~Amsterdam|Noord-Holland|NL|52.35|4.917|120~Lupanshui|Guizhou|CN|26.594|104.833|45~Edmonton|Alberta|CA|53.55|-113.5|38~Glasgow||GB|55.874|-4.251|176~Dushanbe|Tadzhikistan Territories|TJ|38.56|68.774|165~Duisburg|Nordrhein-Westfalen|DE|51.43|6.75|68~Zhucheng|Shandong|CN|35.99|119.38|44~Tanjungkarang-Telubketung|Lampung|ID|-5.45|105.3|77~Qinhuangdao|Hebei|CN|39.93|119.62|44~Banghazi|Benghazi|LY|32.117|20.067|97~Virginia Beach|Virginia|US|36.853|-75.978|180~Aba|Abia|NG|5.1|7.35|124~Donetsk|Donets'k|UA|48|37.83|173~Kaifeng|Henan|CN|34.85|114.35|44~Basra|Al-Basrah|IQ|30.514|47.814|81~Abuja|Federal Capital Territory|NG|9.083|7.533|124~Xuanzhou|Anhui|CN|30.953|118.755|44~Puch'on|Gyeonggi-do|KR|37.499|126.783|158~Cagayan de Oro|Misamis Oriental|PH|8.451|124.685|132~Bogor|Jawa Barat|ID|-6.57|106.75|77~Marrakesh|Marrakech - Tensift - Al Haouz|MA|31.63|-8|116~Yangquan|Shanxi|CN|37.87|113.57|44~Pingdingshan|Henan|CN|33.73|113.3|44~Padang|Sumatera Barat|ID|-0.96|100.36|77~Odessa||UA|46.49|30.71|173~Panama City|Panama|PA|8.968|-79.533|129~Nova Iguacu|Rio de Janeiro|BR|-22.74|-43.47|23~Az Zarqa|Zarqa|JO|32.07|36.1|88~Duque de Caxias|Rio de Janeiro|BR|-22.77|-43.31|23~Merida|Yucatán|MX|20.967|-89.617|113~Mombasa|Coast|KE|-4.04|39.69|90~Yancheng|Jiangsu|CN|33.386|120.125|44~Johor Bahru|Johor|MY|1.48|103.73|102~Helsinki|Southern Finland|FI|60.176|24.934|64~Ndjamena|Hadjer-Lamis|TD|12.113|15.049|42~San Luis Potosi|San Luis Potosí|MX|22.17|-101|106~Anyang|Henan|CN|36.08|114.35|44~Torreon|Coahuila|MX|25.57|-103.42|107~Port Elizabeth|Eastern Cape|ZA|-33.97|25.6|157~Mianyang|Sichuan|CN|31.47|104.77|45~Niamey||NE|13.517|2.117|123~Kermanshah||IR|34.38|47.06|80~Mendoza||AR|-32.883|-68.817|7~Ulaanbaatar||MN|47.917|106.917|115~Yueyang|Hunan|CN|29.38|113.1|44~Quanzhou|Fujian|CN|24.9|118.58|44~Xinxiang|Henan|CN|35.32|113.87|44~Bishkek||KG|42.873|74.585|92~Guilin|Guangxi|CN|25.28|110.28|45~Jining|Shandong|CN|35.4|116.55|44~Newcastle|New South Wales|AU|-32.845|151.815|10~Saratov||RU|51.58|46.03|141~Chifeng|Nei Mongol|CN|42.27|118.95|44~Cebu||PH|10.32|123.9|132~Valencia|Comunidad Valenciana|ES|39.485|-0.4|159~Nantong|Jiangsu|CN|32.03|120.825|44~Lingyuan|Liaoning|CN|41.24|119.401|44~Cochabamba||BO|-17.41|-66.17|21~Joao Pessoa|Paraíba|BR|-7.101|-34.876|25~Zhangjiakou|Hebei|CN|40.83|114.93|44~Kigali|Kigali City|RW|-1.954|30.061|151~Volgograd||RU|48.71|44.5|146~Rotterdam|Zuid-Holland|NL|51.92|4.48|120~Kingston||JM|17.977|-76.767|86~Baoji|Shaanxi|CN|34.38|107.15|45~Heze|Shandong|CN|35.23|115.45|44~Irbil|Arbil|IQ|36.179|44.009|81~Bandar Lampung|Lampung|ID|-5.43|105.27|77~Porto||PT|41.15|-8.62|134~Nampo|Namp'o-si|KP|38.767|125.452|125~Bucaramanga|Santander|CO|7.13|-73.126|48~Raleigh|North Carolina|US|35.819|-78.645|180~Queretaro|Querétaro|MX|20.63|-100.38|106~Callao|Lima|PE|-12.07|-77.135|131~Foshan|Guangdong|CN|23.03|113.12|44~Jiamusi|Heilongjiang|CN|46.83|130.35|47~Jinzhou|Liaoning|CN|41.12|121.1|44~Orlando|Florida|US|28.51|-81.38|180~Yiyang|Hunan|CN|28.6|112.33|44~Malang|Jawa Timur|ID|-7.98|112.61|77~Arequipa||PE|-16.42|-71.53|131~Aden|`Adan|YE|12.78|45.009|191~Vereeniging|Gauteng|ZA|-26.65|27.96|157~Fuyang|Zhejiang|CN|30.053|119.952|44~Palermo|Sicily|IT|38.125|13.35|84~Xiangfan|Hubei|CN|32.02|112.13|44~Aguascalientes||MX|21.879|-102.29|106~Djibouti||DJ|11.595|43.148|57~Mesa|Arizona|US|33.424|-111.736|177~Lvov|L'viv|UA|49.835|24.03|173~Auckland||NZ|-36.85|174.765|121~Montevideo||UY|-34.858|-56.171|186~Lodz|Lódz|PL|51.775|19.451|133~Krakow|Lesser Poland|PL|50.06|19.96|133~Rajshahi||BD|24.375|88.605|17~Zaria|Kaduna|NG|11.08|7.71|124~Memphis|Tennessee|US|35.12|-90|178~Okayama||JP|34.672|133.917|87~Agadir|Souss - Massa - Draâ|MA|30.44|-9.62|116~Yangjiang|Guangdong|CN|21.85|111.97|45~Dandong|Liaoning|CN|40.144|124.394|44~Quetta|Baluchistan|PK|30.22|67.025|128~Chihuahua||MX|28.645|-106.085|112~Teresina|Piauí|BR|-5.095|-42.78|25~General Santos|South Cotabato|PH|6.111|125.175|132~Zhenjiang|Jiangsu|CN|32.22|119.43|44~Vila Velha|Amapá|BR|3.217|-51.217|28~Liaoyang|Liaoning|CN|41.28|123.18|44~Jos|Plateau|NG|9.93|8.89|124~Mexicali|Baja California|MX|32.65|-115.48|109~Bengbu|Anhui|CN|32.95|117.33|44~Bacolod|Negros Occidental|PH|10.632|122.982|132~Fuxin|Liaoning|CN|42.01|121.66|44~Bangui||CF|4.367|18.558|41~Jiaxing|Zhejiang|CN|30.77|120.75|44~Cotonou|Ouémé|BJ|6.4|2.52|20~Albuquerque|New Mexico|US|35.105|-106.641|182~Zurich|Zürich|CH|47.38|8.55|162~Riga||LV|56.95|24.1|94~Oran||DZ|35.71|-0.62|3~Cucuta|Norte de Santander|CO|7.92|-72.52|48~Cheongju|Chungcheongbuk-do|KR|36.644|127.501|158~Tangier|Tanger - Tétouan|MA|35.747|-5.833|116~Konya||TR|37.875|32.475|170~San Salvador||SV|13.71|-89.203|61~Geneva|Genève|CH|46.21|6.14|162~Lianyungang|Jiangsu|CN|34.6|119.17|44~Zagreb|Grad Zagreb|HR|45.8|16|53~Joinville|Santa Catarina|BR|-26.32|-48.84|23~New Haven|Connecticut|US|41.33|-72.9|180~Oslo||NO|59.917|10.75|126~Qingyuan|Guangdong|CN|23.7|113.03|44~Changzhi|Shanxi|CN|36.184|113.105|44~Pekanbaru|Riau|ID|0.565|101.425|77~Maiduguri|Borno|NG|11.85|13.16|124~Nashville|Tennessee|US|36.17|-86.78|178~Antalya||TR|36.89|30.7|170~Nouakchott||MR|18.086|-15.975|105~Ilorin|Kwara|NG|8.49|4.55|124~Yongzhou|Hunan|CN|26.23|111.62|44~Kumamoto||JP|32.801|130.701|87~Bulawayo||ZW|-20.17|28.58|193~Culiacan|Sinaloa|MX|24.83|-107.38|110~Sao Jose dos Campos|São Paulo|BR|-23.2|-45.88|23~Ansan|Gyeonggi-do|KR|37.348|126.86|158~Huzhou|Zhejiang|CN|30.87|120.1|44~Langfang|Hebei|CN|39.52|116.68|44~Yingkow|Liaoning|CN|40.67|122.28|44~Islamabad|F.C.T.|PK|33.7|73.167|128~Can Tho||VN|10.05|105.77|190~Antwerpen|Antwerp|BE|51.22|4.415|19~Enugu||NG|6.45|7.5|124~Huangshi|Hubei|CN|30.22|115.1|44~Campo Grande|Mato Grosso do Sul|BR|-20.45|-54.617|30~Jiaozuo|Henan|CN|35.25|113.22|44~Shizuoka||JP|34.986|138.385|87~Jixi|Heilongjiang|CN|45.3|130.97|47~Acapulco|Guerrero|MX|16.85|-99.916|106~Taizz|Ta`izz|YE|13.604|44.039|191~Warri|Delta|NG|5.52|5.76|124~Jaboatao|Pernambuco|BR|-8.11|-35.02|24~Jeonju|Jeollabuk-do|KR|35.831|127.14|158~Saltillo|Coahuila|MX|25.42|-101.005|107~San Miguel de Tucuman|Tucumán|AR|-26.816|-65.217|5~Yichang|Hubei|CN|30.7|111.28|44~West Palm Beach|Florida|US|26.745|-80.124|180~Shaoguan|Guangdong|CN|24.8|113.58|44~Tucson|Arizona|US|32.205|-110.89|177~Birmingham|Alabama|US|33.53|-86.825|178~Tulsa|Oklahoma|US|36.12|-95.93|178~Pingxiang|Jiangxi|CN|27.62|113.85|44~Puyang|Henan|CN|35.7|114.98|44~Providence|Rhode Island|US|41.821|-71.415|180~Sarajevo||BA|43.85|18.383|22~Santo Andre|São Paulo|BR|-23.653|-46.528|23~Vientiane|Vientiane [prefecture]|LA|17.967|102.6|93~Chisinau||MD|47.005|28.858|114~Muscat||OM|23.613|58.593|127~Oklahoma City|Oklahoma|US|35.47|-97.519|178~Olinda|Pernambuco|BR|-8|-34.85|24~Wuhu|Anhui|CN|31.35|118.37|44~El Paso|Texas|US|31.78|-106.51|182~Tirana|Durrës|AL|41.328|19.819|2~Hegang|Heilongjiang|CN|47.4|130.37|47~Zunyi|Guizhou|CN|27.7|106.92|45~Yinchuan|Ningxia Hui|CN|38.468|106.273|45~Ipoh|Perak|MY|4.6|101.065|102~Leshan|Sichuan|CN|29.567|103.733|45~As Sulaymaniyah|As-Sulaymaniyah|IQ|35.561|45.431|81~Shiyan|Hubei|CN|32.57|110.78|44~Ashgabat|Ahal|TM|37.95|58.383|171~Bien Hoa|Đồng Nai|VN|10.97|106.83|190~Zhanyi|Yunnan|CN|25.6|103.817|45~Samarqand|Samarkand|UZ|39.67|66.945|188~Tianshui|Gansu|CN|34.6|105.92|45~Tolyatti|Samara|RU|53.48|49.53|138~Sokoto||NG|13.06|5.24|124~Buffalo|New York|US|42.88|-78.88|180~Lilongwe||MW|-13.983|33.783|101~Malacca|Melaka|MY|2.206|102.246|102~Norfolk|Virginia|US|36.85|-76.28|180~Hue|Thừa Thiên–Huế|VN|16.47|107.58|190~Omaha|Nebraska|US|41.24|-96.01|178~San Jose|San José|CR|9.935|-84.084|52~Diyarbakir||TR|37.92|40.23|170~Toulouse|Midi-Pyrénées|FR|43.62|1.45|65~Liverpool|Merseyside|GB|53.416|-2.918|176~Haifa||IL|32.82|34.98|83~Yulin|Guangxi|CN|22.63|110.15|45~Yogyakarta||ID|-7.78|110.375|77~Lille|Nord-Pas-de-Calais|FR|50.65|3.08|65~Bremen||DE|53.08|8.8|68~Ciudad Guayana|Bolívar|VE|8.37|-62.62|189~Nice|Provence-Alpes-Côte-d'Azur|FR|43.715|7.265|65~Al Hudaydah||YE|14.798|42.953|191~Genoa|Liguria|IT|44.41|8.93|84~Wroclaw|Lower Silesian|PL|51.11|17.03|133~Meknes|Meknès - Tafilalet|MA|33.9|-5.56|116~Pietermaritzburg|KwaZulu-Natal|ZA|-29.61|30.39|157~Hamilton|Ontario|CA|43.25|-79.83|36~Dahuk|Dihok|IQ|36.867|43|81~Hannover|Niedersachsen|DE|52.367|9.717|68~Morelia|Michoacán|MX|19.733|-101.189|106~Nurnberg|Bayern|DE|49.45|11.08|68~Jinhua|Zhejiang|CN|29.12|119.65|44~Zamboanga|Zamboanga del Sur|PH|6.92|122.08|132~Bilbao|País Vasco|ES|43.25|-2.93|159~Kananga|Kasaï-Occidental|CD|-5.89|22.4|50~Kandahar||AF|31.61|65.695|1~Krasnoyarsk||RU|56.014|92.866|150~An Najaf|An-Najaf|IQ|32|44.335|81~Taizhou|Jiangsu|CN|32.49|119.9|44~Xiangtai|Hebei|CN|37.05|114.5|44~Naha|Okinawa|JP|26.207|127.673|87~Izhevsk|Udmurt|RU|56.85|53.23|138~Cardiff||GB|51.5|-3.225|176~Winnipeg|Manitoba|CA|49.883|-97.166|37~Cuiaba|Mato Grosso|BR|-15.57|-56.085|29~Copenhagen|Hovedstaden|DK|55.676|12.568|56~Pointe-Noire|Kouilou|CG|-4.77|11.88|49~Krasnodar||RU|45.02|39|139~Zaporizhzhya||UA|47.857|35.177|174~Anshun|Guizhou|CN|26.25|105.93|45~Namangan||UZ|41|71.67|187~Shaoxing|Zhejiang|CN|30|120.57|44~Gdansk|Pomeranian|PL|54.36|18.64|133~Poznan|Greater Poland|PL|52.406|16.9|133~Louisville|Kentucky|US|38.225|-85.749|181~Hamhung|Hamgyong-namdo|KP|39.91|127.545|125~Ogbomosho|Oyo|NG|8.13|4.24|124~Al Hillah|Ar Riyad|SA|23.489|46.756|152~At Taif|Makkah|SA|21.262|40.382|152~Asmara|Anseba|ER|15.333|38.933|62~Cuernavaca|Morelos|MX|18.921|-99.24|106~Thessaloniki|Kentriki Makedonia|GR|40.696|22.885|70~Dortmund|Nordrhein-Westfalen|DE|51.53|7.45|68~Bandjarmasin|Kalimantan Selatan|ID|-3.33|114.58|78~Aracaju|Sergipe|BR|-10.9|-37.12|27~Chiclayo|Lambayeque|PE|-6.763|-79.837|131~Vladivostok|Primor'ye|RU|43.13|131.91|145~Bannu|N.W.F.P.|PK|32.989|70.599|128~Blantyre||MW|-15.79|34.99|101~San Pedro Sula|Cortés|HN|15.5|-88.03|74~Hsinchu|Hsinchu City|TW|24.817|120.977|164~Prague||CZ|50.083|14.466|55~Abu Dhabi||AE|24.467|54.367|175~Hachioji|Tokyo|JP|35.658|139.326|87~Honolulu|Hawaii|US|21.307|-157.858|184~Pontianak|Kalimantan Barat|ID|-0.03|109.32|79~Bridgeport|Connecticut|US|41.18|-73.2|180~Tampico|Tamaulipas|MX|22.3|-97.87|107~Icel|Mersin|TR|36.8|34.62|170~Quebec|Québec|CA|46.84|-71.246|39~Zahedan|Sistan and Baluchestan|IR|29.5|60.83|80~Samsun||TR|41.28|36.344|170~Veracruz||MX|19.177|-96.16|106~Shihezi|Xinjiang Uygur|CN|44.3|86.03|46~Tongliao|Nei Mongol|CN|43.62|122.27|44~Irkutsk||RU|52.32|104.245|149~Yibin|Sichuan|CN|28.77|104.57|45~Salt Lake City|Utah|US|40.775|-111.93|182~Kryvyy Rih|Dnipropetrovs'k|UA|47.928|33.345|173~Ulyanovsk|Ul'yanovsk|RU|54.33|48.41|142~Yaroslavl|Yaroslavl'|RU|57.62|39.87|139~Voronezh||RU|51.73|39.27|139~Barnaul|Altay|RU|53.355|83.745|147~Denpasar|Bali|ID|-8.65|115.22|78~Florianopolis|Santa Catarina|BR|-27.58|-48.52|23~Macau||MO|22.203|113.545|99~Beihai|Guangxi|CN|21.48|109.1|45~Tarsus|Mersin|TR|36.92|34.88|170~Nottingham||GB|52.97|-1.17|176~Wuppertal|Nordrhein-Westfalen|DE|51.25|7.17|68~Khabarovsk||RU|48.455|135.12|145~Naypyidaw|Mandalay|MM|19.767|96.119|118~Kayseri||TR|38.735|35.49|170~Bur Said|Bur Sa`id|EG|31.26|32.29|60~Sorocaba|São Paulo|BR|-23.49|-47.47|23~Kisangani|Orientale|CD|0.52|25.22|50~Utsunomiya|Tochigi|JP|36.55|139.87|87~Novo Hamburgo|Rio Grande do Sul|BR|-29.71|-51.14|23~Kerman||IR|30.3|57.08|80~Rizhao|Shandong|CN|35.43|119.45|44~Surakarta|Jawa Tengah|ID|-7.565|110.825|77~Kirkuk|At-Ta'mim|IQ|35.472|44.392|81~Mar del Plata|Ciudad de Buenos Aires|AR|-38|-57.58|8~Hermosillo|Sonora|MX|29.099|-110.954|111~Bahawalpur|Punjab|PK|29.39|71.675|128~Dresden|Sachsen|DE|51.05|13.75|68~Richmond|Virginia|US|37.55|-77.45|180~Concepcion|Bío-Bío|CL|-36.83|-73.05|43~Zaragoza|Aragón|ES|41.65|-0.89|159~Hungnam|Hamgyong-namdo|KP|39.823|127.623|125~Luxor|Qina|EG|25.7|32.65|60~Salerno|Campania|IT|40.68|14.77|84~Jiujiang|Jiangxi|CN|29.73|115.98|44~Grand Prairie|Texas|US|32.685|-97.02|178~Rasht|Gilan|IR|37.3|49.63|80~Qui Nhon|Bình Định|VN|13.78|109.18|190~Sargodha|Punjab|PK|32.085|72.675|128~Fresno|California|US|36.748|-119.773|179~El Mansura|Ad Daqahliyah|EG|31.05|31.38|60~Yangzhou|Jiangsu|CN|32.4|119.43|44~Xingyi|Guizhou|CN|25.09|104.89|45~Malaga|Andalucía|ES|36.72|-4.42|159~Yuci|Shanxi|CN|37.68|112.73|44~Kuching|Sarawak|MY|1.53|110.33|103~Niigata||JP|37.92|139.04|87~Newcastle|Tyne and Wear|GB|55|-1.6|176~Kagoshima||JP|31.586|130.561|87~Linfen|Shanxi|CN|36.08|111.52|44~Jiangmen|Guangdong|CN|22.58|113.08|44~Orenburg||RU|51.78|55.11|140~Libreville|Estuaire|GA|0.385|9.458|66~Novokuznetsk|Kemerovo|RU|53.75|87.115|144~Siping|Jilin|CN|43.17|124.33|47~Cangzhou|Hebei|CN|38.32|116.87|44~Constantine||DZ|36.36|6.6|3~New Orleans|Louisiana|US|29.995|-90.04|178~Makhachkala|Dagestan|RU|42.98|47.5|139~Matsuyama|Ehime|JP|33.846|132.766|87~Vilnius|Vilniaus|LT|54.683|25.317|98~Sao Luis|Maranhão|BR|-2.516|-44.266|25~Leipzig|Sachsen|DE|51.335|12.41|68~St. Petersburg|Florida|US|27.771|-82.679|180~Trujillo|La Libertad|PE|-8.12|-79.02|131~Goteborg|Västra Götaland|SE|57.75|12|161~Ribeirao Preto|São Paulo|BR|-21.17|-47.83|23~Soledad|Atlántico|CO|10.92|-74.77|48~Jincheng|Shanxi|CN|35.5|112.83|44~Al Hufuf|Ash Sharqiyah|SA|25.349|49.586|152~Hartford|Connecticut|US|41.77|-72.68|180~Bordeaux|Aquitaine|FR|44.85|-0.595|65~Vinh|Nghệ An|VN|18.7|105.68|190~Bouake|Vallée du Bandama|CI|7.69|-5.03|85~St. Paul|Minnesota|US|44.944|-93.085|178~Shashi|Hubei|CN|30.32|112.23|44~Beira|Sofala|MZ|-19.82|34.87|117~Xinyu|Jiangxi|CN|27.8|114.93|44~Kanazawa|Ishikawa|JP|36.56|136.64|87~Pereira|Risaralda|CO|4.81|-75.68|48~Braga||PT|41.555|-8.421|134~Matola|Maputo|MZ|-25.97|32.46|117~Ryazan|Ryazan'|RU|54.62|39.72|139~Lipetsk||RU|52.62|39.64|139~Tabuk||SA|28.384|36.555|152~Santiago de Cuba||CU|20.025|-75.821|54~Puerto la Cruz|Anzoátegui|VE|10.17|-64.68|189~Basel|Basel-Stadt|CH|47.58|7.59|162~Shuangyashan|Heilongjiang|CN|46.67|131.35|47~Leicester||GB|52.63|-1.133|176~Port Louis||MU|-20.167|57.5|195~Wellington|Manawatu-Wanganui|NZ|-41.3|174.783|121~Colombo||LK|6.932|79.858|196~Suva|Central|FJ|-18.133|178.442|194~Perth|Perthshire and Kinross|GB|56.4|-3.47|176~San Jose|Escuintla|GT|13.94|-90.82|71~San Jose|Santa Cruz|BO|-17.85|-60.78|21";
+</script>
+<script>/* Jyotish engine: sidereal (Lahiri) positions, whole-sign houses, Vimshottari dasha,
+   Parashari Ashtakavarga, classical yogas, panchang, transits and muhurta.
+   Depends on the global `Astronomy` (astronomy-engine 2.1.19). */
+(function (root) {
+  'use strict';
+  const A = root.Astronomy;
+  const D2R = Math.PI / 180, R2D = 180 / Math.PI;
+  const DAY = 86400000, YEAR = 365.25 * DAY;
+  const norm = (x) => ((x % 360) + 360) % 360;
+
+  const PLANETS = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+  const SEVEN = PLANETS.slice(0, 7);
+  const SIGN_LORD = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+  const DASHA_ORDER = ['Ketu', 'Venus', 'Sun', 'Moon', 'Mars', 'Rahu', 'Jupiter', 'Saturn', 'Mercury'];
+  const DASHA_YEARS = { Ketu: 7, Venus: 20, Sun: 6, Moon: 10, Mars: 7, Rahu: 18, Jupiter: 16, Saturn: 19, Mercury: 17 };
+  const NAK_LEN = 360 / 27;
+
+  const EXALT = { Sun: 0, Moon: 1, Mars: 9, Mercury: 5, Jupiter: 3, Venus: 11, Saturn: 6, Rahu: 1, Ketu: 7 };
+  const OWN = { Sun: [4], Moon: [3], Mars: [0, 7], Mercury: [2, 5], Jupiter: [8, 11], Venus: [1, 6], Saturn: [9, 10], Rahu: [], Ketu: [] };
+  const MOOLA = { Sun: [4, 0, 20], Moon: [1, 3, 30], Mars: [0, 0, 12], Mercury: [5, 15, 20], Jupiter: [8, 0, 10], Venus: [6, 0, 15], Saturn: [10, 0, 20] };
+  // Naisargika (natural) relationships, BPHS
+  const FRIENDS = {
+    Sun: { f: ['Moon', 'Mars', 'Jupiter'], e: ['Venus', 'Saturn'] },
+    Moon: { f: ['Sun', 'Mercury'], e: [] },
+    Mars: { f: ['Sun', 'Moon', 'Jupiter'], e: ['Mercury'] },
+    Mercury: { f: ['Sun', 'Venus'], e: ['Moon'] },
+    Jupiter: { f: ['Sun', 'Moon', 'Mars'], e: ['Mercury', 'Venus'] },
+    Venus: { f: ['Mercury', 'Saturn'], e: ['Sun', 'Moon'] },
+    Saturn: { f: ['Mercury', 'Venus'], e: ['Sun', 'Moon', 'Mars'] },
+    Rahu: { f: ['Mercury', 'Venus', 'Saturn'], e: ['Sun', 'Moon', 'Mars'] },
+    Ketu: { f: ['Mars', 'Venus', 'Saturn'], e: ['Sun', 'Moon'] },
+  };
+  const COMBUST = { Moon: 12, Mars: 17, Mercury: 14, Jupiter: 11, Venus: 10, Saturn: 15 };
+  const SPECIAL_ASPECTS = { Mars: [4, 8], Jupiter: [5, 9], Saturn: [3, 10], Rahu: [5, 9], Ketu: [5, 9] };
+  const DIG_BALA = { Jupiter: 1, Mercury: 1, Sun: 10, Mars: 10, Saturn: 7, Moon: 4, Venus: 4 };
+  const NATURAL_BENEFIC = { Jupiter: 1, Venus: 1, Mercury: 1, Moon: 1 };
+  const KENDRA = [1, 4, 7, 10], TRIKONA = [1, 5, 9], DUSTHANA = [6, 8, 12], UPACHAYA = [3, 6, 10, 11];
+
+  // Parashari Ashtakavarga benefic places (BPHS). Order of contributors: Sun Moon Mars Mercury Jupiter Venus Saturn Lagna
+  const AV = {
+    Sun: [[1, 2, 4, 7, 8, 9, 10, 11], [3, 6, 10, 11], [1, 2, 4, 7, 8, 9, 10, 11], [3, 5, 6, 9, 10, 11, 12], [5, 6, 9, 11], [6, 7, 12], [1, 2, 4, 7, 8, 9, 10, 11], [3, 4, 6, 10, 11, 12]],
+    Moon: [[3, 6, 7, 8, 10, 11], [1, 3, 6, 7, 10, 11], [2, 3, 5, 6, 9, 10, 11], [1, 3, 4, 5, 7, 8, 10, 11], [1, 4, 7, 8, 10, 11, 12], [3, 4, 5, 7, 9, 10, 11], [3, 5, 6, 11], [3, 6, 10, 11]],
+    Mars: [[3, 5, 6, 10, 11], [3, 6, 11], [1, 2, 4, 7, 8, 10, 11], [3, 5, 6, 11], [6, 10, 11, 12], [6, 8, 11, 12], [1, 4, 7, 8, 9, 10, 11], [1, 3, 6, 10, 11]],
+    Mercury: [[5, 6, 9, 11, 12], [2, 4, 6, 8, 10, 11], [1, 2, 4, 7, 8, 9, 10, 11], [1, 3, 5, 6, 9, 10, 11, 12], [6, 8, 11, 12], [1, 2, 3, 4, 5, 8, 9, 11], [1, 2, 4, 7, 8, 9, 10, 11], [1, 2, 4, 6, 8, 10, 11]],
+    Jupiter: [[1, 2, 3, 4, 7, 8, 9, 10, 11], [2, 5, 7, 9, 11], [1, 2, 4, 7, 8, 10, 11], [1, 2, 4, 5, 6, 9, 10, 11], [1, 2, 3, 4, 7, 8, 10, 11], [2, 5, 6, 9, 10, 11], [3, 5, 6, 12], [1, 2, 4, 5, 6, 7, 9, 10, 11]],
+    Venus: [[8, 11, 12], [1, 2, 3, 4, 5, 8, 9, 11, 12], [3, 5, 6, 9, 11, 12], [3, 5, 6, 9, 11], [5, 8, 9, 10, 11], [1, 2, 3, 4, 5, 8, 9, 10, 11], [3, 4, 5, 8, 9, 10, 11], [1, 2, 3, 4, 5, 8, 9, 11]],
+    Saturn: [[1, 2, 4, 7, 8, 10, 11], [3, 6, 11], [3, 5, 6, 10, 11, 12], [6, 8, 9, 10, 11, 12], [5, 6, 11, 12], [6, 11, 12], [3, 5, 6, 11], [1, 3, 4, 6, 10, 11]],
+  };
+
+  // ---------- astronomy ----------
+  function lahiriMean(T) {
+    // Lahiri (Chitrapaksha) as defined by the Indian Calendar Reform Committee, anchored at
+    // 1956-03-21 (JD 2435553.5) and carried by IAU 2006 general precession in longitude.
+    const T0 = (2435553.5 - 2451545.0) / 36525;
+    const p = (t) => 5028.796195 * t + 1.1054348 * t * t;
+    return 23.245524743 + (p(T) - p(T0)) / 3600;
+  }
+  function nutation(T) {
+    const om = (125.04452 - 1934.136261 * T) * D2R;
+    const L = (280.4665 + 36000.7698 * T) * D2R;
+    const Lp = (218.3165 + 481267.8813 * T) * D2R;
+    return {
+      dpsi: (-17.2 * Math.sin(om) - 1.32 * Math.sin(2 * L) - 0.23 * Math.sin(2 * Lp) + 0.21 * Math.sin(2 * om)) / 3600,
+      deps: (9.2 * Math.cos(om) + 0.57 * Math.cos(2 * L) + 0.1 * Math.cos(2 * Lp) - 0.09 * Math.cos(2 * om)) / 3600,
+    };
+  }
+  const meanObliquity = (T) => 23.4392911111 - (46.815 * T + 0.00059 * T * T - 0.001813 * T * T * T) / 3600;
+  const meanNode = (T) => norm(125.0445479 - 1934.1362891 * T + 0.0020754 * T * T + (T * T * T) / 467441 - (T * T * T * T) / 60616000);
+
+  function tropical(name, time) {
+    if (name === 'Sun') return A.SunPosition(time).elon;
+    if (name === 'Moon') return A.EclipticGeoMoon(time).lon;
+    return A.Ecliptic(A.GeoVector(A.Body[name], time, true)).elon;
+  }
+  function frame(ms) {
+    const time = A.MakeTime(new Date(ms));
+    const T = time.tt / 36525;
+    const nut = nutation(T);
+    return { time, T, nut, ayan: lahiriMean(T) };
+  }
+  // sidereal longitude of a body at an instant (ms UTC)
+  function sidereal(name, ms, fr) {
+    fr = fr || frame(ms);
+    if (name === 'Rahu') return norm(meanNode(fr.T) - fr.ayan);
+    if (name === 'Ketu') return norm(meanNode(fr.T) - fr.ayan + 180);
+    return norm(tropical(name, fr.time) - fr.nut.dpsi - fr.ayan);
+  }
+  function ascendant(ms, lat, lon, fr) {
+    fr = fr || frame(ms);
+    const ramc = norm(A.SiderealTime(fr.time) * 15 + lon) * D2R;
+    const eps = (meanObliquity(fr.T) + fr.nut.deps) * D2R;
+    const f = lat * D2R;
+    const asc = Math.atan2(Math.cos(ramc), -(Math.sin(ramc) * Math.cos(eps) + Math.tan(f) * Math.sin(eps))) * R2D;
+    return norm(asc - fr.nut.dpsi - fr.ayan);
+  }
+
+  // ---------- helpers ----------
+  const signOf = (lon) => Math.floor(norm(lon) / 30);
+  const nakOf = (lon) => Math.floor(norm(lon) / NAK_LEN);
+  const padaOf = (lon) => Math.floor((norm(lon) % NAK_LEN) / (NAK_LEN / 4)) + 1;
+  const navamsaOf = (lon) => Math.floor(norm(lon) / (30 / 9)) % 12;
+  const houseFrom = (sign, fromSign) => ((sign - fromSign + 12) % 12) + 1;
+  const angDist = (a, b) => { const d = Math.abs(norm(a) - norm(b)); return d > 180 ? 360 - d : d; };
+
+  function relation(planet, signLord) {
+    if (planet === signLord) return 'own';
+    const r = FRIENDS[planet];
+    if (r.f.includes(signLord)) return 'friend';
+    if (r.e.includes(signLord)) return 'enemy';
+    return 'neutral';
+  }
+  function dignity(planet, lon) {
+    const s = signOf(lon), d = norm(lon) % 30;
+    if (EXALT[planet] === s) return 'exalted';
+    if ((EXALT[planet] + 6) % 12 === s) return 'debilitated';
+    const m = MOOLA[planet];
+    if (m && m[0] === s && d >= m[1] && d < m[2]) return 'moolatrikona';
+    if (OWN[planet].includes(s)) return 'own';
+    return relation(planet, SIGN_LORD[s]);
+  }
+  const DIGNITY_PTS = { exalted: 14, moolatrikona: 11, own: 10, friend: 5, neutral: 0, enemy: -5, debilitated: -9 };
+
+  // ---------- chart ----------
+  function computeChart(input) {
+    const { utcMs, lat, lon } = input;
+    const timeKnown = input.timeKnown !== false;
+    const fr = frame(utcMs);
+    const p = {};
+    for (const name of PLANETS) {
+      const L = sidereal(name, utcMs, fr);
+      let speed = 0;
+      if (name !== 'Rahu' && name !== 'Ketu') {
+        const a = sidereal(name, utcMs - DAY / 2), b = sidereal(name, utcMs + DAY / 2);
+        speed = ((b - a + 540) % 360) - 180;
+      } else speed = -0.053;
+      p[name] = { name, lon: L, sign: signOf(L), deg: L % 30, nak: nakOf(L), pada: padaOf(L), nav: navamsaOf(L), speed, retro: speed < 0 };
+    }
+    const ascLon = ascendant(utcMs, lat, lon, fr);
+    const asc = { lon: ascLon, sign: signOf(ascLon), deg: ascLon % 30, nak: nakOf(ascLon), pada: padaOf(ascLon), nav: navamsaOf(ascLon) };
+    const lagnaSign = timeKnown ? asc.sign : p.Moon.sign; // Chandra lagna when the birth time is unknown
+
+    for (const name of PLANETS) {
+      const x = p[name];
+      x.house = houseFrom(x.sign, lagnaSign);
+      x.dignity = dignity(name, x.lon);
+      x.vargottama = x.sign === x.nav;
+      x.combust = name !== 'Sun' && COMBUST[name] !== undefined &&
+        angDist(x.lon, p.Sun.lon) < (x.retro && name === 'Mercury' ? 12 : x.retro && name === 'Venus' ? 8 : COMBUST[name]);
+      x.digBala = DIG_BALA[name] === x.house;
+    }
+    const moonPhase = norm(p.Moon.lon - p.Sun.lon);
+    const waxing = moonPhase < 180;
+
+    const chart = { input, timeKnown, ayanamsa: fr.ayan + fr.nut.dpsi, asc, lagnaSign, p, moonPhase, waxing };
+    chart.signOfHouse = (h) => (lagnaSign + h - 1) % 12;
+    chart.lordOf = (h) => SIGN_LORD[chart.signOfHouse(h)];
+    chart.occupants = (h) => PLANETS.filter((n) => p[n].house === h);
+    chart.housesOwned = (planet) => { const out = []; for (let h = 1; h <= 12; h++) if (chart.lordOf(h) === planet) out.push(h); return out; };
+    chart.aspects = (planet) => [7].concat(SPECIAL_ASPECTS[planet] || []).map((k) => ((p[planet].house + k - 2) % 12) + 1);
+    chart.aspectedBy = (h) => PLANETS.filter((n) => chart.aspects(n).includes(h));
+    chart.influences = (h) => chart.occupants(h).concat(chart.aspectedBy(h).filter((n) => !chart.occupants(h).includes(n)));
+    chart.isBenefic = (n) => n === 'Moon' ? waxing : n === 'Mercury' ? !['Sun', 'Mars', 'Saturn', 'Rahu', 'Ketu'].some((m) => p[m].sign === p.Mercury.sign) : !!NATURAL_BENEFIC[n];
+
+    // Neecha bhanga (cancellation of debilitation)
+    for (const name of SEVEN) {
+      const x = p[name];
+      if (x.dignity !== 'debilitated') continue;
+      const dispositor = SIGN_LORD[x.sign], exaltLord = SIGN_LORD[EXALT[name]];
+      const inKendra = (n) => KENDRA.includes(p[n].house) || KENDRA.includes(houseFrom(p[n].sign, p.Moon.sign));
+      x.neechaBhanga = inKendra(dispositor) || inKendra(exaltLord) || p[dispositor].sign === x.sign || chart.aspects(dispositor).includes(x.house);
+    }
+
+    // Planet strength (0-100ish, composite of classical dignity, house, dig bala, vargottama, combustion)
+    for (const name of PLANETS) {
+      const x = p[name];
+      let s = 50 + DIGNITY_PTS[x.dignity] * 1.6;
+      if (x.neechaBhanga) s += 20;
+      if (KENDRA.includes(x.house) || TRIKONA.includes(x.house)) s += 9;
+      else if (x.house === 11 || x.house === 2) s += 6;
+      else if (x.house === 3) s += 2;
+      else if (DUSTHANA.includes(x.house)) s -= 7;
+      if (x.digBala) s += 9;
+      if (x.vargottama) s += 8;
+      if (x.combust) s -= 10;
+      if (x.retro && name !== 'Rahu' && name !== 'Ketu') s += 3; // cheshta bala favours retrograde planets
+      x.strength = Math.max(5, Math.min(100, Math.round(s)));
+    }
+
+    // Jaimini chara karakas (7-planet scheme)
+    const byDeg = SEVEN.slice().sort((a, b) => p[b].deg - p[a].deg);
+    chart.karakas = { atma: byDeg[0], amatya: byDeg[1], dara: byDeg[6] };
+
+    chart.ashtakavarga = ashtakavarga(chart);
+    chart.dasha = vimshottari(p.Moon.lon, utcMs);
+    chart.panchang = panchang(utcMs, lat, lon, input.localWeekday, input.localMidnightUtc, p.Sun.lon, p.Moon.lon);
+    chart.yogas = findYogas(chart);
+    return chart;
+  }
+
+  function ashtakavarga(chart) {
+    const { p } = chart;
+    const refSign = (i) => i === 7 ? chart.lagnaSign : p[SEVEN[i]].sign;
+    const bav = {};
+    const sav = new Array(12).fill(0);
+    for (const planet of SEVEN) {
+      const row = new Array(12).fill(0);
+      AV[planet].forEach((places, i) => { for (const h of places) row[(refSign(i) + h - 1) % 12] += 1; });
+      bav[planet] = row;
+      row.forEach((v, s) => { sav[s] += v; });
+    }
+    const byHouse = [0];
+    for (let h = 1; h <= 12; h++) byHouse.push(sav[chart.signOfHouse(h)]);
+    return { bav, sav, byHouse, total: sav.reduce((a, b) => a + b, 0) };
+  }
+
+  function vimshottari(moonLon, birthMs) {
+    const idx = nakOf(moonLon);
+    const frac = (norm(moonLon) - idx * NAK_LEN) / NAK_LEN;
+    let li = idx % 9;
+    let start = birthMs - frac * DASHA_YEARS[DASHA_ORDER[li]] * YEAR;
+    const list = [];
+    while (start < birthMs + 110 * YEAR) {
+      const lord = DASHA_ORDER[li];
+      const len = DASHA_YEARS[lord] * YEAR;
+      const md = { lord, start, end: start + len, sub: [] };
+      let s = start;
+      for (let j = 0; j < 9; j++) {
+        const al = DASHA_ORDER[(li + j) % 9];
+        const l = (len * DASHA_YEARS[al]) / 120;
+        md.sub.push({ lord: al, start: s, end: s + l });
+        s += l;
+      }
+      list.push(md);
+      start += len;
+      li = (li + 1) % 9;
+    }
+    return { list, balanceYears: (1 - frac) * DASHA_YEARS[DASHA_ORDER[idx % 9]], startLord: DASHA_ORDER[idx % 9] };
+  }
+  function dashaAt(chart, ms) {
+    const md = chart.dasha.list.find((d) => ms >= d.start && ms < d.end);
+    if (!md) return null;
+    const ad = md.sub.find((d) => ms >= d.start && ms < d.end);
+    return { md, ad };
+  }
+
+  // ---------- panchang ----------
+  const TITHI = ['Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami', 'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami', 'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi'];
+  const NITYA_YOGA = ['Vishkambha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana', 'Atiganda', 'Sukarma', 'Dhriti', 'Shula', 'Ganda', 'Vriddhi', 'Dhruva', 'Vyaghata', 'Harshana', 'Vajra', 'Siddhi', 'Vyatipata', 'Variyan', 'Parigha', 'Shiva', 'Siddha', 'Sadhya', 'Shubha', 'Shukla', 'Brahma', 'Indra', 'Vaidhriti'];
+  const KARANA_MOVABLE = ['Bava', 'Balava', 'Kaulava', 'Taitila', 'Garaja', 'Vanija', 'Vishti'];
+  const VAARA = ['Ravivara (Sunday)', 'Somavara (Monday)', 'Mangalavara (Tuesday)', 'Budhavara (Wednesday)', 'Guruvara (Thursday)', 'Shukravara (Friday)', 'Shanivara (Saturday)'];
+
+  function tithiInfo(sunLon, moonLon) {
+    const e = norm(moonLon - sunLon);
+    const n = Math.floor(e / 12) + 1; // 1..30
+    const paksha = n <= 15 ? 'Shukla' : 'Krishna';
+    const k = n <= 15 ? n : n - 15;
+    const name = n === 15 ? 'Purnima' : n === 30 ? 'Amavasya' : TITHI[k - 1];
+    const kIdx = Math.floor(e / 6);
+    const karana = kIdx === 0 ? 'Kimstughna' : kIdx >= 57 ? ['Shakuni', 'Chatushpada', 'Naga'][kIdx - 57] : KARANA_MOVABLE[(kIdx - 1) % 7];
+    return { n, paksha, name, karana };
+  }
+  function sunEvents(ms, lat, lon) {
+    // sunrise / sunset nearest after ms - 12h, used for vaara and muhurta
+    const obs = new A.Observer(lat, lon, 0);
+    const rise = A.SearchRiseSet(A.Body.Sun, obs, +1, new Date(ms), 1);
+    const set = rise ? A.SearchRiseSet(A.Body.Sun, obs, -1, rise, 1) : null;
+    return { rise: rise ? rise.date.getTime() : null, set: set ? set.date.getTime() : null };
+  }
+  function panchang(utcMs, lat, lon, localWeekday, localMidnightUtc, sunLon, moonLon) {
+    const t = tithiInfo(sunLon, moonLon);
+    // Vedic day runs sunrise to sunrise: before local sunrise it is still the previous vaara
+    let wd = localWeekday;
+    let sunrise = null;
+    if (wd !== undefined && wd !== null && localMidnightUtc != null) {
+      sunrise = sunEvents(localMidnightUtc, lat, lon).rise;
+      if (sunrise && utcMs < sunrise) wd = (wd + 6) % 7;
+    }
+    return {
+      sunrise,
+      tithi: t.name, tithiNum: t.n, paksha: t.paksha, karana: t.karana,
+      yoga: NITYA_YOGA[Math.floor(norm(sunLon + moonLon) / NAK_LEN)],
+      vaara: wd === undefined || wd === null ? null : VAARA[wd], weekday: wd,
+      nak: nakOf(moonLon),
+    };
+  }
+
+  // ---------- yogas ----------
+  function findYogas(c) {
+    const { p } = c;
+    const Y = [];
+    const add = (name, kind, text, planets, strength) => Y.push({ name, kind, text, planets: planets || [], strength: strength || 'present' });
+    const sameSign = (a, b) => p[a].sign === p[b].sign;
+    const mutualAspect = (a, b) => c.aspects(a).includes(p[b].house) && c.aspects(b).includes(p[a].house);
+    const exchange = (a, b) => a !== b && SIGN_LORD[p[a].sign] === b && SIGN_LORD[p[b].sign] === a;
+    const connected = (a, b) => a !== b && (sameSign(a, b) || exchange(a, b) || mutualAspect(a, b));
+    const how = (a, b) => sameSign(a, b) ? 'sit together' : exchange(a, b) ? 'exchange signs' : 'aspect each other';
+    const fromMoon = (n) => houseFrom(p[n].sign, p.Moon.sign);
+    const strong = (n) => ['exalted', 'moolatrikona', 'own'].includes(p[n].dignity);
+
+    // Gajakesari
+    if (KENDRA.includes(fromMoon('Jupiter')))
+      add('Gajakesari Yoga', 'fame', 'Jupiter stands in a kendra from your Moon. Classical texts promise lasting reputation, intelligence, a respected voice and the ability to win people over.', ['Jupiter', 'Moon'], p.Jupiter.dignity === 'debilitated' && !p.Jupiter.neechaBhanga ? 'mild' : 'strong');
+    // Budhaditya
+    if (sameSign('Sun', 'Mercury'))
+      add('Budhaditya Yoga', 'mind', 'Sun and Mercury share a sign. This is the yoga of sharp business intelligence, clear communication and skill with numbers and negotiation.', ['Sun', 'Mercury'], p.Mercury.combust && angDist(p.Mercury.lon, p.Sun.lon) < 4 ? 'mild' : 'strong');
+    // Chandra-Mangala
+    if (sameSign('Moon', 'Mars') || mutualAspect('Moon', 'Mars'))
+      add('Chandra-Mangala Yoga', 'wealth', 'Moon and Mars ' + how('Moon', 'Mars') + '. This is a classic earning yoga: money through enterprise, quick decisions and a hunger to build.', ['Moon', 'Mars']);
+    // Pancha Mahapurusha
+    const MP = { Mars: ['Ruchaka Yoga', 'courage, leadership and command over competition'], Mercury: ['Bhadra Yoga', 'brilliant intellect, eloquence and natural trading sense'], Jupiter: ['Hamsa Yoga', 'wisdom, good fortune and the respect of learned people'], Venus: ['Malavya Yoga', 'charm, luxury, artistic taste and a comfortable life'], Saturn: ['Sasa Yoga', 'authority over large groups, discipline and long-term power'] };
+    for (const n of Object.keys(MP)) {
+      if (['exalted', 'moolatrikona', 'own'].includes(p[n].dignity) && KENDRA.includes(p[n].house))
+        add(MP[n][0], 'power', `One of the five Mahapurusha yogas. ${n} is in its own or exalted sign in a kendra, giving ${MP[n][1]}.`, [n], 'strong');
+    }
+    // Raja yogas: kendra lord + trikona lord
+    const ks = new Set(), seen = new Set();
+    for (const k of [1, 4, 7, 10]) for (const t of [1, 5, 9]) {
+      const a = c.lordOf(k), b = c.lordOf(t);
+      if (a === b) { if (k !== 1 && t !== 1) ks.add(a); continue; }
+      const key = [a, b].sort().join('+');
+      if (seen.has(key) || !connected(a, b)) continue;
+      seen.add(key);
+      add('Raja Yoga', 'power', `${a} (lord of house ${c.housesOwned(a).join(' & ')}) and ${b} (lord of house ${c.housesOwned(b).join(' & ')}) ${how(a, b)}. A kendra lord joining a trikona lord is the core Parashari formula for rise in status and authority.`, [a, b], 'strong');
+    }
+    for (const yk of ks) add('Yogakaraka ' + yk, 'power', `${yk} rules both a kendra and a trikona for your lagna, which makes it your single most rewarding planet. Its periods tend to bring promotions, recognition and big wins.`, [yk], strong(yk) || KENDRA.includes(p[yk].house) || TRIKONA.includes(p[yk].house) ? 'strong' : 'present');
+    // Dhana yogas
+    const dseen = new Set();
+    for (const w of [2, 11]) for (const f of [1, 5, 9]) {
+      const a = c.lordOf(w), b = c.lordOf(f);
+      if (a === b) continue;
+      const key = [a, b].sort().join('+');
+      if (dseen.has(key) || !connected(a, b)) continue;
+      dseen.add(key);
+      add('Dhana Yoga', 'wealth', `${a} (wealth lord of house ${w}) and ${b} (fortune lord of house ${f}) ${how(a, b)}. This links your money houses with your luck houses, a classical sign of accumulated wealth.`, [a, b], 'strong');
+    }
+    if (c.lordOf(2) !== c.lordOf(11) && connected(c.lordOf(2), c.lordOf(11)))
+      add('Dhana Yoga', 'wealth', `Your 2nd lord ${c.lordOf(2)} and 11th lord ${c.lordOf(11)} ${how(c.lordOf(2), c.lordOf(11))}. Income and savings feed each other, so what you earn tends to stay and grow.`, [c.lordOf(2), c.lordOf(11)], 'strong');
+    // Lakshmi
+    const L9 = c.lordOf(9), L1 = c.lordOf(1);
+    if (strong(L9) && (KENDRA.includes(p[L9].house) || TRIKONA.includes(p[L9].house)) && p[L1].dignity !== 'debilitated')
+      add('Lakshmi Yoga', 'wealth', `Your 9th lord ${L9} is dignified and well placed while your lagna lord is steady. Named after the goddess of wealth, this yoga gives prosperity, generosity and a graceful life.`, [L9, L1], 'strong');
+    // Dharma-Karmadhipati
+    const L10 = c.lordOf(10);
+    if (L9 !== L10 && connected(L9, L10))
+      add('Dharma-Karmadhipati Yoga', 'power', `Your 9th lord ${L9} and 10th lord ${L10} ${how(L9, L10)}. Luck and career are tied together, the strongest classical signal for a meaningful, successful career.`, [L9, L10], 'strong');
+    else if (L9 === L10)
+      add('Dharma-Karmadhipati Yoga', 'power', `${L9} rules both your 9th and 10th houses, so luck and career are carried by one planet. Its strength becomes your career's engine.`, [L9], 'present');
+    // Vipreet raja
+    const VR = { 6: 'Harsha', 8: 'Sarala', 12: 'Vimala' };
+    for (const h of [6, 8, 12]) {
+      const l = c.lordOf(h);
+      if (DUSTHANA.includes(p[l].house) && !c.housesOwned(l).some((x) => [1, 5, 9].includes(x)))
+        add(VR[h] + ' Vipreet Raja Yoga', 'power', `Your ${h}th lord ${l} sits in a dusthana. This reverse raja yoga turns setbacks into springboards: you win when situations look difficult and often gain from others' losses.`, [l]);
+    }
+    // Neecha bhanga
+    for (const n of SEVEN) if (p[n].neechaBhanga)
+      add('Neecha Bhanga Raja Yoga', 'power', `${n} is debilitated but the debilitation is cancelled. Classical texts rate this among the most powerful raja yogas: a slow or humble start that turns into a remarkable rise.`, [n], 'strong');
+    // Parivartana
+    const pseen = new Set();
+    for (const a of SEVEN) for (const b of SEVEN) {
+      if (a >= b || !exchange(a, b)) continue;
+      const key = a + b;
+      if (pseen.has(key)) continue; pseen.add(key);
+      const bad = DUSTHANA.includes(p[a].house) || DUSTHANA.includes(p[b].house);
+      add('Parivartana Yoga', bad ? 'mind' : 'power', `${a} and ${b} sit in each other's signs (houses ${p[a].house} and ${p[b].house}). The two houses they rule work as a team and strengthen each other.`, [a, b], bad ? 'present' : 'strong');
+    }
+    // Moon yogas
+    const others = ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const second = others.filter((n) => fromMoon(n) === 2), twelfth = others.filter((n) => fromMoon(n) === 12);
+    if (second.length && twelfth.length) add('Durudhara Yoga', 'wealth', `Planets on both sides of your Moon (${second.concat(twelfth).join(', ')}). Classical results: wealth, vehicles, generosity and a well supported life.`, second.concat(twelfth));
+    else if (second.length) add('Sunapha Yoga', 'wealth', `${second.join(', ')} in the 2nd from your Moon. You build self-earned wealth and a reputation through your own intelligence.`, second);
+    else if (twelfth.length) add('Anapha Yoga', 'mind', `${twelfth.join(', ')} in the 12th from your Moon. Graceful personality, good health and a generous, magnetic presence.`, twelfth);
+    const adhi = ['Mercury', 'Jupiter', 'Venus'].filter((n) => [6, 7, 8].includes(fromMoon(n)));
+    if (adhi.length >= 2) add('Adhi Yoga', 'power', `${adhi.join(' and ')} in the 6th, 7th or 8th from your Moon. Adhi yoga is linked to leadership, a comfortable life and success over rivals.`, adhi, adhi.length === 3 ? 'strong' : 'present');
+    // Amala
+    const amala = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 10 || fromMoon(n) === 10);
+    if (amala.length) add('Amala Yoga', 'fame', `${amala.join(' and ')} in the 10th house. Amala means spotless: a clean, lasting reputation and work people admire.`, amala);
+    // Saraswati
+    const good = [1, 2, 4, 5, 7, 9, 10];
+    if (['Jupiter', 'Venus', 'Mercury'].every((n) => good.includes(p[n].house)) && ['exalted', 'moolatrikona', 'own', 'friend'].includes(p.Jupiter.dignity))
+      add('Saraswati Yoga', 'mind', 'Jupiter, Venus and Mercury all occupy kendras, trikonas or the 2nd house with Jupiter well disposed. Named after the goddess of learning: gifted with words, creativity and knowledge.', ['Jupiter', 'Venus', 'Mercury'], 'strong');
+    // Shubha kartari on lagna
+    const b12 = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 12), b2 = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 2);
+    if (b12.length && b2.length) add('Shubha Kartari Yoga', 'mind', 'Benefics on both sides of your lagna protect your health, image and self-confidence.', b12.concat(b2));
+    // Vesi / Vasi / Ubhayachari
+    const fromSun = (n) => houseFrom(p[n].sign, p.Sun.sign);
+    const s2 = others.filter((n) => fromSun(n) === 2), s12 = others.filter((n) => fromSun(n) === 12);
+    if (s2.length && s12.length) add('Ubhayachari Yoga', 'fame', 'Planets on both sides of your Sun. Equal to a king in comfort, says Phaladeepika: confident, eloquent and well resourced.', s2.concat(s12));
+    else if (s2.length) add('Vesi Yoga', 'mind', `${s2.join(', ')} in the 2nd from your Sun. Truthful, balanced and steadily prosperous.`, s2);
+    else if (s12.length) add('Vasi Yoga', 'mind', `${s12.join(', ')} in the 12th from your Sun. Charitable, skilful and happy.`, s12);
+    return Y;
+  }
+
+  // ---------- transits ----------
+  function positionsAt(ms) {
+    const fr = frame(ms);
+    const out = {};
+    for (const n of PLANETS) { const L = sidereal(n, ms, fr); out[n] = { lon: L, sign: signOf(L), nak: nakOf(L) }; }
+    return out;
+  }
+  function sadeSati(chart, fromMs, toMs) {
+    // months where Saturn transits the 12th, 1st or 2nd sign from the natal Moon
+    const periods = [];
+    let cur = null;
+    for (let t = fromMs; t <= toMs; t += 15 * DAY) {
+      const s = signOf(sidereal('Saturn', t));
+      const rel = houseFrom(s, chart.p.Moon.sign);
+      const on = rel === 12 || rel === 1 || rel === 2;
+      if (on && !cur) cur = { start: t, end: t };
+      if (on) cur.end = t;
+      if (!on && cur) { periods.push(cur); cur = null; }
+    }
+    if (cur) periods.push(cur);
+    // merge retrograde gaps shorter than ~14 months
+    const merged = [];
+    for (const pr of periods) {
+      const last = merged[merged.length - 1];
+      if (last && pr.start - last.end < 425 * DAY) last.end = pr.end; else merged.push({ ...pr });
+    }
+    return merged;
+  }
+  function signIngresses(planet, fromMs, toMs, stepDays) {
+    const out = [];
+    let prev = signOf(sidereal(planet, fromMs));
+    out.push({ sign: prev, start: fromMs });
+    for (let t = fromMs + stepDays * DAY; t <= toMs; t += stepDays * DAY) {
+      const s = signOf(sidereal(planet, t));
+      if (s !== prev) { out.push({ sign: s, start: t }); prev = s; }
+    }
+    for (let i = 0; i < out.length; i++) out[i].end = i + 1 < out.length ? out[i + 1].start : toMs;
+    return out;
+  }
+
+  // ---------- muhurta ----------
+  const BUSINESS_NAK = [0, 3, 4, 6, 7, 11, 12, 13, 14, 16, 20, 21, 22, 23, 25, 26];
+  const AVOID_NAK = [1, 2, 5, 8, 9, 10, 15, 17, 18, 19, 24];
+  const GOOD_TITHI = [2, 3, 5, 7, 10, 11, 13];
+  const BAD_TITHI = [4, 8, 9, 14, 30];
+  const TARA = ['Janma', 'Sampat', 'Vipat', 'Kshema', 'Pratyari', 'Sadhana', 'Naidhana', 'Mitra', 'Param Mitra'];
+  const RAHU_KAAL_SEG = [8, 2, 7, 5, 6, 4, 3]; // 1-indexed eighth of daytime, Sunday first
+
+  function muhurtaDays(chart, opts) {
+    const { lat, lon, startMs, days, weekdayOf } = opts;
+    const natalNak = chart.p.Moon.nak, natalMoonSign = chart.p.Moon.sign;
+    const out = [];
+    let t = startMs;
+    for (let i = 0; i < days; i++) {
+      const ev = sunEvents(t, lat, lon);
+      if (!ev.rise) { t += DAY; continue; }
+      const at = ev.rise + 30 * 60000;
+      const fr = frame(at);
+      const sun = sidereal('Sun', at, fr), moon = sidereal('Moon', at, fr);
+      const ti = tithiInfo(sun, moon);
+      const nk = nakOf(moon);
+      const wd = weekdayOf(ev.rise);
+      const taraN = (((nk - natalNak) % 27 + 27) % 27) % 9; // 0..8
+      const chandra = houseFrom(signOf(moon), natalMoonSign);
+      let score = 0;
+      const why = [], hard = [];
+      const tNum = ti.n <= 15 ? ti.n : ti.n - 15;
+      if (ti.n === 30 || BAD_TITHI.includes(tNum)) { hard.push(ti.n === 30 ? 'Amavasya' : 'Rikta / avoided tithi'); score -= 4; }
+      else if (GOOD_TITHI.includes(tNum)) { score += 2; why.push(`${ti.paksha} ${ti.name}, an auspicious tithi`); }
+      if (ti.paksha === 'Shukla') score += 1;
+      if ([3, 4, 5].includes(wd)) { score += 2; why.push(['', '', '', 'Wednesday, ruled by Mercury: commerce and deals', 'Thursday, ruled by Jupiter: growth and blessings', 'Friday, ruled by Venus: brand, beauty and money'][wd]); }
+      else if (wd === 1 || wd === 0) score += 1;
+      else { hard.push('Tuesday / Saturday'); score -= 3; }
+      if (BUSINESS_NAK.includes(nk)) { score += 2; why.push(`Moon in a nakshatra favoured for opening a business`); }
+      else if (AVOID_NAK.includes(nk)) { hard.push('sharp or mixed nakshatra'); score -= 2; }
+      if ([1, 3, 5, 7, 8].includes(taraN)) { score += 2; why.push(`${TARA[taraN]} tara from your birth star`); }
+      else if ([2, 4, 6].includes(taraN)) { hard.push(`${TARA[taraN]} tara`); score -= 3; }
+      if ([1, 3, 6, 7, 10, 11].includes(chandra)) { score += 1; why.push('Moon transiting a favourable house from your natal Moon (Chandrabala)'); }
+      else if (chandra === 8) { hard.push('Chandrashtama'); score -= 4; }
+      if (ti.karana === 'Vishti') { hard.push('Bhadra (Vishti karana)'); score -= 2; }
+      const dayLen = ev.set && ev.set > ev.rise ? ev.set - ev.rise : 12 * 3600000;
+      const seg = dayLen / 8;
+      const rk = ev.rise + (RAHU_KAAL_SEG[wd] - 1) * seg;
+      const noon = ev.rise + dayLen / 2;
+      out.push({
+        sunrise: ev.rise, sunset: ev.set, weekday: wd, tithi: `${ti.paksha} ${ti.name}`, nak: nk, tara: TARA[taraN], chandra,
+        score, why: why.filter(Boolean), hard, ok: hard.length === 0,
+        rahuKaal: [rk, rk + seg], abhijit: wd === 3 ? null : [noon - 24 * 60000, noon + 24 * 60000],
+      });
+      t = ev.rise + 20 * 3600000;
+    }
+    return out;
+  }
+
+  root.Jyotish = {
+    PLANETS, SEVEN, SIGN_LORD, DASHA_ORDER, DASHA_YEARS, EXALT, OWN, KENDRA, TRIKONA, DUSTHANA, UPACHAYA, DIGNITY_PTS, YEAR, DAY,
+    norm, signOf, nakOf, padaOf, houseFrom, angDist, frame, sidereal, ascendant, lahiriMean,
+    computeChart, dashaAt, positionsAt, sadeSati, signIngresses, muhurtaDays, tithiInfo, sunEvents,
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>/* Reading layer: turns a computed chart into plain-English answers.
+   Every answer is derived from chart factors and lists the factors it used. */
+(function (root) {
+  'use strict';
+  const J = root.Jyotish;
+  const { PLANETS, SIGN_LORD, KENDRA, TRIKONA, DUSTHANA, DIGNITY_PTS, YEAR, DAY, houseFrom, signOf } = J;
+
+  const SIGNS = [
+    { en: 'Aries', sa: 'Mesha', el: 'Fire', body: 'head and face', lagna: 'You start things. Mesha lagna gives initiative, physical energy and the nerve to go first, and you learn fastest by doing.', moon: 'Your mind is quick and direct. You recharge by starting something new.', spouse: 'energetic, direct and independent' },
+    { en: 'Taurus', sa: 'Vrishabha', el: 'Earth', body: 'throat, neck and face', lagna: 'You build things that last. Vrishabha lagna gives patience, taste and a steady hand with money, and people trust you because you stay calm.', moon: 'The Moon is exalted in Vrishabha, giving a calm, steady and sensual mind with excellent taste.', spouse: 'loyal, attractive, steady and fond of comfort' },
+    { en: 'Gemini', sa: 'Mithuna', el: 'Air', body: 'shoulders, arms and lungs', lagna: 'You connect ideas and people. Mithuna lagna gives a quick mind, wit and a gift for communication, and you can run several projects at once.', moon: 'Your mind is curious and witty and needs conversation and variety.', spouse: 'witty, youthful, talkative and smart' },
+    { en: 'Cancer', sa: 'Karka', el: 'Water', body: 'chest and stomach', lagna: 'You lead by caring. Karka lagna gives emotional intelligence, protectiveness and a strong memory, and people feel at home around you.', moon: 'The Moon is in its own sign, so your instincts are reliable and your feelings run deep.', spouse: 'caring, emotional, family-minded and protective' },
+    { en: 'Leo', sa: 'Simha', el: 'Fire', body: 'heart and spine', lagna: 'You are built to lead. Simha lagna gives presence, dignity and generosity, and you do your best work when you own the outcome.', moon: 'Your mind is proud, warm and big-hearted. You give loyalty and expect respect.', spouse: 'confident, dignified, generous and proud' },
+    { en: 'Virgo', sa: 'Kanya', el: 'Earth', body: 'digestion and intestines', lagna: 'You make things work. Kanya lagna, ruled by Mercury, gives an analytical mind, precision and a talent for improving systems. You notice what others miss, which makes you a sharp strategist and operator.', moon: 'Your mind is thoughtful and precise and calms down when things are organised.', spouse: 'intelligent, practical, health-conscious and helpful' },
+    { en: 'Libra', sa: 'Tula', el: 'Air', body: 'kidneys and lower back', lagna: 'You create balance and close deals. Tula lagna gives charm, fairness and an eye for design, and you are a natural negotiator.', moon: 'Your mind is diplomatic and aesthetic. You think best in partnership.', spouse: 'graceful, fair-minded, stylish and social' },
+    { en: 'Scorpio', sa: 'Vrishchika', el: 'Water', body: 'reproductive and eliminative organs', lagna: 'You go deep. Vrishchika lagna gives intensity, focus and resilience, and you read people and situations quickly.', moon: 'Your mind is intense, private and perceptive, with real staying power.', spouse: 'intense, loyal, private and magnetic' },
+    { en: 'Sagittarius', sa: 'Dhanu', el: 'Fire', body: 'hips, thighs and liver', lagna: 'You aim high. Dhanu lagna gives optimism, a love of learning and a strong moral compass, and you inspire people with vision.', moon: 'Your mind is optimistic and philosophical. You need a bigger purpose to feel settled.', spouse: 'principled, cheerful, educated and adventurous' },
+    { en: 'Capricorn', sa: 'Makara', el: 'Earth', body: 'knees, bones and joints', lagna: 'You climb. Makara lagna gives discipline, ambition and practicality, and your success compounds with age.', moon: 'Your mind is practical and goal-driven. You show love through reliability.', spouse: 'mature, responsible, hardworking and grounded' },
+    { en: 'Aquarius', sa: 'Kumbha', el: 'Air', body: 'calves, ankles and circulation', lagna: 'You think ahead of the crowd. Kumbha lagna gives originality, a systems mind and a strong network, and you are drawn to work that helps many people.', moon: 'Your mind is independent, original and future-focused. You process feelings through ideas, and friends and networks matter a lot to you.', spouse: 'independent, unconventional, friendly and idealistic' },
+    { en: 'Pisces', sa: 'Meena', el: 'Water', body: 'feet, sleep and immunity', lagna: 'You sense what others miss. Meena lagna gives imagination, compassion and intuition, and you shine in creative and advisory work.', moon: 'Your mind is gentle, imaginative and compassionate. Music, art and quiet time restore you.', spouse: 'kind, artistic, intuitive and spiritual' },
+  ];
+
+  const NAKS = [
+    ['Ashwini', 'the Ashwini Kumaras, divine healers', "a horse's head", 'speed, healing and fresh starts', ['Chu', 'Che', 'Cho', 'La']],
+    ['Bharani', 'Yama, lord of dharma', 'the yoni', 'willpower, responsibility and the strength to carry big loads', ['Li', 'Lu', 'Le', 'Lo']],
+    ['Krittika', 'Agni, the fire god', 'a flame or razor', 'sharpness, courage and decisive action', ['A', 'I', 'U', 'E']],
+    ['Rohini', 'Brahma, the creator', 'a chariot', 'growth, beauty, charm and abundance', ['O', 'Va', 'Vi', 'Vu']],
+    ['Mrigashira', 'Soma, the moon god', "a deer's head", 'curiosity, gentleness and the joy of searching', ['Ve', 'Vo', 'Ka', 'Ki']],
+    ['Ardra', 'Rudra, the storm god', 'a teardrop', 'intensity, research and the power to transform', ['Ku', 'Gha', 'Ng', 'Chha']],
+    ['Punarvasu', 'Aditi, mother of the gods', 'a quiver of arrows', 'renewal, optimism and coming back stronger', ['Ke', 'Ko', 'Ha', 'Hi']],
+    ['Pushya', 'Brihaspati, guru of the gods', "a cow's udder", 'nourishment and wisdom; it is called the most auspicious nakshatra', ['Hu', 'He', 'Ho', 'Da']],
+    ['Ashlesha', 'the Nagas', 'a coiled serpent', 'strategy, perception and magnetism', ['Di', 'Du', 'De', 'Do']],
+    ['Magha', 'the Pitris, the ancestors', 'a royal throne', 'leadership, legacy and royal confidence', ['Ma', 'Mi', 'Mu', 'Me']],
+    ['Purva Phalguni', 'Bhaga, god of fortune', 'the front legs of a bed', 'creativity, pleasure and charm', ['Mo', 'Ta', 'Ti', 'Tu']],
+    ['Uttara Phalguni', 'Aryaman, god of contracts', 'the back legs of a bed', 'generosity, contracts and dependable alliances', ['Te', 'To', 'Pa', 'Pi']],
+    ['Hasta', 'Savitar, the sun god', 'an open hand', 'skill, craftsmanship and wit', ['Pu', 'Sha', 'Na', 'Tha']],
+    ['Chitra', 'Vishwakarma, the divine architect', 'a bright jewel', 'design, brilliance and building beautiful things', ['Pe', 'Po', 'Ra', 'Ri']],
+    ['Swati', 'Vayu, the wind god', 'a young shoot in the wind', 'independence, flexibility and a natural trading sense', ['Ru', 'Re', 'Ro', 'Ta']],
+    ['Vishakha', 'Indra and Agni', 'a triumphal arch', 'ambition, focus and winning the goal', ['Ti', 'Tu', 'Te', 'To']],
+    ['Anuradha', 'Mitra, god of friendship', 'a lotus', 'friendship, devotion and success far from home', ['Na', 'Ni', 'Nu', 'Ne']],
+    ['Jyeshtha', 'Indra, king of the gods', 'a protective umbrella', 'seniority, protection and command', ['No', 'Ya', 'Yi', 'Yu']],
+    ['Mula', 'Nirriti', 'a bundle of roots', 'getting to the root of things and rebuilding from scratch', ['Ye', 'Yo', 'Bha', 'Bhi']],
+    ['Purva Ashadha', 'Apas, the waters', 'a winnowing fan', 'persuasion, invincibility and purifying energy', ['Bhu', 'Dha', 'Pha', 'Dha']],
+    ['Uttara Ashadha', 'the Vishvadevas', "an elephant's tusk", 'final victory, integrity and lasting success', ['Bhe', 'Bho', 'Ja', 'Ji']],
+    ['Shravana', 'Vishnu, the preserver', 'an ear', 'listening, learning and reputation', ['Ju', 'Je', 'Jo', 'Gha']],
+    ['Dhanishta', 'the eight Vasus', 'a drum', 'wealth, rhythm, music and fame', ['Ga', 'Gi', 'Gu', 'Ge']],
+    ['Shatabhisha', 'Varuna, lord of the cosmic waters', 'an empty circle', 'healing, research and technology', ['Go', 'Sa', 'Si', 'Su']],
+    ['Purva Bhadrapada', 'Aja Ekapada, the one-footed fire serpent', 'the front of a cot', 'idealism, vision and the courage to transform things', ['Se', 'So', 'Da', 'Di']],
+    ['Uttara Bhadrapada', 'Ahir Budhnya, the serpent of the deep', 'the back of a cot', 'depth, wisdom and steadiness', ['Du', 'Tha', 'Jha', 'Na']],
+    ['Revati', 'Pushan, the guide and nourisher', 'a fish', 'nourishment, guidance and prosperous journeys', ['De', 'Do', 'Cha', 'Chi']],
+  ].map(([name, deity, symbol, gift, syl], i) => ({ name, deity, symbol, gift, syl, lord: J.DASHA_ORDER[i % 9] }));
+  const GANA = 'DMRMDMDDRRMMDRDRDRRMMDRRMMD'; // per nakshatra: Deva / Manushya / Rakshasa
+  const GANA_TEXT = { D: ['Deva', 'gentle, generous and idealistic'], M: ['Manushya', 'practical, balanced and ambitious'], R: ['Rakshasa', 'fearless, intense and protective'] };
+  const NADI = ['Adi', 'Madhya', 'Antya', 'Antya', 'Madhya', 'Adi'];
+
+  const PL = {
+    Sun: { sa: 'Surya', ab: 'Su', means: 'soul, confidence, authority and father', theme: 'visibility, authority and leadership', fields: ['leadership and management roles', 'government and policy', 'medicine', 'running your own show'], edge: 'You lead from the front and people follow a confident founder.', gem: 'Ruby (Manik)', color: 'saffron and copper red', day: 'Sunday', num: 1, deity: 'Surya', mantra: 'Om Suryaya Namah', dir: 'East', verb: 'brings visibility and authority to' },
+    Moon: { sa: 'Chandra', ab: 'Mo', means: 'mind, emotions, mother and the public', theme: 'public connection, home and emotional growth', fields: ['anything mass-market or public-facing', 'hospitality and food', 'healthcare and care work', 'travel'], edge: 'You read what people feel, which is the core of marketing.', gem: 'Pearl (Moti)', color: 'white and silver', day: 'Monday', num: 2, deity: 'Shiva and Parvati', mantra: 'Om Chandraya Namah', dir: 'North-west', verb: 'puts your heart and attention into' },
+    Mars: { sa: 'Mangal', ab: 'Ma', means: 'energy, courage, property and competition', theme: 'action, courage and bold starts', fields: ['startups and fast execution', 'engineering and technology', 'real estate', 'sports and fitness'], edge: 'You execute fast and you are not afraid of competition.', gem: 'Red Coral (Moonga)', color: 'red', day: 'Tuesday', num: 9, deity: 'Hanuman', mantra: 'Om Mangalaya Namah', dir: 'South', verb: 'brings drive and fight to' },
+    Mercury: { sa: 'Budh', ab: 'Me', means: 'intellect, speech, trade and numbers', theme: 'business, communication and smart deals', fields: ['business and trading', 'marketing and media', 'writing and content', 'consulting, IT and analytics'], edge: 'You think in deals, words and numbers. Selling and negotiating come naturally.', gem: 'Emerald (Panna)', color: 'green', day: 'Wednesday', num: 5, deity: 'Vishnu and Ganesha', mantra: 'Om Budhaya Namah', dir: 'North', verb: 'brings intelligence and deal-making to' },
+    Jupiter: { sa: 'Guru', ab: 'Ju', means: 'wisdom, wealth, teachers and growth', theme: 'growth, wisdom, mentors and wealth', fields: ['education and teaching', 'finance and investing', 'law and advisory', 'mentoring and coaching'], edge: 'People trust your judgement. You grow by teaching and advising.', gem: 'Yellow Sapphire (Pukhraj)', color: 'yellow and gold', day: 'Thursday', num: 3, deity: 'Vishnu and Brihaspati', mantra: 'Om Gurave Namah', dir: 'North-east', verb: 'blesses and expands' },
+    Venus: { sa: 'Shukra', ab: 'Ve', means: 'love, beauty, art, luxury and comfort', theme: 'money, love, creativity and brand', fields: ['brands, fashion and beauty', 'design and the arts', 'entertainment and the creator economy', 'luxury and hospitality'], edge: 'You have taste. Brands, design and relationships are where you win.', gem: 'Diamond (Heera) or White Sapphire', color: 'white, cream and pastels', day: 'Friday', num: 6, deity: 'Lakshmi', mantra: 'Om Shukraya Namah', dir: 'South-east', verb: 'brings charm, comfort and luck to' },
+    Saturn: { sa: 'Shani', ab: 'Sa', means: 'discipline, time, scale and hard work', theme: 'discipline, structure and long-term foundations', fields: ['operations and systems', 'manufacturing and infrastructure', 'large organisations', 'anything built to scale over years'], edge: 'You outlast people. Systems and patience are your unfair advantage.', gem: 'Blue Sapphire (Neelam)', color: 'dark blue and black', day: 'Saturday', num: 8, deity: 'Shani Dev and Hanuman', mantra: 'Om Shanaischaraya Namah', dir: 'West', verb: 'builds slow, durable strength in' },
+    Rahu: { sa: 'Rahu', ab: 'Ra', means: 'ambition, technology, foreign links and the masses', theme: 'ambition, technology, foreign links and big jumps', fields: ['technology and AI', 'social media and mass media', 'foreign markets', 'new-age, unconventional industries'], edge: 'You spot what is new before others do and you are hungry to grow.', gem: 'Hessonite (Gomed)', color: 'smoky blue', day: 'Saturday', num: 4, deity: 'Durga', mantra: 'Om Rahave Namah', dir: 'South-west', verb: 'creates hunger and unconventional growth in' },
+    Ketu: { sa: 'Ketu', ab: 'Ke', means: 'detachment, research, intuition and mastery', theme: 'focus, research and deep mastery', fields: ['research and analysis', 'coding and technical depth', 'spiritual and healing work', 'niche expertise'], edge: 'You go deeper than anyone else in your niche.', gem: "Cat's Eye (Lehsunia)", color: 'grey and earthy tones', day: 'Tuesday', num: 7, deity: 'Ganesha', mantra: 'Om Ketave Namah', dir: 'North-west', verb: 'brings detached mastery to' },
+  };
+
+  const HOUSES = [null,
+    { sa: 'Tanu', area: 'self, body and personality', channel: 'your own name, face and personal brand' },
+    { sa: 'Dhana', area: 'savings, family, speech and food', channel: 'savings, family assets and anything you sell with your voice' },
+    { sa: 'Sahaja', area: 'courage, effort, media and siblings', channel: 'your own effort, content, media, writing and sales' },
+    { sa: 'Sukha', area: 'home, mother, property and peace of mind', channel: 'property, vehicles, home-based work and education' },
+    { sa: 'Putra', area: 'creativity, intelligence, romance and children', channel: 'creative work, ideas, teaching, entertainment and smart investments' },
+    { sa: 'Ari', area: 'competition, service, health and daily work', channel: 'service, problem-solving, consulting and beating competitors' },
+    { sa: 'Kalatra', area: 'partners, spouse, clients and trade', channel: 'partnerships, clients, deals and public trade' },
+    { sa: 'Ayu', area: 'research, transformation and shared money', channel: "research, investors, insurance and other people's money" },
+    { sa: 'Dharma', area: 'luck, mentors, higher learning and father', channel: 'mentors, higher learning, publishing, travel and plain good luck' },
+    { sa: 'Karma', area: 'career, status and reputation', channel: 'career status, authority and public reputation' },
+    { sa: 'Labha', area: 'gains, networks and ambitions', channel: 'networks, large platforms, friends and recurring income' },
+    { sa: 'Vyaya', area: 'expenses, foreign lands and spirituality', channel: 'foreign clients, overseas work and behind-the-scenes roles' },
+  ];
+
+  const ord = (n) => n + (n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th');
+  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+  const DIG_WORD = { exalted: 'exalted', moolatrikona: 'in moolatrikona', own: 'in its own sign', friend: "in a friend's sign", neutral: 'in a neutral sign', enemy: 'in a challenging sign', debilitated: 'debilitated' };
+  const list = (a) => a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+
+  function analyse(c, opts) {
+    const p = c.p;
+    const now = opts.now;
+    const birth = c.input.utcMs;
+    const zone = opts.zone || { tz: opts.tz || 'Asia/Kolkata' };
+    const sav = c.ashtakavarga.byHouse;
+    const ageAt = (ms) => Math.floor((ms - birth) / YEAR);
+    const zf = (ms, o) => zone.tz
+      ? new Intl.DateTimeFormat('en-IN', { ...o, timeZone: zone.tz }).format(new Date(ms))
+      : new Intl.DateTimeFormat('en-IN', { ...o, timeZone: 'UTC' }).format(new Date(ms + (zone.offset || 0) * 60000));
+    const fmtMY = (ms) => zf(ms, { month: 'short', year: 'numeric' });
+    const fmtY = (ms) => zf(ms, { year: 'numeric' });
+    const fmtD = (ms) => zf(ms, { day: 'numeric', month: 'short', year: 'numeric' });
+    const sg = (i) => `${SIGNS[i].sa} (${SIGNS[i].en})`;
+    const pdesc = (n) => `${n} ${digw(n)} in your ${ord(p[n].house)} house`;
+    const digw = (n) => DIG_WORD[p[n].dignity] + (p[n].neechaBhanga ? ' with cancellation' : '');
+    const chartWord = c.timeKnown ? '' : ' (from your Moon chart)';
+
+    // ---- house and area strength ----
+    function houseScore(h) {
+      let s = 50 + (sav[h] - 28) * 2.2;
+      const L = c.lordOf(h), x = p[L];
+      s += DIGNITY_PTS[x.dignity] * 0.9 + (x.neechaBhanga ? 12 : 0);
+      if (KENDRA.includes(x.house) || TRIKONA.includes(x.house)) s += 7;
+      else if (x.house === 2 || x.house === 11) s += 5;
+      else if (x.house === 3) s += 2;
+      else if (DUSTHANA.includes(x.house)) s += DUSTHANA.includes(h) ? 3 : -5;
+      for (const n of c.occupants(h)) {
+        if (n === 'Jupiter') s += 8;
+        else if (c.isBenefic(n)) s += 6;
+        else s += J.UPACHAYA.includes(h) ? 4 : -3;
+      }
+      if (c.aspects('Jupiter').includes(h) && p.Jupiter.house !== h) s += 6;
+      if (x.vargottama) s += 3;
+      if (x.combust) s -= 4;
+      return clamp(s, 0, 100);
+    }
+    const H = [0]; for (let h = 1; h <= 12; h++) H.push(houseScore(h));
+    const st = (n) => p[n].strength - 50;
+    const yogaCount = (kind) => c.yogas.filter((y) => y.kind === kind && y.strength !== 'mild').length;
+    const disp = (s) => Math.round(58 + clamp(s, 0, 100) * 0.38);
+    const label = (d) => d >= 88 ? 'Exceptional' : d >= 81 ? 'Very strong' : d >= 74 ? 'Strong' : 'Steady';
+    const raw = {
+      wealth: (H[2] + H[11]) / 2 + st('Jupiter') * 0.1 + yogaCount('wealth') * 3,
+      career: H[10] + st(c.lordOf(10)) * 0.15 + yogaCount('power') * 2,
+      business: H[7] * 0.4 + H[10] * 0.3 + H[3] * 0.3 + st('Mercury') * 0.15 + (H[11] - 50) * 0.1,
+      fame: H[10] * 0.5 + H[11] * 0.2 + H[1] * 0.3 + st('Sun') * 0.1 + yogaCount('fame') * 3,
+      love: H[7] * 0.5 + H[5] * 0.3 + st('Venus') * 0.2 + 10,
+      luck: H[9] + st('Jupiter') * 0.2,
+      health: H[1] + st(c.lordOf(1)) * 0.2 + st('Sun') * 0.1,
+      learning: H[5] * 0.5 + H[4] * 0.3 + st('Mercury') * 0.15 + st('Jupiter') * 0.1 + yogaCount('mind') * 2 + 10,
+    };
+    const AREA_META = {
+      wealth: ['Wealth', `2nd house ${sav[2]} and 11th house ${sav[11]} bindus`],
+      career: ['Career', `10th lord ${c.lordOf(10)} ${digw(c.lordOf(10))}`],
+      business: ['Business', `7th, 10th and 3rd houses with Mercury`],
+      fame: ['Fame', `10th house ${sav[10]} bindus, Sun in house ${p.Sun.house}`],
+      love: ['Love', `7th house ${sav[7]} bindus, Venus ${DIG_WORD[p.Venus.dignity]}`],
+      luck: ['Luck', `9th lord ${c.lordOf(9)} ${digw(c.lordOf(9))}`],
+      health: ['Health', `lagna ${sav[1]} bindus, lagna lord ${c.lordOf(1)}`],
+      learning: ['Learning', `4th and 5th houses with Mercury and Jupiter`],
+    };
+    const areas = Object.keys(raw).map((k) => { const d = disp(raw[k]); return { key: k, name: AREA_META[k][0], score: d, label: label(d), basis: AREA_META[k][1] }; });
+    const A = Object.fromEntries(areas.map((a) => [a.key, a]));
+
+    // ---- dasha periods ----
+    function ownsOf(L) { return (L === 'Rahu' || L === 'Ketu') ? c.housesOwned(SIGN_LORD[p[L].sign]) : c.housesOwned(L); }
+    function periodScore(L) {
+      const x = p[L], owns = ownsOf(L);
+      const W = { 1: 3, 2: 3, 3: 0, 4: 1, 5: 3, 6: -1, 7: 1, 8: -1, 9: 3, 10: 3, 11: 3, 12: -1 };
+      let s = owns.reduce((a, h) => a + W[h], 0);
+      if (owns.some((h) => [4, 7, 10].includes(h)) && owns.some((h) => [5, 9].includes(h))) s += 3;
+      s += [1, 4, 7, 10, 5, 9].includes(x.house) ? 2 : [2, 11].includes(x.house) ? 3 : x.house === 3 ? 1 : -2;
+      s += DIGNITY_PTS[x.dignity] / 4 + (x.neechaBhanga ? 4 : 0) + (x.vargottama ? 1 : 0);
+      if (c.yogas.some((y) => y.planets.includes(L) && y.strength === 'strong' && y.kind !== 'mind')) s += 2;
+      if (['Jupiter', 'Venus', 'Mercury', 'Moon'].includes(L)) s += 1;
+      return s;
+    }
+    const tier = (s) => s >= 9 ? 'Golden' : s >= 5 ? 'Rising' : s >= 1 ? 'Growth' : 'Foundation';
+    const TIER_TEXT = { Golden: 'Golden period', Rising: 'Rising period', Growth: 'Growth period', Foundation: 'Foundation period' };
+    function periodTheme(L) {
+      const owns = ownsOf(L);
+      const areasOwned = owns.map((h) => HOUSES[h].area.split(',')[0]).join(' and ');
+      return `${PL[L].theme[0].toUpperCase() + PL[L].theme.slice(1)}. ${L === 'Rahu' || L === 'Ketu' ? 'Acting for ' + SIGN_LORD[p[L].sign] + ', it' : 'It'} rules your ${owns.map(ord).join(' and ')} house${owns.length > 1 ? 's' : ''} (${areasOwned}) and plays out through your ${ord(p[L].house)} house of ${HOUSES[p[L].house].area}.`;
+    }
+    const timeline = c.dasha.list.filter((d) => d.end > birth && d.start < birth + 92 * YEAR).map((d) => {
+      const s = periodScore(d.lord);
+      return {
+        lord: d.lord, start: Math.max(d.start, birth), end: d.end, startAge: Math.max(0, ageAt(d.start)), endAge: ageAt(d.end),
+        score: s, tier: tier(s), theme: periodTheme(d.lord), current: now >= d.start && now < d.end,
+        sub: d.sub.map((a) => { const sc = s * 0.4 + periodScore(a.lord); return { lord: a.lord, start: a.start, end: a.end, tier: tier(sc), current: now >= a.start && now < a.end }; }),
+      };
+    });
+    const cur = J.dashaAt(c, now);
+    const curMD = timeline.find((t) => t.current);
+    const curAD = curMD && curMD.sub.find((a) => a.current);
+    const nextADs = curMD ? curMD.sub.filter((a) => a.start > now).slice(0, 2) : [];
+    const upcoming = timeline.filter((t) => t.end > now);
+    const best = upcoming.filter((t) => !t.current).find((t) => t.tier === 'Golden') || upcoming.slice().sort((a, b) => b.score - a.score)[0];
+
+    // ---- transits ----
+    const tNow = J.positionsAt(now);
+    const fromMoon = (sign) => houseFrom(sign, p.Moon.sign);
+    const fromLagna = (sign) => houseFrom(sign, c.lagnaSign);
+    const sadeList = J.sadeSati(c, birth - 3 * YEAR, birth + 90 * YEAR).filter((s) => s.end > birth);
+    const satRel = fromMoon(tNow.Saturn.sign);
+    const sadeNow = sadeList.find((s) => now >= s.start && now <= s.end + 20 * DAY);
+    const sadeNext = sadeList.find((s) => s.start > now);
+    const jupNowMoon = fromMoon(tNow.Jupiter.sign);
+    const JUP_GOOD = [2, 5, 7, 9, 11];
+    const jupiterPath = J.signIngresses('Jupiter', now, now + 3.2 * YEAR, 4).map((seg) => ({
+      ...seg, fromMoon: fromMoon(seg.sign), fromLagna: fromLagna(seg.sign), good: JUP_GOOD.includes(fromMoon(seg.sign)),
+    }));
+
+    // ---- helpers for answers ----
+    const strongestPlanets = PLANETS.slice().sort((a, b) => p[b].strength - p[a].strength);
+    const top3 = strongestPlanets.slice(0, 3);
+    const yogasOf = (kinds) => c.yogas.filter((y) => kinds.includes(y.kind));
+    const periodLine = (t) => `${t.lord} Mahadasha, ${fmtY(t.start)} to ${fmtY(t.end)} (age ${t.startAge} to ${t.endAge})`;
+    const Q = [];
+    const add = (group, id, q, a) => Q.push({ group, id, q, ...a });
+
+    // ===== Right now =====
+    {
+      const md = curMD, ad = curAD;
+      const body = [];
+      if (md && ad) {
+        body.push(`You are running ${md.lord} Mahadasha with ${ad.lord} Antardasha. In Vimshottari terms, ${md.lord} sets the big theme of these years and ${ad.lord} sets the flavour of right now.`);
+        body.push(`${md.lord} (until ${fmtMY(md.end)}): ${md.theme}`);
+        body.push(`${ad.lord} sub-period (until ${fmtMY(ad.end)}): ${PL[ad.lord].theme}. ${ad.lord} sits in your ${ord(p[ad.lord].house)} house of ${HOUSES[p[ad.lord].house].area}, so that is where things move fastest right now.`);
+        if (nextADs.length) body.push(`Next: ${nextADs.map((a) => `${a.lord} from ${fmtMY(a.start)} (${a.tier.toLowerCase()})`).join(', then ')}.`);
+        const nextMD = upcoming[1];
+        if (nextMD) body.push(`The next big chapter is ${nextMD.lord} Mahadasha from ${fmtY(nextMD.start)}, rated a ${TIER_TEXT[nextMD.tier].toLowerCase()} in your chart.`);
+      }
+      add('now', 'phase', 'What phase of life am I in right now?', {
+        verdict: md ? `${md.lord} chapter, ${ad.lord} season` : 'Fresh start', tone: md && md.tier === 'Golden' ? 'great' : 'good', body,
+        factors: [`Moon in ${NAKS[p.Moon.nak].name} nakshatra starts your Vimshottari sequence with ${c.dasha.startLord}`, `Jupiter now transits your ${ord(jupNowMoon)} house from the Moon${JUP_GOOD.includes(jupNowMoon) ? ', a favourable position' : ''}`, `Saturn now transits your ${ord(satRel)} house from the Moon`],
+      });
+    }
+    {
+      const phase = satRel === 12 ? 'rising phase (Saturn in the 12th from your Moon)' : satRel === 1 ? 'peak phase (Saturn over your Moon)' : satRel === 2 ? 'final, setting phase (Saturn in the 2nd from your Moon)' : null;
+      const body = [];
+      if (sadeNow && phase) {
+        body.push(`Yes. You are in the ${phase}. It started around ${fmtMY(sadeNow.start)} and wraps up around ${fmtMY(sadeNow.end)}.`);
+        body.push(satRel === 2 ? 'This is the lightest of the three phases, and most of the pressure is already behind you. Saturn rewards what you have built through discipline during these years, so expect the effort you put in to start paying off as it ends.' : 'Sade Sati is Saturn teaching structure. People who work hard and stay honest during it often build the foundation of their whole career in these years.');
+      } else {
+        body.push(`No. Saturn is in your ${ord(satRel)} house from the Moon, so Sade Sati is not running.`);
+        if ([3, 6, 11].includes(satRel)) body.push('Even better, this is one of the three positions where Saturn transit is classically favourable: steady gains and wins over competition.');
+      }
+      if (sadeNext) body.push(`Your next Sade Sati begins around ${fmtMY(sadeNext.start)} (age ${ageAt(sadeNext.start)}).`);
+      const past = sadeList.filter((s) => s.end < now);
+      add('now', 'sadesati', 'Is Sade Sati running for me?', {
+        verdict: sadeNow ? (satRel === 2 ? 'Yes, in its last phase' : 'Yes') : 'No', tone: sadeNow ? 'steady' : 'great', body,
+        factors: [`Natal Moon in ${sg(p.Moon.sign)}`, `Transit Saturn in ${sg(tNow.Saturn.sign)} today`, 'Sade Sati = Saturn crossing the 12th, 1st and 2nd signs from the natal Moon'],
+        timing: sadeList.slice(0, 4).map((s) => ({ label: s.end < now ? 'Completed' : s.start > now ? 'Upcoming' : 'Running', range: `${fmtMY(s.start)} to ${fmtMY(s.end)}` })),
+      });
+    }
+    {
+      const s = curMD ? curMD.score * 0.4 + periodScore(curAD.lord) : 5;
+      const good = [];
+      if (curAD) good.push(`${curAD.lord} Antardasha favours ${PL[curAD.lord].theme}.`);
+      if (JUP_GOOD.includes(jupNowMoon)) good.push(`Jupiter is transiting your ${ord(jupNowMoon)} from the Moon, one of its five favourable houses.`);
+      if (sadeNow && satRel === 2) good.push(`Sade Sati is in its final phase, so pressure is lifting.`);
+      if (!sadeNow) good.push('Saturn is not pressing on your Moon.');
+      const nextGoodJ = jupiterPath.find((j) => j.good && j.start > now);
+      const body = [
+        `Yes. A business started in a ${curMD ? curMD.lord : ''} period grows the way that planet works: ${curMD ? PL[curMD.lord].theme : ''}. ${curMD && curMD.lord === 'Saturn' ? 'Saturn rewards founders who build systems early and keep going, so treat these years as the foundation phase of something that compounds.' : 'Use that energy deliberately.'}`,
+        good.join(' '),
+      ];
+      if (nextGoodJ && !JUP_GOOD.includes(jupNowMoon)) body.push(`Jupiter moves into a favourable house from your Moon around ${fmtMY(nextGoodJ.start)}. That is a strong window for launches, fundraising or big client wins.`);
+      if (best && best.start > now) body.push(`Your next golden chapter, ${best.lord} Mahadasha, begins in ${fmtY(best.start)} (age ${best.startAge}). Starting now means the business is already mature when that period arrives.`);
+      add('now', 'startnow', 'Is now a good time to start my business?', {
+        verdict: s >= 5 ? 'Yes, strongly supported' : 'Yes, as a foundation-building phase', tone: s >= 5 ? 'great' : 'good', body,
+        factors: [`Current period: ${curMD ? curMD.lord + ' / ' + curAD.lord : 'n/a'}`, `Jupiter transit: ${ord(jupNowMoon)} from Moon`, `Saturn transit: ${ord(satRel)} from Moon`],
+      });
+    }
+
+    // ===== Money & business =====
+    {
+      const d = A.wealth.score;
+      const L2 = c.lordOf(2), L11 = c.lordOf(11);
+      const body = [
+        `Jyotish doesn't print rupee figures. It reads capacity (your 2nd and 11th houses), channels (where their lords sit) and timing (your dashas). On those three, your wealth potential reads ${A.wealth.label.toLowerCase()}, ${d}/100.`,
+        sav[11] >= sav[12]
+          ? `Your 11th house of gains has ${sav[11]} bindus against ${sav[12]} in your 12th house of expenses. When gains beat expenses in Ashtakavarga, classical texts say income outruns spending and money accumulates.`
+          : `Your 12th house carries ${sav[12]} bindus against ${sav[11]} in the 11th, so money moves fast through your hands. Park it in assets (equity, property, your own company) and it compounds instead of circulating.`,
+        `Your 2nd lord ${pdesc(L2)} and your 11th lord ${pdesc(L11)}.`,
+      ];
+      const wy = yogasOf(['wealth']);
+      if (wy.length) body.push(`Wealth yogas in your chart: ${list([...new Set(wy.map((y) => y.name))])}.`);
+      const peaks = upcoming.filter((t) => t.tier === 'Golden' || t.tier === 'Rising').slice(0, 2);
+      if (peaks.length) body.push(`Peak money periods: ${peaks.map(periodLine).join('; ')}.`);
+      add('money', 'howmuch', 'How much money will I make?', {
+        verdict: `${A.wealth.label} wealth potential`, tone: d >= 81 ? 'great' : 'good', body, score: d,
+        factors: [`2nd house: ${sav[2]} bindus (28 is average)`, `11th house: ${sav[11]} bindus`, `12th house: ${sav[12]} bindus`, `Jupiter, karaka of wealth, ${DIG_WORD[p.Jupiter.dignity]} in house ${p.Jupiter.house}`],
+      });
+    }
+    {
+      const L2 = c.lordOf(2), L11 = c.lordOf(11), L10 = c.lordOf(10);
+      const chans = [];
+      const pushC = (h, why) => { if (!chans.some((x) => x.h === h)) chans.push({ h, why: [why] }); else chans.find((x) => x.h === h).why.push(why); };
+      pushC(p[L11].house, `11th lord ${L11} sits here`);
+      pushC(p[L2].house, `2nd lord ${L2} sits here`);
+      pushC(p[L10].house, `10th lord ${L10} sits here`);
+      for (const n of c.occupants(11)) pushC(11, `${n} occupies the 11th`);
+      for (const n of c.occupants(2)) pushC(2, `${n} occupies the 2nd`);
+      chans.sort((a, b) => b.why.length - a.why.length);
+      const main = chans[0];
+      const body = [
+        `Your strongest money channel is ${HOUSES[main.h].channel}. ${main.why.join(' and ')}, so this area pulls in income more than any other.`,
+        chans.length > 1 ? `Secondary channels: ${list(chans.slice(1, 3).map((x) => HOUSES[x.h].channel))}.` : '',
+        `Your Amatyakaraka, the Jaimini planet of profession, is ${c.karakas.amatya}. It points to money through ${list(PL[c.karakas.amatya].fields.slice(0, 3))}.`,
+      ].filter(Boolean);
+      add('money', 'source', 'Where will my money come from?', {
+        verdict: HOUSES[main.h].channel.split(',')[0].replace(/^your /, '').replace(/^\w/, (m) => m.toUpperCase()), tone: 'great', body,
+        factors: chans.slice(0, 3).map((x) => `House ${x.h} (${HOUSES[x.h].sa}): ${x.why.join(', ')}`),
+      });
+    }
+    {
+      const L10 = c.lordOf(10), L1 = c.lordOf(1);
+      const biz = [], job = [];
+      if ([1, 3, 7, 11].includes(p[L10].house)) biz.push(`10th lord ${L10} in your ${ord(p[L10].house)} house ties career to ${p[L10].house === 7 ? 'clients and trade' : p[L10].house === 1 ? 'your own name' : p[L10].house === 3 ? 'self-effort and media' : 'gains and networks'}`);
+      if ([6, 10].includes(p[L10].house)) job.push(`10th lord ${L10} in house ${p[L10].house} favours structured roles`);
+      if (c.occupants(7).some((n) => c.isBenefic(n) || ['exalted', 'own', 'moolatrikona'].includes(p[n].dignity))) biz.push(`strong planets in your 7th house of trade (${c.occupants(7).join(', ')})`);
+      if (sav[3] >= 28) biz.push(`3rd house of initiative has ${sav[3]} bindus`);
+      if (sav[11] >= 30) biz.push(`11th house of gains has ${sav[11]} bindus`);
+      if (p.Mars.digBala || p.Mars.strength >= 65) biz.push('Mars strong for drive and risk-taking' + (p.Mars.digBala ? ' (directional strength in the 10th)' : ''));
+      if (p.Mercury.strength >= 60) biz.push('Mercury, planet of trade, well supported');
+      if ([3, 6, 10, 11].includes(p.Rahu.house)) biz.push(`Rahu in the ${ord(p.Rahu.house)}, an upachaya house where it grows ambition and beats competition`);
+      if (KENDRA.includes(p[L1].house)) biz.push(`lagna lord ${L1} in a kendra gives a self-driven nature`);
+      if (sav[6] >= 30) job.push(`6th house of service has ${sav[6]} bindus`);
+      if (p.Sun.house === 10) job.push('Sun in the 10th supports authority roles and government');
+      if (p.Saturn.house === 10 || p.Saturn.house === 6) job.push('Saturn in house ' + p.Saturn.house + ' supports long tenure in large organisations');
+      const diff = biz.length - job.length;
+      const verdict = diff >= 3 ? 'Built for business' : diff >= 1 ? 'Business, with strong structure' : diff === 0 ? 'Both work: build inside, then go out' : 'A leadership role, then your own venture';
+      add('money', 'bizjob', 'Is business or a job better for me?', {
+        verdict, tone: diff >= 1 ? 'great' : 'good',
+        body: [
+          diff >= 1 ? 'Your chart leans clearly toward running your own business.' : 'Your chart supports both paths. Many charts like yours do best by learning inside a strong organisation and then building their own venture.',
+          biz.length ? `What points to business: ${list(biz)}.` : '',
+          job.length ? `What supports structured roles: ${list(job)}. Use this side by building strong systems and a reliable team inside your business.` : 'Very little in your chart pulls toward a salaried path.',
+        ].filter(Boolean),
+        factors: biz.concat(job).slice(0, 6),
+      });
+    }
+    {
+      const d = Math.round((A.business.score + A.wealth.score + A.career.score) / 3 + Math.min(4, yogaCount('power')));
+      const edges = top3.map((n) => `${n}: ${PL[n].edge}`);
+      const support = (h) => sav[h] >= 28 ? `${sav[h]} bindus` : c.occupants(h).length ? `${list(c.occupants(h))} there` : `its lord ${c.lordOf(h)} ${digw(c.lordOf(h))}`;
+      const watch = (() => {
+        if (c.occupants(12).length) return `Your 12th house holds ${list(c.occupants(12))}, so spending, overseas costs and rest need deliberate limits. Keep a tight budget and protect your sleep.`;
+        if (c.occupants(6).includes('Moon')) return 'Moon in the 6th means you take work stress personally. Build routines that let you switch off.';
+        if (sav[12] > sav[11]) return 'Money flows out as quickly as it comes in. Automate savings from day one.';
+        return 'Your chart has no major warning signs here. Keep reinvesting rather than spending early profits.';
+      })();
+      add('money', 'succeed', 'Will my new business succeed?', {
+        verdict: `${label(clamp(d, 0, 100))} success signature`, tone: 'great', score: clamp(d, 0, 96),
+        body: [
+          `Your business success signature reads ${label(d).toLowerCase()} (${clamp(d, 0, 96)}/100), combining your trade, wealth and career houses with the raja yogas in your chart.`,
+          `Your three strongest planets are your edge. ${edges.join(' ')}`,
+          `What makes it work: partners and clients through your 7th house (${support(7)}), execution through your 10th (${support(10)}) and scale through your 11th (${support(11)}).`,
+          `Keep an eye on: ${watch}`,
+        ],
+        factors: [`Strongest planets: ${top3.map((n) => `${n} (${p[n].strength})`).join(', ')}`].concat(yogasOf(['power', 'wealth']).slice(0, 4).map((y) => y.name + ': ' + y.planets.join(' + '))),
+      });
+    }
+    {
+      const L7 = c.lordOf(7), occ = c.occupants(7);
+      const traits = [`${SIGNS[c.signOfHouse(7)].spouse} people (your 7th house is ${sg(c.signOfHouse(7))})`];
+      for (const n of occ) traits.push({ Sun: 'people with authority and strong personalities', Moon: 'emotionally intelligent, public-facing people', Mars: 'driven, fast-moving operators', Mercury: 'sharp, numbers-minded business people', Jupiter: 'wise, ethical advisers', Venus: 'creative, well-connected people with taste', Saturn: 'older, disciplined, process-driven people', Rahu: 'unconventional or foreign partners', Ketu: 'quiet technical specialists' }[n]);
+      const strong = H[7] >= 60;
+      add('money', 'partner', 'Should I take a business partner?', {
+        verdict: strong ? 'Yes, partners amplify you' : 'Yes, with clear roles', tone: strong ? 'great' : 'good',
+        body: [
+          `Your 7th house of partnerships scores ${disp(H[7])}/100 with ${sav[7]} bindus${occ.length ? ` and holds ${list(occ)}` : ''}. Its lord ${pdesc(L7)}.`,
+          strong ? 'Partnerships are one of the strongest parts of your chart. The right partner or a small set of anchor clients can multiply your results.' : 'Partnerships work for you when roles, equity and decision rights are written down early.',
+          `Best partner profile: ${list(traits)}.`,
+          `Pick someone whose strengths cover your quieter houses, and put the agreement on paper.`,
+        ],
+        factors: [`7th house: ${sg(c.signOfHouse(7))}, ${sav[7]} bindus`, `7th lord ${L7} in house ${p[L7].house}`].concat(occ.map((n) => `${n} in the 7th, ${digw(n)}`)),
+      });
+    }
+    {
+      const nk = NAKS[p.Moon.nak];
+      const L1 = c.lordOf(1), L9 = c.lordOf(9);
+      add('money', 'name', 'What should I name my business?', {
+        verdict: `Start with "${nk.syl[p.Moon.pada - 1]}"`, tone: 'good',
+        body: [
+          `Your Janma nakshatra is ${nk.name}, pada ${p.Moon.pada}. Its namakshar (naming syllable) is "${nk.syl[p.Moon.pada - 1]}". The full set for ${nk.name} is ${nk.syl.map((s) => `"${s}"`).join(', ')}.`,
+          `Your lagna lord ${L1} carries the number ${PL[L1].num} and your 9th lord of luck ${L9} carries ${PL[L9].num}. Founders often use these numbers as a tie-breaker when two names feel equally good.`,
+          `Use this as a filter on names you already like. A name that is clear, easy to say and easy to search will always do more work than the syllable alone.`,
+        ],
+        factors: [`Moon in ${nk.name} pada ${p.Moon.pada}`, `Lagna lord ${L1} = ${PL[L1].num}`, `9th lord ${L9} = ${PL[L9].num}`],
+      });
+    }
+
+    // ===== Career & fame =====
+    {
+      const L10 = c.lordOf(10);
+      const w = {};
+      const bump = (n, k) => { w[n] = (w[n] || 0) + k; };
+      bump(L10, 3); for (const n of c.occupants(10)) bump(n, 2); bump(c.karakas.amatya, 2); bump(strongestPlanets[0], 1);
+      for (const n of c.aspectedBy(10)) bump(n, 0.5);
+      const ranked = Object.keys(w).sort((a, b) => w[b] - w[a]).slice(0, 3);
+      const fields = [...new Set(ranked.flatMap((n) => PL[n].fields.slice(0, 2)))];
+      add('career', 'career', 'Which career or industry suits me?', {
+        verdict: fields.slice(0, 2).map((f) => f.replace(/^\w/, (m) => m.toUpperCase())).join(' / '), tone: 'great',
+        body: [
+          `Your 10th house of career is ${sg(c.signOfHouse(10))}, ruled by ${L10}. ${c.occupants(10).length ? `${list(c.occupants(10))} ${c.occupants(10).length > 1 ? 'sit' : 'sits'} in it. ` : ''}Your Amatyakaraka is ${c.karakas.amatya}.`,
+          `Combining these, the planets running your career are ${list(ranked)}. Fields that fit: ${list(fields)}.`,
+          `Your career score is ${A.career.score}/100 (${A.career.label.toLowerCase()}).`,
+        ],
+        factors: ranked.map((n) => `${n}: ${PL[n].means}`),
+      });
+    }
+    {
+      const d = A.fame.score;
+      const pts = [];
+      if (c.occupants(10).length) pts.push(`${list(c.occupants(10))} in the 10th house of public status`);
+      if ([1, 10, 11, 7, 3].includes(p.Rahu.house)) pts.push(`Rahu in the ${ord(p.Rahu.house)} gives mass appeal`);
+      if (p.Rahu.house === 6) pts.push('Rahu in the 6th helps you outpace competitors');
+      if (['exalted', 'own', 'moolatrikona'].includes(p.Sun.dignity) || [1, 10, 11, 9].includes(p.Sun.house)) pts.push('Sun well placed for recognition');
+      if (p.Venus.strength >= 70) pts.push('Venus strong, giving charm and a brand others want to be near');
+      for (const y of yogasOf(['fame'])) pts.push(y.name);
+      if (sav[3] >= 30) pts.push(`3rd house of media and content has ${sav[3]} bindus`);
+      add('career', 'fame', 'Will I become well known?', {
+        verdict: `${A.fame.label} public potential`, tone: d >= 81 ? 'great' : 'good', score: d,
+        body: [
+          `Your fame potential reads ${d}/100. Fame in Jyotish comes from the 10th house (status), the 11th (reach), the lagna (your personal brand) and the Sun.`,
+          pts.length ? `Working for you: ${list(pts)}.` : 'Your reputation builds steadily through results rather than hype.',
+          `Your Moon is in ${NAKS[p.Moon.nak].name}, giving ${NAKS[p.Moon.nak].gift}. Make that the tone of your public brand.`,
+        ],
+        factors: [`10th house: ${sav[10]} bindus`, `11th house: ${sav[11]} bindus`, `Lagna: ${sav[1]} bindus`, `Sun in house ${p.Sun.house}`],
+      });
+    }
+    {
+      const tops = upcoming.slice().sort((a, b) => b.score - a.score).slice(0, 3).sort((a, b) => a.start - b.start);
+      add('career', 'bestyears', 'When are my best years?', {
+        verdict: best ? `${best.lord} Mahadasha, ${fmtY(Math.max(best.start, now))} to ${fmtY(best.end)}` : 'Ahead of you', tone: 'great',
+        body: [
+          'Vimshottari dasha divides life into planetary chapters. A chapter is strongest when its planet rules good houses for your lagna, sits in a strong house and forms yogas.',
+          ...tops.map((t) => `${periodLine(t)}: ${TIER_TEXT[t.tier].toLowerCase()}. ${t.theme}`),
+          'Scroll down to the life timeline to see every period and sub-period.',
+        ],
+        factors: tops.map((t) => `${t.lord}: period score ${t.score.toFixed(1)}`),
+      });
+    }
+
+    // ===== Love & marriage =====
+    {
+      const L7 = c.lordOf(7), L5 = c.lordOf(5);
+      const karaka = opts.gender === 'female' ? 'Jupiter' : 'Venus';
+      const sig = new Set([L7, 'Venus', karaka, c.karakas.dara, ...c.occupants(7)]);
+      const t7 = [c.signOfHouse(7), p[L7].sign];
+      const windows = [];
+      let curW = null;
+      for (let t = birth + 21 * YEAR; t < birth + 36 * YEAR; t += 30 * DAY) {
+        const da = J.dashaAt(c, t);
+        const rel = (sig.has(da.ad.lord) ? 2 : 0) + (sig.has(da.md.lord) ? 1 : 0);
+        const pos = J.positionsAt(t);
+        const jOn = t7.some((s) => [1, 5, 7, 9].includes(houseFrom(s, pos.Jupiter.sign)));
+        const sOn = t7.some((s) => [1, 3, 7, 10].includes(houseFrom(s, pos.Saturn.sign)));
+        const on = rel >= 2 && jOn && sOn;
+        if (on && !curW) curW = { start: t, end: t, lords: da.md.lord + ' / ' + da.ad.lord };
+        if (on) curW.end = t;
+        if (!on && curW) { windows.push(curW); curW = null; }
+      }
+      if (curW) windows.push(curW);
+      const win = windows.filter((w) => w.end - w.start >= 60 * DAY).slice(0, 3);
+      const loveSigns = [];
+      const conn = (a, b) => p[a].sign === p[b].sign || c.aspects(a).includes(p[b].house) && c.aspects(b).includes(p[a].house) || (SIGN_LORD[p[a].sign] === b && SIGN_LORD[p[b].sign] === a);
+      if (L5 !== L7 && conn(L5, L7)) loveSigns.push('5th and 7th lords connected');
+      if (p[L5].house === 7 || p[L7].house === 5) loveSigns.push('5th and 7th lords linked by placement');
+      if ([5, 7].includes(p.Venus.house)) loveSigns.push(`Venus in the ${ord(p.Venus.house)}`);
+      if ([5, 7].includes(p.Rahu.house)) loveSigns.push(`Rahu in the ${ord(p.Rahu.house)}`);
+      if (p.Mars.sign === p.Venus.sign) loveSigns.push('Mars with Venus');
+      const lean = loveSigns.length >= 2 ? 'Love marriage indicated' : loveSigns.length === 1 ? 'Love or introduced, both work' : 'Introduced through family or network';
+      add('love', 'marriage', 'When will I get married?', {
+        verdict: win.length ? `Windows in ${list([...new Set(win.map((w) => fmtY(w.start)))])}` : 'Late 20s, by dasha', tone: 'good',
+        body: [
+          `Marriage timing uses two classical checks together: a dasha of a 7th-house significator (${list([...sig])}) and the double transit, where Jupiter and Saturn both touch your 7th house or its lord.`,
+          win.length ? `Windows where both line up: ${win.map((w) => `${fmtMY(w.start)} to ${fmtMY(w.end)} (age ${ageAt(w.start)}, ${w.lords})`).join('; ')}.` : 'No window shows both checks before 36, so timing will follow the dasha of your 7th lord and Venus.',
+          `Love or arranged: ${lean.toLowerCase()}${loveSigns.length ? ` (${list(loveSigns)})` : ''}.`,
+        ],
+        factors: [`7th house ${sg(c.signOfHouse(7))}, lord ${L7}`, `Spouse karaka ${karaka} ${digw(karaka)}`, `Darakaraka (Jaimini spouse planet): ${c.karakas.dara}`],
+        timing: win.map((w) => ({ label: w.lords, range: `${fmtMY(w.start)} to ${fmtMY(w.end)}` })),
+      });
+    }
+    {
+      const L7 = c.lordOf(7), occ = c.occupants(7);
+      const bits = [`${SIGNS[c.signOfHouse(7)].spouse} (7th house in ${SIGNS[c.signOfHouse(7)].en})`];
+      const lordAdj = { Sun: 'self-respecting and ambitious', Moon: 'caring and emotionally warm', Mars: 'energetic and decisive', Mercury: 'smart, witty and youthful', Jupiter: 'wise, cultured and principled', Venus: 'beautiful, artistic and affectionate', Saturn: 'mature, loyal and hardworking' }[L7];
+      bits.push(lordAdj + ` (7th lord ${L7})`);
+      const cap = (x) => x.replace(/^\w/, (m) => m.toUpperCase());
+      const firstWord = (x) => x.split(/,| and /)[0].trim();
+      for (const n of occ) bits.push({ Sun: 'confident with a strong personality', Moon: 'nurturing and attractive', Mars: 'passionate and driven', Mercury: 'intelligent and communicative', Jupiter: 'educated and kind', Venus: 'very attractive with refined taste', Saturn: 'steady and serious', Rahu: 'unusual, possibly from a different background', Ketu: 'spiritual and independent' }[n] + ` (${n} in the 7th)`);
+      add('love', 'spouse', 'What will my partner be like?', {
+        verdict: `${cap(firstWord(SIGNS[c.signOfHouse(7)].spouse))}, ${firstWord(SIGNS[c.signOfHouse(7)].spouse.split(', ')[1] || 'warm')} and ${firstWord(lordAdj)}`, tone: 'great',
+        body: [
+          `Your partner is described as ${list(bits)}.`,
+          `Your Darakaraka is ${c.karakas.dara}, which adds a partner who brings ${PL[c.karakas.dara].theme} into your life.`,
+          p.Venus.strength >= 70 ? `Venus is strong in your chart (${p.Venus.strength}/100), a classical sign of a happy, affectionate relationship.` : 'Venus is supported in your chart, giving warmth in relationships.',
+        ],
+        factors: [`7th house ${sg(c.signOfHouse(7))}`, `7th lord ${L7} in house ${p[L7].house}`, `Venus ${DIG_WORD[p.Venus.dignity]}`, `Darakaraka ${c.karakas.dara}`],
+      });
+    }
+    {
+      const M = [1, 2, 4, 7, 8, 12];
+      const mh = p.Mars.house, fm = houseFrom(p.Mars.sign, p.Moon.sign), fv = houseFrom(p.Mars.sign, p.Venus.sign);
+      const lag = M.includes(mh), moo = M.includes(fm), ven = M.includes(fv);
+      const cancel = [];
+      if (['own', 'exalted', 'moolatrikona'].includes(p.Mars.dignity)) cancel.push('Mars in its own or exalted sign');
+      if (p.Mars.sign === p.Jupiter.sign || c.aspects('Jupiter').includes(mh)) cancel.push('Jupiter joins or aspects Mars');
+      if (p.Mars.sign === p.Moon.sign) cancel.push('Mars with the Moon');
+      if ([1, 7].includes(p.Jupiter.house) || [1, 7].includes(p.Venus.house)) cancel.push(`${[1, 7].includes(p.Jupiter.house) ? 'Jupiter' : 'Venus'} in the ${ord([1, 7].includes(p.Jupiter.house) ? p.Jupiter.house : p.Venus.house)} house`);
+      const sm = { 2: [2, 5], 4: [0, 7], 7: [3, 9], 8: [8, 11], 12: [1, 6] };
+      if (sm[mh] && sm[mh].includes(p.Mars.sign)) cancel.push(`Mars in ${SIGNS[p.Mars.sign].en} in the ${ord(mh)} house is a listed exception`);
+      const verdict = !lag && !moo ? 'Not Manglik' : cancel.length ? 'Manglik, cancelled' : 'Mangal energy present';
+      add('love', 'manglik', 'Am I Manglik?', {
+        verdict, tone: !lag && !moo ? 'great' : 'good',
+        body: [
+          `Manglik dosha is checked by Mars in the 1st, 2nd, 4th, 7th, 8th or 12th house. Your Mars is in your ${ord(mh)} house from lagna${chartWord}, the ${ord(fm)} from your Moon and the ${ord(fv)} from Venus.`,
+          !lag && !moo ? 'By the two main checks, lagna and Moon, you are not Manglik.' + (ven ? ' Some astrologers also check from Venus, where it does appear; most treat that as minor.' : '') : cancel.length ? `It appears, and it is cancelled by: ${list(cancel)}.` : 'Mars energy here means a passionate, driven partner suits you best, and matching with someone of similar Mars energy is the traditional answer.',
+          'Mars in a good house gives drive, courage and protectiveness in relationships.',
+        ],
+        factors: [`Mars in ${sg(p.Mars.sign)}`, `From lagna: ${ord(mh)}`, `From Moon: ${ord(fm)}`, `From Venus: ${ord(fv)}`].concat(cancel),
+      });
+    }
+
+    // ===== Life & luck =====
+    {
+      const nk = NAKS[p.Moon.nak];
+      const g = GANA_TEXT[GANA[p.Moon.nak]];
+      add('life', 'strengths', 'What are my biggest strengths?', {
+        verdict: list(top3), tone: 'great',
+        body: [
+          `${c.timeKnown ? `Your lagna is ${sg(c.asc.sign)}. ${SIGNS[c.asc.sign].lagna}` : `Your birth time is not set, so your Moon sign stands in for the lagna.`}`,
+          `Your Moon is in ${sg(p.Moon.sign)}. ${SIGNS[p.Moon.sign].moon}`,
+          `Your nakshatra is ${nk.name}, ruled by ${nk.deity}, symbol ${nk.symbol}: ${nk.gift}. Its gana is ${g[0]}, meaning ${g[1]}.`,
+          `Your Atmakaraka (soul planet) is ${c.karakas.atma}, so your life purpose runs through ${PL[c.karakas.atma].means}.`,
+          `Your three strongest planets: ${top3.map((n) => `${n} (${p[n].strength}/100, ${digw(n)} in house ${p[n].house})`).join('; ')}.`,
+        ],
+        factors: top3.map((n) => `${n}: ${PL[n].edge}`),
+      });
+    }
+    {
+      let s = 0; const why = [];
+      const L12 = c.lordOf(12), L9 = c.lordOf(9), L4 = c.lordOf(4), L1 = c.lordOf(1);
+      const occ12 = c.occupants(12);
+      if (occ12.length) { s += Math.min(2, occ12.length); why.push(`${list(occ12)} in the 12th house of foreign lands`); }
+      if ([9, 12, 1].includes(p[L12].house)) { s += 2; why.push(`12th lord ${L12} in the ${ord(p[L12].house)}`); }
+      if (p[L9].house === 12) { s += 2; why.push(`9th lord ${L9} in the 12th`); }
+      if ([1, 4, 7, 9, 10, 12].includes(p.Rahu.house)) { s += 1; why.push(`Rahu in the ${ord(p.Rahu.house)}`); }
+      if ([9, 12].includes(p[L1].house)) { s += 1; why.push(`lagna lord in the ${ord(p[L1].house)}`); }
+      if (DUSTHANA.includes(p[L4].house)) { s += 1; why.push(`4th lord ${L4} away from the home house`); }
+      if (p[L4].house === 4) { s -= 1; why.push(`4th lord ${L4} in its own house keeps you rooted`); }
+      const links = s >= 1 && occ12.length;
+      const verdict = s >= 4 ? 'Strong pull to live abroad' : s >= 2 ? 'Global work, home base' : links ? 'Home base, global links' : 'Rooted, with travel';
+      add('life', 'abroad', 'Will I work or settle abroad?', {
+        verdict, tone: 'good',
+        body: [
+          s >= 4 ? 'Your chart shows a strong foreign connection. Settling or spending long stretches abroad is well supported.' : s >= 2 ? 'Your chart supports foreign clients, foreign income and regular international travel, while your roots and base stay in India.' : links ? `Your base stays at home, and the planets in your 12th house bring foreign connections: overseas clients, remote work and trips abroad.` : 'Your chart keeps your base at home, with travel for work and pleasure.',
+          why.length ? `Indications: ${list(why)}.` : '',
+          `Jupiter's travel windows: whenever it transits your 9th or 12th house, long journeys open up.`,
+        ].filter(Boolean),
+        factors: why,
+      });
+    }
+    {
+      const L1 = c.lordOf(1);
+      const el = SIGNS[c.lagnaSign].el;
+      const habit = { Fire: 'burn energy daily through sport, and cool down properly', Earth: 'keep regular meal times, eat fibre and protect your gut', Air: 'guard your sleep and calm your nervous system with breathwork', Water: 'drink enough water and give yourself real emotional rest' }[el];
+      add('life', 'health', 'What keeps my health strong?', {
+        verdict: `${A.health.label} vitality`, tone: 'good', score: A.health.score,
+        body: [
+          `Your vitality score is ${A.health.score}/100, based on your lagna (${sav[1]} bindus), its lord ${pdesc(L1)} and the Sun.`,
+          `Your lagna sign ${SIGNS[c.lagnaSign].en} governs the ${SIGNS[c.lagnaSign].body}, so that is the area to look after. As ${el === 'Air' || el === 'Earth' ? 'an' : 'a'} ${el.toLowerCase()} lagna, ${habit}.`,
+          (() => { const m = c.occupants(6).filter((n) => ['Sun', 'Mars', 'Saturn', 'Rahu', 'Ketu'].includes(n)); return m.length ? `${list(m)} in your 6th house ${m.length > 1 ? 'give' : 'gives'} strong immunity and fighting power.` : ''; })(),
+          c.occupants(6).includes('Moon') ? 'Moon in the 6th means stress lands in your body first. Fixed routines and time off screens help more than anything else.' : '',
+        ].filter(Boolean),
+        factors: [`Lagna ${sg(c.lagnaSign)}`, `Lagna lord ${L1}: ${p[L1].strength}/100`, `Sun: ${p.Sun.strength}/100`, `6th house: ${c.occupants(6).join(', ') || 'empty'}`],
+      });
+    }
+    {
+      const L4 = c.lordOf(4), L5 = c.lordOf(5), L9 = c.lordOf(9);
+      const fields = [...new Set([...PL.Mercury.fields.slice(0, 2), ...PL[L5].fields.slice(0, 1), ...PL[L9].fields.slice(0, 1)])];
+      add('life', 'education', 'Should I study further, and what?', {
+        verdict: `${A.learning.label} learning chart`, tone: 'great', score: A.learning.score,
+        body: [
+          `Your learning score is ${A.learning.score}/100. Foundational education sits in your 4th house (${sg(c.signOfHouse(4))}, lord ${pdesc(L4)}), intelligence in the 5th (lord ${pdesc(L5)}) and higher learning in the 9th (lord ${L9}).`,
+          p[L5].house === 12 || p[L9].house === 12 ? 'Your learning lords touch the 12th house, which favours study abroad, online programs and self-directed learning.' : 'Formal programs and mentors both work well for you.',
+          `Subjects that suit your chart: ${list(fields)}.`,
+        ],
+        factors: [`4th house: ${sav[4]} bindus`, `5th house: ${sav[5]} bindus`, `Mercury ${DIG_WORD[p.Mercury.dignity]}`, `Jupiter ${DIG_WORD[p.Jupiter.dignity]}`],
+      });
+    }
+    {
+      const L4 = c.lordOf(4), L9 = c.lordOf(9);
+      const body = [
+        `Your mother is read from the 4th house and the Moon. Your 4th house is ${sg(c.signOfHouse(4))}${c.occupants(4).length ? ` holding ${list(c.occupants(4))}` : ''}, and its lord ${pdesc(L4)}. ${p[L4].strength >= 65 ? 'This is a strong, protective placement: your mother is a real pillar of support and the home is a source of strength.' : 'Your mother gives steady, practical support.'}`,
+        `Your father is read from the 9th house and the Sun. Your 9th house is ${sg(c.signOfHouse(9))}, its lord ${pdesc(L9)}. ${p[L9].strength >= 65 ? 'This is a lucky placement for your father, and his blessings and guidance carry real weight in your success.' : 'Your father has built his path with effort, and his discipline shows up in you.'}`,
+      ];
+      const fam = (opts.family || []).filter((f) => f.moonSign != null);
+      for (const f of fam) {
+        const h = houseFrom(f.moonSign, c.lagnaSign);
+        body.push(`${f.relation === 'mother' ? 'Your mother' : 'Your father'} (born ${f.dob}) has the Moon in ${sg(f.moonSign)}, which falls in your ${ord(h)} house of ${HOUSES[h].area}.${h === 1 ? ' That is your lagna itself, a close natural bond.' : h === 7 ? ' That is the house of partnership, so you work well as a team.' : ''}`);
+      }
+      add('life', 'parents', 'What does my chart say about my parents?', {
+        verdict: 'Strong family backing', tone: 'great', body,
+        factors: [`4th lord ${L4}: ${p[L4].strength}/100`, `Moon ${DIG_WORD[p.Moon.dignity]} in house ${p.Moon.house}`, `9th lord ${L9}: ${p[L9].strength}/100`, `Sun ${DIG_WORD[p.Sun.dignity]} in house ${p.Sun.house}`],
+      });
+    }
+    {
+      const L1 = c.lordOf(1), L5 = c.lordOf(5), L9 = c.lordOf(9);
+      const P = PL[L1];
+      // supporting stones only from trikona lords that do not also rule a dusthana
+      const helpers = [...new Set([L5, L9])].filter((l) => l !== L1 && !c.housesOwned(l).some((h) => DUSTHANA.includes(h)));
+      add('life', 'lucky', 'What are my lucky number, colour, day and gemstone?', {
+        verdict: `${P.num}, ${P.color.split(' and ')[0]}, ${P.day}`, tone: 'great',
+        body: [
+          `These follow your lagna lord ${L1}, the classical choice because it rules your body and fortune. Supporting picks come from your 9th lord of luck, ${L9}.`,
+          `Lucky numbers: ${P.num}${PL[L9].num !== P.num ? ' and ' + PL[L9].num : ''}. Colours: ${P.color}${L9 !== L1 ? ', plus ' + PL[L9].color : ''}. Days: ${P.day}${PL[L9].day !== P.day ? ' and ' + PL[L9].day : ''}. Direction: ${P.dir}.`,
+          `Gemstone: ${P.gem} for ${L1}.${helpers.length ? ` Supporting stone${helpers.length > 1 ? 's' : ''}: ${helpers.map((l) => `${PL[l].gem} for ${l}, your ${c.housesOwned(l).map(ord).join(' and ')} lord`).join('; ')}.` : ''} Traditionally a stone is tried for a few days before committing to it.`,
+          `Mantra: "${P.mantra}", 108 times on ${P.day}s. Deity: ${P.deity}.`,
+        ],
+        factors: [`Lagna lord ${L1}`, `5th lord ${L5}`, `9th lord ${L9}`],
+      });
+    }
+
+    // ---- summary strings ----
+    const nk = NAKS[p.Moon.nak];
+    const summary = {
+      lagna: c.timeKnown ? sg(c.asc.sign) : 'Needs birth time',
+      lagnaDeg: c.asc.deg,
+      rashi: sg(p.Moon.sign),
+      nak: `${nk.name}, pada ${p.Moon.pada}`,
+      nakLord: nk.lord,
+      sunSign: sg(p.Sun.sign),
+      dasha: curMD ? `${curMD.lord} / ${curAD.lord}` : '',
+      dashaEnd: curAD ? fmtMY(curAD.end) : '',
+      atma: c.karakas.atma,
+      gana: GANA_TEXT[GANA[p.Moon.nak]][0], nadi: NADI[p.Moon.nak % 6], syllable: nk.syl[p.Moon.pada - 1],
+    };
+    return { areas, A, H, questions: Q, timeline, cur: { md: curMD, ad: curAD }, transits: { now: tNow, jupiterPath, sadeList, satRel, jupNowMoon }, summary, top3, fmt: { fmtMY, fmtY, fmtD } };
+  }
+
+  function chartText(c, r, name) {
+    const p = c.p;
+    const lines = [];
+    lines.push(`Name: ${name || 'Native'}. Vedic chart, Lahiri ayanamsa, whole-sign houses${c.timeKnown ? '' : ', birth time unknown so houses are from the Moon'}.`);
+    lines.push(`Lagna ${c.timeKnown ? SIGNS[c.asc.sign].en + ' ' + c.asc.deg.toFixed(1) + '°' : 'unknown'}. Moon sign ${SIGNS[p.Moon.sign].en}, nakshatra ${NAKS[p.Moon.nak].name} pada ${p.Moon.pada}.`);
+    for (const n of PLANETS) { const x = p[n]; lines.push(`${n}: ${SIGNS[x.sign].en} ${x.deg.toFixed(1)}°, house ${x.house}, ${x.dignity}${x.neechaBhanga ? ' (neecha bhanga)' : ''}${x.retro && n !== 'Rahu' && n !== 'Ketu' ? ', retrograde' : ''}${x.combust ? ', combust' : ''}, strength ${x.strength}/100.`); }
+    lines.push(`Ashtakavarga (SAV) by house 1-12: ${c.ashtakavarga.byHouse.slice(1).join(', ')}.`);
+    lines.push(`Yogas: ${c.yogas.map((y) => y.name + ' (' + y.planets.join('+') + ')').join('; ') || 'none'}.`);
+    lines.push(`Atmakaraka ${c.karakas.atma}, Amatyakaraka ${c.karakas.amatya}, Darakaraka ${c.karakas.dara}.`);
+    if (r.cur.md) lines.push(`Current dasha: ${r.cur.md.lord} Mahadasha (to ${r.fmt.fmtMY(r.cur.md.end)}), ${r.cur.ad.lord} Antardasha (to ${r.fmt.fmtMY(r.cur.ad.end)}).`);
+    lines.push(`Upcoming Mahadashas: ${r.timeline.filter((t) => t.start > Date.now()).slice(0, 4).map((t) => `${t.lord} ${r.fmt.fmtY(t.start)}-${r.fmt.fmtY(t.end)} (${t.tier})`).join(', ')}.`);
+    lines.push(`Transits today: Jupiter in ${SIGNS[r.transits.now.Jupiter.sign].en} (${r.transits.jupNowMoon} from Moon), Saturn in ${SIGNS[r.transits.now.Saturn.sign].en} (${r.transits.satRel} from Moon), Rahu in ${SIGNS[r.transits.now.Rahu.sign].en}.`);
+    lines.push(`Life area scores: ${r.areas.map((a) => `${a.name} ${a.score}`).join(', ')}.`);
+    return lines.join('\n');
+  }
+
+  root.Reading = { SIGNS, NAKS, PL, HOUSES, analyse, chartText, ord };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>window.KUNDLI_DEFAULT={"name":"Example chart","date":"1995-06-21","time":"07:30","timeMode":"exact","gender":"female","place":{"label":"New Delhi, Delhi","lat":28.6139,"lon":77.209,"tz":"Asia/Kolkata"},"offset":null,"launch":null,"sample":true};window.KUNDLI_FAMILY=[];</script>
+<script>
+(function () {
+  'use strict';
+  const J = window.Jyotish, R = window.Reading;
+  const $ = (s, el) => (el || document).querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const STORE = 'janma-kundli.v1';
+  const DEFAULT = window.KUNDLI_DEFAULT;
+  const FAMILY = window.KUNDLI_FAMILY || [];
+
+  // ---------- cities ----------
+  const CITIES = window.CITIES.split('~').map((r) => { const [name, region, cc, lat, lon, ti] = r.split('|'); return { name, region, cc, lat: +lat, lon: +lon, tz: window.CITY_TZ[+ti] }; });
+  let regionName = (cc) => cc;
+  try { const dn = new Intl.DisplayNames(['en'], { type: 'region' }); regionName = (cc) => dn.of(cc) || cc; } catch (e) { /* older browsers */ }
+  const placeLabel = (c) => c.cc === 'IN' ? `${c.name}, ${c.region}` : `${c.name}, ${c.region ? c.region + ', ' : ''}${regionName(c.cc)}`;
+  function searchCities(q) {
+    q = q.trim().toLowerCase();
+    if (!q) return [];
+    const a = [], b = [];
+    for (const c of CITIES) {
+      const n = c.name.toLowerCase();
+      if (n.startsWith(q) || n.includes('(' + q)) a.push(c);
+      else if (n.includes(q) || c.region.toLowerCase().startsWith(q)) b.push(c);
+      if (a.length >= 8) break;
+    }
+    return a.concat(b).slice(0, 8);
+  }
+  const findCity = (name) => CITIES.find((c) => c.name === name) || null;
+
+  function combo(input, listEl, onPick) {
+    let items = [], idx = -1;
+    const close = () => { listEl.hidden = true; input.setAttribute('aria-expanded', 'false'); idx = -1; };
+    const render = () => {
+      listEl.innerHTML = items.map((c, i) => `<li role="option" id="${listEl.id}-${i}" aria-selected="${i === idx}" data-i="${i}">${esc(c.name)}<small>${esc(c.cc === 'IN' ? c.region : regionName(c.cc))}</small></li>`).join('');
+      listEl.hidden = !items.length; input.setAttribute('aria-expanded', String(!!items.length));
+      if (idx >= 0) input.setAttribute('aria-activedescendant', `${listEl.id}-${idx}`); else input.removeAttribute('aria-activedescendant');
+    };
+    input.addEventListener('input', () => { items = searchCities(input.value); idx = items.length ? 0 : -1; render(); });
+    input.addEventListener('keydown', (e) => {
+      if (listEl.hidden) return;
+      if (e.key === 'ArrowDown') { idx = Math.min(items.length - 1, idx + 1); render(); e.preventDefault(); }
+      else if (e.key === 'ArrowUp') { idx = Math.max(0, idx - 1); render(); e.preventDefault(); }
+      else if (e.key === 'Enter' && idx >= 0) { e.preventDefault(); pick(items[idx]); }
+      else if (e.key === 'Escape') close();
+    });
+    listEl.addEventListener('mousedown', (e) => { const li = e.target.closest('li'); if (li) { e.preventDefault(); pick(items[+li.dataset.i]); } });
+    input.addEventListener('blur', () => setTimeout(close, 120));
+    function pick(c) { input.value = placeLabel(c); close(); onPick(c); }
+  }
+
+  // ---------- time zones ----------
+  function tzOffsetMin(tz, utcMs) {
+    const f = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const p = Object.fromEntries(f.formatToParts(new Date(utcMs)).map((x) => [x.type, x.value]));
+    return Math.round((Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - utcMs) / 60000);
+  }
+  function toUtc(y, m, d, h, mi, zone) {
+    const wall = Date.UTC(y, m - 1, d, h, mi);
+    if (!zone.tz) return wall - zone.offset * 60000;
+    let off = tzOffsetMin(zone.tz, wall);
+    let utc = wall - off * 60000;
+    const off2 = tzOffsetMin(zone.tz, utc);
+    if (off2 !== off) utc = wall - off2 * 60000;
+    return utc;
+  }
+  const zfmt = (ms, zone, o) => zone.tz
+    ? new Intl.DateTimeFormat('en-IN', { ...o, timeZone: zone.tz }).format(new Date(ms))
+    : new Intl.DateTimeFormat('en-IN', { ...o, timeZone: 'UTC' }).format(new Date(ms + zone.offset * 60000));
+  const tm = (ms, zone) => zfmt(ms, zone, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s?(am|pm)/i, (x) => ' ' + x.trim().toUpperCase());
+  const WD = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  const weekdayIn = (ms, zone) => WD[zone.tz ? new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: zone.tz }).format(new Date(ms)) : new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'UTC' }).format(new Date(ms + zone.offset * 60000))];
+  const dms = (deg) => { const d = Math.floor(deg), m = Math.floor((deg - d) * 60); return `${d}°${String(m).padStart(2, '0')}′`; };
+
+  // ---------- state ----------
+  let state = load();
+  function load() {
+    try { const s = JSON.parse(localStorage.getItem(STORE) || 'null'); if (s && s.date) return s; } catch (e) { /* storage blocked */ }
+    return JSON.parse(JSON.stringify(DEFAULT));
+  }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { /* storage blocked */ } }
+
+  // ---------- form ----------
+  const F = { name: $('#f-name'), date: $('#f-date'), time: $('#f-time'), mode: $('#f-mode'), place: $('#f-place'), gender: $('#f-gender'), lat: $('#f-lat'), lon: $('#f-lon'), off: $('#f-off') };
+  let pickedPlace = null;
+  function fillForm() {
+    F.name.value = state.name || ''; F.date.value = state.date; F.time.value = state.time || '12:00'; F.mode.value = state.timeMode || 'exact';
+    F.gender.value = state.gender || 'male';
+    pickedPlace = state.place;
+    F.place.value = state.place ? state.place.label : '';
+    F.lat.value = state.place ? state.place.lat : ''; F.lon.value = state.place ? state.place.lon : '';
+    F.off.value = state.offset != null && state.offset !== '' ? state.offset : '';
+    F.time.disabled = F.mode.value === 'unknown';
+  }
+  F.mode.addEventListener('change', () => { F.time.disabled = F.mode.value === 'unknown'; });
+  combo(F.place, $('#place-list'), (c) => { pickedPlace = { label: placeLabel(c), lat: c.lat, lon: c.lon, tz: c.tz }; F.lat.value = c.lat; F.lon.value = c.lon; });
+  $('#form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const err = $('#form-error'); err.textContent = '';
+    if (!F.date.value) { err.textContent = 'Add a date of birth.'; F.date.focus(); return; }
+    if (F.mode.value !== 'unknown' && !F.time.value) { err.textContent = 'Add a time, or choose "Don’t know".'; F.time.focus(); return; }
+    const lat = parseFloat(F.lat.value), lon = parseFloat(F.lon.value);
+    if (!pickedPlace && (isNaN(lat) || isNaN(lon))) { err.textContent = 'Pick a city from the list, or enter coordinates.'; F.place.focus(); return; }
+    if (isNaN(lat) || lat < -66 || lat > 66 || isNaN(lon) || lon < -180 || lon > 180) { err.textContent = 'Coordinates look off. Latitude must be between -66 and 66.'; return; }
+    const off = F.off.value.trim() === '' ? null : parseFloat(F.off.value);
+    if (off !== null && (isNaN(off) || off < -12 || off > 14)) { err.textContent = 'UTC offset must be between -12 and +14 hours.'; return; }
+    const place = { ...(pickedPlace || { label: F.place.value || `${lat}, ${lon}`, tz: null }), lat, lon };
+    if (!place.tz && off === null) { err.textContent = 'Add a UTC offset for custom coordinates.'; $('#adv').open = true; F.off.focus(); return; }
+    state = { ...state, name: F.name.value.trim(), date: F.date.value, time: F.time.value || '12:00', timeMode: F.mode.value, gender: F.gender.value, place, offset: off, sample: false };
+    save(); run(); document.getElementById('chart').scrollIntoView();
+  });
+  $('#btn-reset').addEventListener('click', () => { try { localStorage.removeItem(STORE); } catch (e) { /* storage blocked */ } state = JSON.parse(JSON.stringify(DEFAULT)); fillForm(); run(); });
+
+  // ---------- chart drawing ----------
+  const HOUSE_POLY = [null,
+    [[200, 200], [100, 100], [200, 0], [300, 100]], [[0, 0], [200, 0], [100, 100]], [[0, 0], [100, 100], [0, 200]], [[0, 200], [100, 100], [200, 200], [100, 300]],
+    [[0, 200], [100, 300], [0, 400]], [[0, 400], [100, 300], [200, 400]], [[200, 200], [100, 300], [200, 400], [300, 300]], [[200, 400], [300, 300], [400, 400]],
+    [[400, 400], [300, 300], [400, 200]], [[400, 200], [300, 300], [200, 200], [300, 100]], [[400, 200], [300, 100], [400, 0]], [[400, 0], [300, 100], [200, 0]],
+  ];
+  const HOUSE_C = [null, [200, 104], [100, 36], [36, 100], [100, 200], [36, 300], [100, 364], [200, 296], [300, 364], [364, 300], [300, 200], [364, 100], [300, 36]];
+  const SIGN_AT = [null, [200, 182], [100, 84], [84, 100], [182, 200], [84, 300], [100, 318], [200, 222], [300, 318], [318, 300], [222, 200], [318, 100], [300, 84]];
+  function chartSVG(lagnaSign, items, showDeg) {
+    // items: [{ab, sign, deg, flags}]
+    const L = (pts) => pts.map((p) => p.join(',')).join(' ');
+    let s = `<svg class="chart-svg" viewBox="-8 -8 416 416" role="img" aria-label="North Indian chart">`;
+    s += `<rect x="-8" y="-8" width="416" height="416" fill="var(--night)"/>`;
+    s += `<polygon points="${L(HOUSE_POLY[1])}" fill="var(--brass)" fill-opacity=".13"/>`;
+    s += `<g fill="none" stroke="var(--brass)" stroke-width="1.4" stroke-linejoin="round"><rect x="0" y="0" width="400" height="400"/><path d="M0 0 L400 400 M400 0 L0 400 M200 0 L400 200 L200 400 L0 200 Z"/></g>`;
+    for (let h = 1; h <= 12; h++) {
+      const sign = (lagnaSign + h - 1) % 12;
+      s += `<text x="${SIGN_AT[h][0]}" y="${SIGN_AT[h][1]}" fill="var(--brass)" font-size="13" text-anchor="middle" dominant-baseline="middle" font-family="Mukta, sans-serif" opacity=".9">${sign + 1}</text>`;
+      const here = items.filter((it) => it.sign === sign);
+      const tri = ![1, 4, 7, 10].includes(h);
+      const lines = [];
+      if (tri && here.length > 3) { for (let i = 0; i < here.length; i += 2) lines.push(here.slice(i, i + 2)); } else here.forEach((x) => lines.push([x]));
+      const lh = 16, y0 = HOUSE_C[h][1] - ((lines.length - 1) * lh) / 2 + (h === 1 && lines.length ? 6 : 0);
+      lines.forEach((ln, i) => {
+        const txt = ln.map((x) => `<tspan fill="${x.ab === 'Asc' ? 'var(--brass)' : 'var(--parchment)'}" font-weight="${x.ab === 'Asc' ? 700 : 600}">${x.ab}</tspan>${x.flags ? `<tspan font-size="12" font-weight="700" fill="var(--brass)" dy="-4">${x.flags}</tspan><tspan dy="4"> </tspan>` : ' '}${showDeg && x.deg != null ? `<tspan font-size="11" fill="#C9C1AA">${Math.floor(x.deg)}°</tspan>` : ''}`).join('<tspan>  </tspan>');
+        s += `<text x="${HOUSE_C[h][0]}" y="${y0 + i * lh}" font-size="14" text-anchor="middle" dominant-baseline="middle" font-family="Mukta, sans-serif">${txt}</text>`;
+      });
+    }
+    return s + '</svg>';
+  }
+  let chartMode = 'd1';
+  function drawChart() {
+    const c = current.chart; const p = c.p;
+    const flags = (n) => (p[n].retro && n !== 'Rahu' && n !== 'Ketu' ? 'R' : '') + (p[n].dignity === 'exalted' ? '↑' : p[n].dignity === 'debilitated' ? '↓' : '');
+    let lag, items, deg = true, title;
+    if (chartMode === 'd9') {
+      lag = c.timeKnown ? c.asc.nav : p.Moon.nav; deg = false; title = 'Navamsa (D9)';
+      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].nav, flags: '' }));
+    } else if (chartMode === 'moon') {
+      lag = p.Moon.sign; title = 'Chandra lagna (Moon chart)';
+      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+    } else {
+      lag = c.lagnaSign; title = c.timeKnown ? 'Rashi chart (D1)' : 'Rashi chart from the Moon';
+      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+    }
+    if (c.timeKnown || chartMode === 'moon') items.unshift({ ab: 'Asc', sign: chartMode === 'd9' ? c.asc.nav : lag, deg: chartMode === 'd1' ? c.asc.deg : null, flags: '' });
+    if (chartMode === 'moon') items = items.filter((x) => x.ab !== 'Asc');
+    $('#chart-box').innerHTML = chartSVG(lag, items, deg);
+    $('#slate-title').textContent = title;
+    document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.chart === chartMode)));
+  }
+  document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => { chartMode = b.dataset.chart; drawChart(); }));
+
+  // ---------- render ----------
+  let current = null;
+  let activeGroup = 'now';
+  const GROUPS = [['now', 'Right now'], ['money', 'Money & business'], ['career', 'Career & fame'], ['love', 'Love & marriage'], ['life', 'Life & luck']];
+  const TONE = { great: 'good', good: 'kesar', steady: '' };
+  const TIER_VAR = { Golden: 'var(--tier-golden)', Rising: 'var(--tier-rising)', Growth: 'var(--tier-growth)', Foundation: 'var(--tier-foundation)' };
+
+  function compute() {
+    const [y, m, d] = state.date.split('-').map(Number);
+    const unknown = state.timeMode === 'unknown';
+    const [hh, mm] = unknown ? [12, 0] : state.time.split(':').map(Number);
+    const zone = state.offset != null && state.offset !== '' ? { offset: Math.round(state.offset * 60) } : { tz: state.place.tz || 'Asia/Kolkata' };
+    const utcMs = toUtc(y, m, d, hh, mm, zone);
+    const input = { utcMs, lat: state.place.lat, lon: state.place.lon, timeKnown: !unknown, localWeekday: new Date(Date.UTC(y, m - 1, d)).getUTCDay(), localMidnightUtc: toUtc(y, m, d, 0, 0, zone) };
+    const chart = J.computeChart(input);
+    const family = FAMILY.map((f) => ({ relation: f.relation, dob: f.dobLabel, moonSign: J.signOf(J.sidereal('Moon', toUtc(...f.date, 12, 0, { tz: 'Asia/Kolkata' }))) }));
+    const reading = R.analyse(chart, { now: Date.now(), zone, gender: state.gender, family });
+    let window_ = null;
+    if (!unknown) {
+      const sign = J.signOf(J.ascendant(utcMs, input.lat, input.lon));
+      let a = utcMs, b = utcMs; const step = 60000;
+      while (a > utcMs - 6 * 3600000 && J.signOf(J.ascendant(a - step, input.lat, input.lon)) === sign) a -= step;
+      while (b < utcMs + 6 * 3600000 && J.signOf(J.ascendant(b + step, input.lat, input.lon)) === sign) b += step;
+      window_ = { sign, start: a, end: b };
+    }
+    let moonRange = null;
+    if (unknown) {
+      const a = J.sidereal('Moon', toUtc(y, m, d, 0, 0, zone)), b = J.sidereal('Moon', toUtc(y, m, d, 23, 59, zone));
+      moonRange = { a, b };
+    }
+    return { chart, reading, zone, input, lagnaWindow: window_, moonRange };
+  }
+
+  function renderHero() {
+    const { chart: c, reading: r, zone } = current; const S = r.summary;
+    $('#hero-name').textContent = state.name || 'Your kundli';
+    $('#hero-eyebrow').textContent = state.sample ? 'Example chart' : 'Vedic birth chart · Lahiri ayanamsa';
+    const [y, m, d] = state.date.split('-').map(Number);
+    const dateLabel = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d)));
+    const timeLabel = state.timeMode === 'unknown' ? 'time unknown' : tm(current.input.utcMs, zone) + (state.timeMode === 'approx' ? ' (approx.)' : '');
+    $('#hero-birth').textContent = `${dateLabel} · ${timeLabel} · ${state.place.label}`;
+    const nk = R.NAKS[c.p.Moon.nak];
+    const facts = [
+      ['Lagna', c.timeKnown ? `${S.lagna}` : 'Needs birth time', c.timeKnown ? `${dms(c.asc.deg)} · ruled by ${J.SIGN_LORD[c.asc.sign]}` : 'Houses are read from the Moon'],
+      ['Rashi (Moon sign)', S.rashi, `${dms(c.p.Moon.deg)} · ruled by ${J.SIGN_LORD[c.p.Moon.sign]}`],
+      ['Nakshatra', S.nak, `Lord ${nk.lord} · deity ${nk.deity.split(',')[0]}`],
+      ['Running dasha', S.dasha, `Sub-period until ${S.dashaEnd}`],
+      ['Sun sign (sidereal)', S.sunSign, `${dms(c.p.Sun.deg)}`],
+      ['Namakshar', `"${S.syllable}"`, `Gana ${S.gana} · Nadi ${S.nadi}`],
+    ];
+    $('#hero-facts').innerHTML = facts.map(([k, v, sub]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}<span>${esc(sub)}</span></dd></div>`).join('');
+    const note = $('#hero-note');
+    note.className = 'note';
+    if (state.sample) { note.hidden = false; note.classList.add('example-note'); note.textContent = 'This is an example chart. Enter your birth details below to see yours.'; }
+    else if (state.timeMode === 'approx' && current.lagnaWindow) {
+      const w = current.lagnaWindow; note.hidden = false;
+      note.textContent = `Approximate time. Your lagna stays ${R.SIGNS[w.sign].sa} (${R.SIGNS[w.sign].en}) for births between ${tm(w.start, zone)} and ${tm(w.end, zone)}. If you find the exact time, update it below.`;
+    } else if (state.timeMode === 'unknown') {
+      note.hidden = false;
+      const a = current.moonRange.a, b = current.moonRange.b;
+      const sameNak = J.nakOf(a) === J.nakOf(b), sameSign = J.signOf(a) === J.signOf(b);
+      note.textContent = `Birth time unknown, so houses are read from your Moon (Chandra lagna). ${sameSign && sameNak ? 'Your Moon sign and nakshatra are the same all day, so those are reliable.' : `During that day the Moon moved from ${R.NAKS[J.nakOf(a)].name} to ${R.NAKS[J.nakOf(b)].name}${sameSign ? '' : ` and from ${R.SIGNS[J.signOf(a)].en} to ${R.SIGNS[J.signOf(b)].en}`}, so the nakshatra depends on the time.`}`;
+    } else note.hidden = true;
+    drawChart();
+  }
+
+  function renderAreas() {
+    $('#areas-grid').innerHTML = current.reading.areas.map((a) => `
+      <div class="area">
+        <div class="area-top"><span class="area-name">${esc(a.name)}</span><span class="chip ${a.score >= 81 ? 'good' : 'kesar'}">${esc(a.label)}</span></div>
+        <div class="area-score num">${a.score}</div>
+        <div class="meter" aria-hidden="true"><i style="width:${a.score}%"></i></div>
+        <div class="area-basis">${esc(a.basis)}</div>
+      </div>`).join('');
+  }
+
+  function renderQuestions() {
+    $('#groups').innerHTML = GROUPS.map(([k, l]) => `<button type="button" data-g="${k}" aria-pressed="${k === activeGroup}">${esc(l)}</button>`).join('');
+    const qs = current.reading.questions.filter((q) => q.group === activeGroup);
+    $('#qlist').innerHTML = qs.map((q, i) => `
+      <details class="q" ${i === 0 ? 'open' : ''}>
+        <summary><h3>${esc(q.q)}</h3><span class="verdict"><span class="chip ${TONE[q.tone] || ''}">${esc(q.verdict)}</span></span></summary>
+        <div class="qbody">
+          <div class="prose">${q.body.map((b) => `<p>${esc(b)}</p>`).join('')}
+            ${q.timing && q.timing.length ? `<div class="timing">${q.timing.map((t) => `<div><b>${esc(t.label)}</b><span class="num">${esc(t.range)}</span></div>`).join('')}</div>` : ''}
+          </div>
+          <div class="why"><h4>Why the chart says this</h4><ul>${q.factors.map((f) => `<li>${esc(f)}</li>`).join('')}</ul></div>
+        </div>
+      </details>`).join('');
+  }
+  $('#groups').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; activeGroup = b.dataset.g; renderQuestions(); });
+
+  function renderTimeline() {
+    const r = current.reading;
+    const maxAge = 90;
+    const ageNow = (Date.now() - current.input.utcMs) / J.YEAR;
+    const pct = (a) => `${Math.max(0, Math.min(100, (a / maxAge) * 100))}%`;
+    const ticks = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+    let html = `<div class="tl-axis"><span>Age</span><div class="tl-ticks">${ticks.map((t) => `<span style="left:${pct(t)}">${t}</span>`).join('')}</div></div>`;
+    for (const t of r.timeline.filter((t) => t.startAge < maxAge)) {
+      const sa = (t.start - current.input.utcMs) / J.YEAR, ea = Math.min(maxAge, (t.end - current.input.utcMs) / J.YEAR);
+      html += `<details class="tl-row ${t.current ? 'current' : ''}" ${t.current ? 'open' : ''}>
+        <summary>
+          <div class="tl-name"><b>${esc(t.lord)} · ${esc(R.PL[t.lord].sa)}</b><span class="num">${r.fmt.fmtY(t.start)}–${r.fmt.fmtY(t.end)} · age ${t.startAge}–${t.endAge}</span></div>
+          <div class="tl-track"><div class="tl-seg" style="left:${pct(sa)};width:calc(${pct(ea)} - ${pct(sa)});background:${TIER_VAR[t.tier]}"></div>${t.current ? `<div class="tl-now" style="left:${pct(ageNow)}"></div>` : ''}</div>
+        </summary>
+        <div class="tl-detail"><span></span><div>
+          <p class="prose"><span class="chip ${t.tier === 'Golden' ? 'kesar' : t.tier === 'Rising' ? 'kesar' : ''}">${esc(t.tier)} period</span> ${esc(t.theme)}</p>
+          <div class="subs">${t.sub.map((a) => `<div class="${a.current ? 'cur' : ''}"><span>${esc(a.lord)}</span><span class="num muted">${r.fmt.fmtMY(a.start)}</span></div>`).join('')}</div>
+        </div></div>
+      </details>`;
+    }
+    $('#tl').innerHTML = html;
+  }
+
+  // launch dates
+  let launch = null;
+  function renderDates() {
+    const lc = launch || (state.launch && state.launch.lat != null ? state.launch : state.place);
+    const zone = lc.tz ? { tz: lc.tz } : current.zone;
+    $('#f-lcity').value = lc.label;
+    const startMs = toUtc(...new Intl.DateTimeFormat('en-CA', { timeZone: zone.tz || 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).split('-').map(Number), 0, 0, zone);
+    const list = J.muhurtaDays(current.chart, { lat: lc.lat, lon: lc.lon, startMs, days: 60, weekdayOf: (ms) => weekdayIn(ms, zone) });
+    const good = list.filter((x) => x.ok).sort((a, b) => b.score - a.score).slice(0, 6).sort((a, b) => a.sunrise - b.sunrise);
+    $('#dates-sum').textContent = `${list.filter((x) => x.ok).length} of the next 60 days pass every check. The six strongest are below, timed for ${lc.label.split(',')[0]}.`;
+    const WDN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    $('#days').innerHTML = good.map((x) => `
+      <div class="day">
+        <div class="day-date"><b class="num">${zfmt(x.sunrise, zone, { day: 'numeric' })}</b><span>${zfmt(x.sunrise, zone, { month: 'short', year: 'numeric' })} · ${WDN[x.weekday]}</span></div>
+        <dl class="kv">
+          <dt>Tithi</dt><dd>${esc(x.tithi)}</dd>
+          <dt>Nakshatra</dt><dd>${esc(R.NAKS[x.nak].name)}</dd>
+          <dt>Tara</dt><dd>${esc(x.tara)}</dd>
+          ${x.abhijit ? `<dt>Best window</dt><dd class="num">${tm(x.abhijit[0], zone)} to ${tm(x.abhijit[1], zone)} (Abhijit)</dd>` : `<dt>Best window</dt><dd>Morning, after sunrise ${tm(x.sunrise, zone)}</dd>`}
+          <dt>Avoid</dt><dd class="num">${tm(x.rahuKaal[0], zone)} to ${tm(x.rahuKaal[1], zone)} (Rahu Kaal)</dd>
+        </dl>
+        <ul>${x.why.slice(0, 3).map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
+      </div>`).join('') || '<p class="muted">No day in the next 60 passes every check. Try again next month.</p>';
+  }
+  combo($('#f-lcity'), $('#lcity-list'), (c) => { launch = { label: placeLabel(c), lat: c.lat, lon: c.lon, tz: c.tz }; state.launch = launch; save(); renderDates(); });
+
+  function renderYogas() {
+    const KIND = { wealth: 'Wealth', power: 'Status', fame: 'Fame', mind: 'Mind' };
+    const ys = current.chart.yogas;
+    $('#yoga-list').innerHTML = ys.map((y) => `
+      <div class="yoga">
+        <div class="yoga-top"><b>${esc(y.name)}</b><span class="chip ${y.kind === 'wealth' ? 'good' : y.kind === 'power' ? 'kesar' : ''}">${KIND[y.kind]}${y.planets.length ? ' · ' + esc(y.planets.join(' + ')) : ''}</span></div>
+        <p>${esc(y.text)}</p>
+      </div>`).join('') || '<p class="muted">No classical yogas detected with these settings.</p>';
+  }
+
+  function renderPositions() {
+    const c = current.chart, p = c.p;
+    const DIG = { exalted: 'Exalted', moolatrikona: 'Moolatrikona', own: 'Own sign', friend: 'Friend', neutral: 'Neutral', enemy: 'Enemy sign', debilitated: 'Debilitated' };
+    const rows = [];
+    if (c.timeKnown) rows.push(`<tr><td><b>Lagna</b></td><td>${esc(R.SIGNS[c.asc.sign].sa)} · ${esc(R.SIGNS[c.asc.sign].en)}</td><td class="num">${dms(c.asc.deg)}</td><td>${esc(R.NAKS[c.asc.nak].name)} ${c.asc.pada}</td><td class="num">1</td><td>Ruled by ${J.SIGN_LORD[c.asc.sign]}</td><td></td><td></td></tr>`);
+    for (const n of J.PLANETS) {
+      const x = p[n];
+      const notes = [x.retro && n !== 'Rahu' && n !== 'Ketu' ? 'Retrograde' : '', x.combust ? 'Close to Sun' : '', x.vargottama ? 'Vargottama' : '', x.digBala ? 'Dig bala' : '', x.neechaBhanga ? 'Neecha bhanga' : '', c.karakas.atma === n ? 'Atmakaraka' : '', c.karakas.amatya === n ? 'Amatyakaraka' : ''].filter(Boolean).join(', ');
+      rows.push(`<tr><td><b>${n}</b> <span class="muted">${R.PL[n].sa}</span></td><td>${esc(R.SIGNS[x.sign].sa)} · ${esc(R.SIGNS[x.sign].en)}</td><td class="num">${dms(x.deg)}</td><td>${esc(R.NAKS[x.nak].name)} ${x.pada}</td><td class="num">${x.house}</td><td>${n === 'Rahu' || n === 'Ketu' ? (x.dignity === 'exalted' || x.dignity === 'debilitated' ? DIG[x.dignity] : 'Node') : DIG[x.dignity]}</td><td><span class="sbar"><i style="width:${x.strength}%"></i></span><span class="num">${x.strength}</span></td><td class="muted">${esc(notes)}</td></tr>`);
+    }
+    $('#ptable').innerHTML = `<thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Nakshatra</th><th>House</th><th>Dignity</th><th>Strength</th><th>Notes</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+    $('#ayan-note').textContent = `Lahiri ayanamsa at birth: ${dms(c.ayanamsa)}. Houses are whole signs from the ${c.timeKnown ? 'lagna' : 'Moon'}. Strength combines dignity, house, dig bala, vargottama and combustion.`;
+    const sav = c.ashtakavarga.byHouse;
+    $('#sav').innerHTML = sav.slice(1).map((b, i) => `<div class="${b >= 30 ? 'hi' : ''}"><b class="num">${b}</b><span>House ${i + 1}</span></div>`).join('');
+    $('#sav-note').textContent = `Sarvashtakavarga total ${c.ashtakavarga.total}. Houses with 30 or more bindus are highlighted; 28 is average.`;
+    const P = c.panchang;
+    const panch = [['Tithi', `${P.paksha} ${P.tithi}`], ['Vaar', P.vaara || 'n/a'], ['Nakshatra', R.NAKS[P.nak].name], ['Yoga', P.yoga], ['Karana', P.karana], ['Paksha', P.paksha === 'Shukla' ? 'Shukla (waxing)' : 'Krishna (waning)'], ['Sunrise', P.sunrise ? tm(P.sunrise, current.zone) : 'n/a'], ['Ayanamsa', 'Lahiri']];
+    $('#panch').innerHTML = panch.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+  }
+
+  function run() {
+    try {
+      current = compute();
+    } catch (e) {
+      $('#form-error').textContent = 'Could not calculate this chart. Check the date, time and place.';
+      console.error(e); return;
+    }
+    renderHero(); renderAreas(); renderQuestions(); renderTimeline(); renderDates(); renderYogas(); renderPositions();
+  }
+
+  // ---------- ask Claude ----------
+  let sample = null, ctl = null;
+  const SUGG = ['What should I focus on in the next 12 months?', 'How do I make the most of my next Mahadasha?', 'Which kind of clients or partners suit me best?'];
+  $('#sugg').innerHTML = SUGG.map((s) => `<button type="button">${esc(s)}</button>`).join('');
+  $('#sugg').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { $('#ask-q').value = b.textContent; $('#ask-q').focus(); } });
+  const ERR = { rate_limited: 'Too many questions at once. Try again in a minute.', session_expired: 'Sign in to Claude again, then ask.', refused: 'Claude could not answer that one. Try asking it differently.', empty_completion: 'No answer came back. Try a shorter question.', prompt_too_large: 'That question is too long. Shorten it and ask again.', upstream_error: 'The answer was interrupted. Ask again.' };
+  const HIDE = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
+  $('#ask-btn').addEventListener('click', async () => {
+    const q = $('#ask-q').value.trim();
+    if (!q || !sample || !current) { $('#ask-status').textContent = q ? '' : 'Type a question first.'; return; }
+    ctl = new AbortController();
+    $('#ask-btn').disabled = true; $('#ask-stop').hidden = false; $('#ask-status').textContent = 'Thinking...'; $('#ask-out').textContent = '';
+    const prompt = `You are a warm, encouraging Vedic astrologer trained in Parashari Jyotish. Answer the question using only the chart data below. Name the specific planets, houses, dashas, transits or yogas you are using. Keep the tone positive and practical, written in plain English for a smart 18 to 30 year old. 120 to 200 words in short paragraphs. No headings, no bullet lists, no em dashes. Never invent placements that are not in the data. If the chart cannot answer something, say what it does show instead.\n\nToday: ${new Date().toDateString()}.\n\nChart data:\n${R.chartText(current.chart, current.reading, state.name)}\n\nQuestion: ${q}`;
+    try {
+      await sample(prompt, { signal: ctl.signal, onText: ({ text }) => { $('#ask-status').textContent = ''; $('#ask-out').textContent = text; } });
+      $('#ask-status').textContent = '';
+    } catch (e) {
+      $('#ask-out').textContent = e && e.text ? e.text : '';
+      if (e && HIDE.includes(e.code)) { $('#ask-sec').hidden = true; }
+      else if (!e || e.code !== 'cancelled') $('#ask-status').textContent = ERR[e && e.code] || ERR.upstream_error;
+      else $('#ask-status').textContent = '';
+    } finally { $('#ask-btn').disabled = false; $('#ask-stop').hidden = true; }
+  });
+  $('#ask-stop').addEventListener('click', () => ctl && ctl.abort());
+  (async () => {
+    try {
+      if (!window.claude || typeof window.claude.use !== 'function') return;
+      const s = await window.claude.use('sample');
+      if (s) { sample = s; $('#ask-sec').hidden = false; }
+    } catch (e) { /* not available in this view */ }
+  })();
+
+  fillForm();
+  run();
+})();
+</script>

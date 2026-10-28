@@ -1,0 +1,850 @@
+<title>Janma Kundli</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap">
+<style>
+/* Layout: one reading column that opens on the kundli itself (a night-indigo slate ruled in brass),
+   then moves from summary (life areas) to answers, timing, and reference tables. */
+:root {
+  --paper: #F1F0F5;
+  --card: #FFFFFF;
+  --ink: #1A1838;
+  --ink-2: #55526E;
+  --ink-3: #7C7996;
+  --rule: #DDDBE7;
+  --kesar: #B4531A;
+  --kesar-soft: #F8E7DA;
+  --kesar-ink: #8E3E10;
+  --night: #1D1B46;
+  --night-2: #2A2860;
+  --brass: #D7AC55;
+  --parchment: #F4EEDD;
+  --good: #2C7A50;
+  --good-soft: #E1F0E7;
+  --steady: #5B5A8C;
+  --steady-soft: #E7E6F3;
+  --tier-golden: #C7651F;
+  --tier-rising: #E3A15F;
+  --tier-growth: #8E8BC0;
+  --tier-foundation: #C9C7DC;
+  --focus: #3D5AFE;
+  --font-display: "Tiro Devanagari Sanskrit", "Iowan Old Style", Georgia, serif;
+  --font-body: "Mukta", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --r-sm: 10px; --r-md: 14px; --r-lg: 20px;
+  --shadow: 0 1px 2px rgba(26, 24, 56, .06), 0 6px 24px rgba(26, 24, 56, .06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E0D1D; --card: #17162D; --ink: #ECEAF7; --ink-2: #ABA8C6; --ink-3: #8481A3; --rule: #2B2948;
+    --kesar: #F0914C; --kesar-soft: #3A2414; --kesar-ink: #F7B888; --night: #18163D; --night-2: #26245A;
+    --brass: #E1B962; --parchment: #F4EEDD; --good: #67C892; --good-soft: #15301F; --steady: #A9A7E0; --steady-soft: #24234A;
+    --tier-golden: #F0914C; --tier-rising: #C9844A; --tier-growth: #6E6BA8; --tier-foundation: #3B3963; --focus: #8EA2FF;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E0D1D; --card: #17162D; --ink: #ECEAF7; --ink-2: #ABA8C6; --ink-3: #8481A3; --rule: #2B2948;
+  --kesar: #F0914C; --kesar-soft: #3A2414; --kesar-ink: #F7B888; --night: #18163D; --night-2: #26245A;
+  --brass: #E1B962; --parchment: #F4EEDD; --good: #67C892; --good-soft: #15301F; --steady: #A9A7E0; --steady-soft: #24234A;
+  --tier-golden: #F0914C; --tier-rising: #C9844A; --tier-growth: #6E6BA8; --tier-foundation: #3B3963; --focus: #8EA2FF;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; margin: 0; letter-spacing: -0.005em; }
+h2 { font-size: clamp(28px, 4vw, 36px); line-height: 1.15; }
+h3 { font-size: 22px; line-height: 1.2; }
+p { margin: 0; }
+a { color: var(--kesar-ink); }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
+.muted { color: var(--ink-2); }
+.small { font-size: 14.5px; }
+.num { font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+/* top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.bar .wrap { display: flex; align-items: center; gap: 20px; min-height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; white-space: nowrap; }
+.brand svg { flex: none; }
+.nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-left: auto; min-width: 0; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a { text-decoration: none; color: var(--ink-2); font-size: 15px; font-weight: 500; padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: var(--steady-soft); }
+
+section { padding-block: 44px; }
+section + section { border-top: 1px solid var(--rule); }
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+.sec-head p { max-width: 62ch; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 40px; align-items: start; padding-block: 36px 44px; }
+.hero h1 { font-size: clamp(40px, 6vw, 60px); line-height: 1.02; margin-top: 8px; }
+.birthline { margin-top: 10px; color: var(--ink-2); font-size: 16.5px; }
+.chip { white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--steady-soft); color: var(--steady); line-height: 1.5; }
+.chip.kesar { background: var(--kesar-soft); color: var(--kesar-ink); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 26px 0 0; }
+.facts div { padding: 12px 0; border-top: 1px solid var(--rule); min-width: 0; }
+.facts dt { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.facts dd { margin: 2px 0 0; font-size: 18.5px; font-weight: 500; }
+.facts dd span { display: block; font-size: 14.5px; font-weight: 400; color: var(--ink-2); }
+.note { margin-top: 18px; padding: 12px 14px; border-radius: var(--r-md); background: var(--kesar-soft); color: var(--kesar-ink); font-size: 15px; }
+.example-note { background: var(--steady-soft); color: var(--steady); }
+
+.slate { background: var(--night); color: var(--parchment); border-radius: var(--r-lg); padding: 16px 16px 14px; box-shadow: var(--shadow); }
+.slate-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.slate-title { font-family: var(--font-display); font-size: 19px; color: var(--parchment); }
+.seg { display: inline-flex; background: var(--night-2); border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: transparent; color: #CFC8B4; font-size: 14px; font-weight: 600; padding: 6px 11px; border-radius: 8px; cursor: pointer; min-height: 34px; }
+.seg button[aria-pressed="true"] { background: var(--brass); color: #1D1B46; }
+.chart-svg { display: block; width: 100%; height: auto; max-width: 100%; }
+.slate-foot { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font-size: 13px; color: #BDB6A2; }
+
+/* birth details form */
+.form { display: grid; grid-template-columns: 1.3fr 1fr .9fr 1.1fr 1.6fr; gap: 14px; align-items: end; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; position: relative; }
+.field label, .field .lbl { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.field input, .field select, .field textarea { width: 100%; background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); padding: 10px 12px; min-height: 46px; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--kesar); outline: none; box-shadow: 0 0 0 3px var(--kesar-soft); }
+.field input:disabled { opacity: .55; }
+.form-row2 { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between; margin-top: 16px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: var(--r-sm); padding: 11px 20px; min-height: 46px; font-weight: 600; cursor: pointer; transition: transform .1s ease, background .15s ease; }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--kesar); color: #fff; }
+.btn.primary:hover { filter: brightness(.95); }
+.btn.ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--rule); }
+.btn.ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+.btn:disabled { opacity: .5; cursor: default; }
+details.adv summary { cursor: pointer; color: var(--ink-2); font-size: 15px; font-weight: 500; list-style: none; }
+details.adv summary::-webkit-details-marker { display: none; }
+details.adv summary::before { content: "+ "; }
+details.adv[open] summary::before { content: "– "; }
+.adv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 180px)); gap: 12px; margin-top: 12px; }
+.combo-list { position: absolute; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); box-shadow: var(--shadow); z-index: 20; max-height: 300px; overflow-y: auto; }
+.combo-list li { padding: 9px 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
+.combo-list li small { color: var(--ink-3); white-space: nowrap; }
+.combo-list li[aria-selected="true"], .combo-list li:hover { background: var(--kesar-soft); }
+.form-error { color: var(--kesar-ink); font-size: 15px; font-weight: 500; }
+
+/* life areas */
+.areas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.area { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.area-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 8px; }
+.area-name { font-weight: 600; font-size: 16px; }
+.area-score { font-family: var(--font-display); font-size: 34px; line-height: 1; }
+.meter { height: 6px; border-radius: 99px; background: var(--steady-soft); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--kesar); border-radius: 99px; }
+.area-basis { font-size: 13.5px; color: var(--ink-3); line-height: 1.4; }
+
+/* questions */
+.groups { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.groups button { border: 1px solid var(--rule); background: var(--card); color: var(--ink-2); border-radius: 999px; padding: 7px 14px; min-height: 40px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .1s ease; }
+.groups button:active { transform: scale(.97); }
+.groups button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.qlist { display: flex; flex-direction: column; gap: 10px; }
+.q { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); }
+.q summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; align-items: center; padding: 16px 18px; min-height: 56px; }
+.q summary::-webkit-details-marker { display: none; }
+.q summary h3 { font-family: var(--font-body); font-size: 18px; font-weight: 600; line-height: 1.35; }
+.q summary .verdict { justify-self: end; text-align: right; }
+.q summary .verdict .chip { white-space: normal; }
+.q summary .chev { grid-column: 2; grid-row: 1; display: none; }
+.q[open] summary { border-bottom: 1px solid var(--rule); }
+.qbody { padding: 16px 18px 18px; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px 28px; }
+.qbody .prose { display: flex; flex-direction: column; gap: 10px; max-width: 66ch; }
+.why { background: var(--paper); border-radius: var(--r-sm); padding: 12px 14px; align-self: start; min-width: 0; }
+.why h4 { margin: 0 0 6px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.why ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; color: var(--ink-2); }
+.timing { margin-top: 4px; display: flex; flex-direction: column; gap: 6px; }
+.timing div { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 15px; padding: 8px 12px; border-radius: var(--r-sm); background: var(--paper); }
+.timing b { font-weight: 600; }
+
+/* timeline */
+.tl { display: flex; flex-direction: column; gap: 6px; }
+.tl-axis { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; font-size: 12.5px; color: var(--ink-3); }
+.tl-ticks { position: relative; height: 18px; }
+.tl-ticks span { position: absolute; transform: translateX(-50%); }
+.tl-row { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); }
+.tl-row.current { border-color: var(--kesar); box-shadow: 0 0 0 1px var(--kesar); }
+.tl-row summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; align-items: center; padding: 10px 12px; min-height: 52px; }
+.tl-row summary::-webkit-details-marker { display: none; }
+.tl-name { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.tl-name b { font-weight: 600; }
+.tl-name span { font-size: 13.5px; color: var(--ink-3); }
+.tl-track { position: relative; height: 22px; border-radius: 6px; background: var(--paper); }
+.tl-seg { position: absolute; top: 3px; bottom: 3px; border-radius: 4px; }
+.tl-now { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 2px; }
+.tl-now::after { content: "now"; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--ink); }
+.tl-detail { padding: 2px 12px 14px; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; }
+.tl-detail .prose { color: var(--ink-2); font-size: 15.5px; }
+.subs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 10px; }
+.subs div { font-size: 14px; padding: 7px 10px; border-radius: 8px; background: var(--paper); display: flex; justify-content: space-between; gap: 8px; }
+.subs div.cur { outline: 2px solid var(--kesar); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; color: var(--ink-2); margin-top: 12px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+/* launch dates */
+.days { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.day { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.day-date { display: flex; align-items: baseline; gap: 10px; }
+.day-date b { font-family: var(--font-display); font-size: 30px; font-weight: 400; line-height: 1; }
+.day-date span { color: var(--ink-2); font-weight: 500; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 12px; font-size: 14.5px; }
+.kv dt { color: var(--ink-3); }
+.kv dd { margin: 0; }
+.day ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-2); }
+.launch-city { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; }
+.launch-city .field { width: min(320px, 100%); }
+
+/* yogas */
+.yogas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.yoga { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.yoga-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.yoga-top b { font-family: var(--font-display); font-weight: 400; font-size: 20px; }
+.yoga p { color: var(--ink-2); font-size: 15.5px; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--r-md); background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 15px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td .sbar { display: inline-block; width: 70px; height: 5px; border-radius: 9px; background: var(--steady-soft); vertical-align: middle; margin-right: 8px; overflow: hidden; }
+td .sbar i { display: block; height: 100%; background: var(--kesar); }
+.ref-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; }
+.sav { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.sav div { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 8px; text-align: center; }
+.sav div b { display: block; font-family: var(--font-display); font-size: 24px; font-weight: 400; line-height: 1.1; }
+.sav div span { font-size: 12.5px; color: var(--ink-3); }
+.sav div.hi { background: var(--kesar-soft); border-color: transparent; }
+.sav div.hi span { color: var(--kesar-ink); }
+.panch { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+.panch div { padding: 9px 0; border-top: 1px solid var(--rule); }
+.panch dt { font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.panch dd { margin: 0; font-weight: 500; }
+
+/* ask */
+.ask { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.ask textarea { min-height: 96px; resize: vertical; }
+.sugg { display: flex; flex-wrap: wrap; gap: 8px; }
+.sugg button { border: 1px dashed var(--rule); background: transparent; color: var(--ink-2); border-radius: 999px; padding: 6px 12px; min-height: 38px; font-size: 14.5px; cursor: pointer; text-align: left; }
+.sugg button:hover { border-color: var(--kesar); color: var(--ink); }
+.answer { white-space: pre-wrap; background: var(--paper); border-radius: var(--r-md); padding: 14px 16px; line-height: 1.6; }
+.answer:empty { display: none; }
+
+footer { padding-block: 36px 60px; border-top: 1px solid var(--rule); color: var(--ink-2); font-size: 15px; }
+footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; max-width: 80ch; }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .form .f-place { grid-column: 1 / -1; }
+  .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .qbody { grid-template-columns: minmax(0, 1fr); }
+  .ref-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  body { font-size: 16.5px; }
+  .nav { display: none; }
+  section { padding-block: 34px; }
+  .facts { grid-template-columns: minmax(0, 1fr); }
+  .form { grid-template-columns: minmax(0, 1fr); }
+  .adv-grid { grid-template-columns: minmax(0, 1fr); }
+  .days, .yogas { grid-template-columns: minmax(0, 1fr); }
+  .q summary { grid-template-columns: minmax(0, 1fr); }
+  .q summary .verdict { justify-self: start; text-align: left; }
+  .tl-axis { grid-template-columns: minmax(0, 1fr); }
+  .tl-axis > span:first-child { display: none; }
+  .tl-row summary, .tl-detail { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .tl-detail > span { display: none; }
+  .subs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .slate { padding: 12px 10px 12px; }
+}
+</style>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="3" fill="none" stroke="var(--kesar)" stroke-width="1.6"/><path d="M1 1 L25 25 M25 1 L1 25 M13 1 L25 13 L13 25 L1 13 Z" fill="none" stroke="var(--kesar)" stroke-width="1.2"/></svg>
+      Janma Kundli
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#chart">Chart</a><a href="#details">Birth details</a><a href="#areas">Life areas</a><a href="#questions">Questions</a><a href="#timeline">Timeline</a><a href="#dates">Launch dates</a><a href="#yogas">Yogas</a><a href="#positions">Positions</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="hero" id="chart">
+      <div>
+        <div class="eyebrow" id="hero-eyebrow">Vedic birth chart</div>
+        <h1 id="hero-name">Your kundli</h1>
+        <p class="birthline" id="hero-birth"></p>
+        <dl class="facts" id="hero-facts"></dl>
+        <p class="note" id="hero-note" hidden></p>
+      </div>
+      <div class="slate" aria-label="Birth chart">
+        <div class="slate-top">
+          <div class="slate-title" id="slate-title">Rashi chart (D1)</div>
+          <div class="seg" role="group" aria-label="Chart type">
+            <button type="button" data-chart="d1" aria-pressed="true">D1</button>
+            <button type="button" data-chart="d9" aria-pressed="false">Navamsa</button>
+            <button type="button" data-chart="moon" aria-pressed="false">Moon</button>
+          </div>
+        </div>
+        <div id="chart-box"></div>
+        <div class="slate-foot"><span>North Indian style. Numbers are signs (1 Mesha to 12 Meena).</span><span>R retrograde · ↑ exalted · ↓ debilitated</span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="details">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Edit any time</div><h2>Birth details</h2></div>
+        <p class="muted small">Everything recalculates in your browser. Your details are remembered on this device only.</p>
+      </div>
+      <form id="form" novalidate>
+        <div class="form">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" autocomplete="name" placeholder="Full name"></div>
+          <div class="field"><label for="f-date">Date of birth</label><input id="f-date" type="date" min="1900-01-01" max="2100-12-31" required></div>
+          <div class="field"><label for="f-time">Time of birth</label><input id="f-time" type="time" required></div>
+          <div class="field"><label for="f-mode">How sure is the time?</label>
+            <select id="f-mode"><option value="exact">Exact (birth certificate)</option><option value="approx">Approximate</option><option value="unknown">Don't know</option></select></div>
+          <div class="field f-place"><label for="f-place">Place of birth</label>
+            <input id="f-place" role="combobox" aria-expanded="false" aria-controls="place-list" aria-autocomplete="list" autocomplete="off" placeholder="Start typing a city">
+            <ul class="combo-list" id="place-list" role="listbox" hidden></ul></div>
+        </div>
+        <div class="form-row2">
+          <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+            <div class="field" style="flex-direction:row;align-items:center;gap:10px"><label for="f-gender" style="white-space:nowrap">Gender</label>
+              <select id="f-gender" style="min-height:40px;padding:6px 10px;width:auto"><option value="male">Male</option><option value="female">Female</option><option value="other">Prefer not to say</option></select></div>
+            <details class="adv" id="adv"><summary>Coordinates and time zone</summary>
+              <div class="adv-grid">
+                <div class="field"><label for="f-lat">Latitude (N +)</label><input id="f-lat" inputmode="decimal"></div>
+                <div class="field"><label for="f-lon">Longitude (E +)</label><input id="f-lon" inputmode="decimal"></div>
+                <div class="field"><label for="f-off">UTC offset, hours</label><input id="f-off" inputmode="decimal" placeholder="Auto from city"></div>
+              </div>
+            </details>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <span class="form-error" id="form-error" role="alert"></span>
+            <button type="button" class="btn ghost" id="btn-reset">Reset</button>
+            <button type="submit" class="btn primary">Update chart</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="areas">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">At a glance</div><h2>Life areas</h2></div>
+        <p class="muted small">Scored from Ashtakavarga bindus, house lords, occupants and yogas. 28 bindus is the classical average for a house.</p>
+      </div>
+      <div class="areas" id="areas-grid"></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Ask the chart</div><h2>Your questions, answered</h2></div>
+        <p class="muted small">The questions people ask astrologers most, answered from your own placements. Each answer lists the chart factors behind it.</p>
+      </div>
+      <div class="groups" role="group" aria-label="Question topics" id="groups"></div>
+      <div class="qlist" id="qlist"></div>
+    </div>
+  </section>
+
+  <section id="ask-sec" hidden>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Anything else</div><h2>Ask your own question</h2></div>
+        <p class="muted small">Claude reads your full chart data and answers from it. Uses your Claude account.</p>
+      </div>
+      <div class="ask">
+        <div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" placeholder="Ask about money, work, love, timing or anything in your chart"></textarea></div>
+        <div class="sugg" id="sugg"></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button type="button" class="btn primary" id="ask-btn">Ask</button>
+          <button type="button" class="btn ghost" id="ask-stop" hidden>Stop</button>
+          <span class="muted small" id="ask-status" role="status"></span>
+        </div>
+        <div class="answer" id="ask-out" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Vimshottari dasha</div><h2>Life timeline</h2></div>
+        <p class="muted small">Your life in planetary chapters, from birth. Open a chapter to see what it brings and its sub-periods.</p>
+      </div>
+      <div class="tl" id="tl"></div>
+      <div class="legend"><span><i style="background:var(--tier-golden)"></i>Golden</span><span><i style="background:var(--tier-rising)"></i>Rising</span><span><i style="background:var(--tier-growth)"></i>Growth</span><span><i style="background:var(--tier-foundation)"></i>Foundation</span></div>
+    </div>
+  </section>
+
+  <section id="dates">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Muhurta</div><h2>Best dates to launch</h2></div>
+        <p class="muted small">Days in the next 60 that pass the classical checks for opening a business: tithi, vaar, nakshatra, Tarabala and Chandrabala from your birth star, with Bhadra avoided.</p>
+      </div>
+      <div class="launch-city">
+        <div class="field"><label for="f-lcity">Launch city</label>
+          <input id="f-lcity" role="combobox" aria-expanded="false" aria-controls="lcity-list" aria-autocomplete="list" autocomplete="off">
+          <ul class="combo-list" id="lcity-list" role="listbox" hidden></ul></div>
+        <p class="muted small" id="dates-sum" style="padding-bottom:10px"></p>
+      </div>
+      <div class="days" id="days" style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <section id="yogas">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Classical combinations</div><h2>Yogas in your chart</h2></div>
+        <p class="muted small">Detected using the rules in Brihat Parashara Hora Shastra and Phaladeepika.</p>
+      </div>
+      <div class="yogas" id="yoga-list"></div>
+    </div>
+  </section>
+
+  <section id="positions">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><div class="eyebrow">Reference</div><h2>Planet positions</h2></div>
+        <p class="muted small" id="ayan-note"></p>
+      </div>
+      <div class="tbl-wrap"><table id="ptable"></table></div>
+      <div class="ref-grid">
+        <div>
+          <h3 style="margin-bottom:12px">Ashtakavarga by house</h3>
+          <div class="sav" id="sav"></div>
+          <p class="muted small" style="margin-top:10px" id="sav-note"></p>
+        </div>
+        <div>
+          <h3 style="margin-bottom:12px">Birth panchang</h3>
+          <dl class="panch" id="panch"></dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="eyebrow">How this is calculated</div>
+    <ul>
+      <li>Planet positions from astronomy-engine, checked against Swiss Ephemeris to within 20 arcseconds.</li>
+      <li>Lahiri (Chitrapaksha) ayanamsa, whole-sign houses, mean node for Rahu and Ketu.</li>
+      <li>Vimshottari dasha with 365.25-day years. Parashari Ashtakavarga. Yogas from BPHS and Phaladeepika.</li>
+      <li>Muhurta at local sunrise with Rahu Kaal and Abhijit muhurta from the day's real sunrise and sunset.</li>
+    </ul>
+    <p style="margin-top:14px">Jyotish is a lens for reflection. Read it, think, then decide for yourself.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+<script>/*CITIES*/</script>
+<script>/*ENGINE*/</script>
+<script>/*READING*/</script>
+<script>/*DEFAULTS*/</script>
+<script>
+(function () {
+  'use strict';
+  const J = window.Jyotish, R = window.Reading;
+  const $ = (s, el) => (el || document).querySelector(s);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const STORE = 'janma-kundli.v1';
+  const DEFAULT = window.KUNDLI_DEFAULT;
+  const FAMILY = window.KUNDLI_FAMILY || [];
+
+  // ---------- cities ----------
+  const CITIES = window.CITIES.split('~').map((r) => { const [name, region, cc, lat, lon, ti] = r.split('|'); return { name, region, cc, lat: +lat, lon: +lon, tz: window.CITY_TZ[+ti] }; });
+  let regionName = (cc) => cc;
+  try { const dn = new Intl.DisplayNames(['en'], { type: 'region' }); regionName = (cc) => dn.of(cc) || cc; } catch (e) { /* older browsers */ }
+  const placeLabel = (c) => c.cc === 'IN' ? `${c.name}, ${c.region}` : `${c.name}, ${c.region ? c.region + ', ' : ''}${regionName(c.cc)}`;
+  function searchCities(q) {
+    q = q.trim().toLowerCase();
+    if (!q) return [];
+    const a = [], b = [];
+    for (const c of CITIES) {
+      const n = c.name.toLowerCase();
+      if (n.startsWith(q) || n.includes('(' + q)) a.push(c);
+      else if (n.includes(q) || c.region.toLowerCase().startsWith(q)) b.push(c);
+      if (a.length >= 8) break;
+    }
+    return a.concat(b).slice(0, 8);
+  }
+  const findCity = (name) => CITIES.find((c) => c.name === name) || null;
+
+  function combo(input, listEl, onPick) {
+    let items = [], idx = -1;
+    const close = () => { listEl.hidden = true; input.setAttribute('aria-expanded', 'false'); idx = -1; };
+    const render = () => {
+      listEl.innerHTML = items.map((c, i) => `<li role="option" id="${listEl.id}-${i}" aria-selected="${i === idx}" data-i="${i}">${esc(c.name)}<small>${esc(c.cc === 'IN' ? c.region : regionName(c.cc))}</small></li>`).join('');
+      listEl.hidden = !items.length; input.setAttribute('aria-expanded', String(!!items.length));
+      if (idx >= 0) input.setAttribute('aria-activedescendant', `${listEl.id}-${idx}`); else input.removeAttribute('aria-activedescendant');
+    };
+    input.addEventListener('input', () => { items = searchCities(input.value); idx = items.length ? 0 : -1; render(); });
+    input.addEventListener('keydown', (e) => {
+      if (listEl.hidden) return;
+      if (e.key === 'ArrowDown') { idx = Math.min(items.length - 1, idx + 1); render(); e.preventDefault(); }
+      else if (e.key === 'ArrowUp') { idx = Math.max(0, idx - 1); render(); e.preventDefault(); }
+      else if (e.key === 'Enter' && idx >= 0) { e.preventDefault(); pick(items[idx]); }
+      else if (e.key === 'Escape') close();
+    });
+    listEl.addEventListener('mousedown', (e) => { const li = e.target.closest('li'); if (li) { e.preventDefault(); pick(items[+li.dataset.i]); } });
+    input.addEventListener('blur', () => setTimeout(close, 120));
+    function pick(c) { input.value = placeLabel(c); close(); onPick(c); }
+  }
+
+  // ---------- time zones ----------
+  function tzOffsetMin(tz, utcMs) {
+    const f = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const p = Object.fromEntries(f.formatToParts(new Date(utcMs)).map((x) => [x.type, x.value]));
+    return Math.round((Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - utcMs) / 60000);
+  }
+  function toUtc(y, m, d, h, mi, zone) {
+    const wall = Date.UTC(y, m - 1, d, h, mi);
+    if (!zone.tz) return wall - zone.offset * 60000;
+    let off = tzOffsetMin(zone.tz, wall);
+    let utc = wall - off * 60000;
+    const off2 = tzOffsetMin(zone.tz, utc);
+    if (off2 !== off) utc = wall - off2 * 60000;
+    return utc;
+  }
+  const zfmt = (ms, zone, o) => zone.tz
+    ? new Intl.DateTimeFormat('en-IN', { ...o, timeZone: zone.tz }).format(new Date(ms))
+    : new Intl.DateTimeFormat('en-IN', { ...o, timeZone: 'UTC' }).format(new Date(ms + zone.offset * 60000));
+  const tm = (ms, zone) => zfmt(ms, zone, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s?(am|pm)/i, (x) => ' ' + x.trim().toUpperCase());
+  const WD = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  const weekdayIn = (ms, zone) => WD[zone.tz ? new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: zone.tz }).format(new Date(ms)) : new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'UTC' }).format(new Date(ms + zone.offset * 60000))];
+  const dms = (deg) => { const d = Math.floor(deg), m = Math.floor((deg - d) * 60); return `${d}°${String(m).padStart(2, '0')}′`; };
+
+  // ---------- state ----------
+  let state = load();
+  function load() {
+    try { const s = JSON.parse(localStorage.getItem(STORE) || 'null'); if (s && s.date) return s; } catch (e) { /* storage blocked */ }
+    return JSON.parse(JSON.stringify(DEFAULT));
+  }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { /* storage blocked */ } }
+
+  // ---------- form ----------
+  const F = { name: $('#f-name'), date: $('#f-date'), time: $('#f-time'), mode: $('#f-mode'), place: $('#f-place'), gender: $('#f-gender'), lat: $('#f-lat'), lon: $('#f-lon'), off: $('#f-off') };
+  let pickedPlace = null;
+  function fillForm() {
+    F.name.value = state.name || ''; F.date.value = state.date; F.time.value = state.time || '12:00'; F.mode.value = state.timeMode || 'exact';
+    F.gender.value = state.gender || 'male';
+    pickedPlace = state.place;
+    F.place.value = state.place ? state.place.label : '';
+    F.lat.value = state.place ? state.place.lat : ''; F.lon.value = state.place ? state.place.lon : '';
+    F.off.value = state.offset != null && state.offset !== '' ? state.offset : '';
+    F.time.disabled = F.mode.value === 'unknown';
+  }
+  F.mode.addEventListener('change', () => { F.time.disabled = F.mode.value === 'unknown'; });
+  combo(F.place, $('#place-list'), (c) => { pickedPlace = { label: placeLabel(c), lat: c.lat, lon: c.lon, tz: c.tz }; F.lat.value = c.lat; F.lon.value = c.lon; });
+  $('#form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const err = $('#form-error'); err.textContent = '';
+    if (!F.date.value) { err.textContent = 'Add a date of birth.'; F.date.focus(); return; }
+    if (F.mode.value !== 'unknown' && !F.time.value) { err.textContent = 'Add a time, or choose "Don’t know".'; F.time.focus(); return; }
+    const lat = parseFloat(F.lat.value), lon = parseFloat(F.lon.value);
+    if (!pickedPlace && (isNaN(lat) || isNaN(lon))) { err.textContent = 'Pick a city from the list, or enter coordinates.'; F.place.focus(); return; }
+    if (isNaN(lat) || lat < -66 || lat > 66 || isNaN(lon) || lon < -180 || lon > 180) { err.textContent = 'Coordinates look off. Latitude must be between -66 and 66.'; return; }
+    const off = F.off.value.trim() === '' ? null : parseFloat(F.off.value);
+    if (off !== null && (isNaN(off) || off < -12 || off > 14)) { err.textContent = 'UTC offset must be between -12 and +14 hours.'; return; }
+    const place = { ...(pickedPlace || { label: F.place.value || `${lat}, ${lon}`, tz: null }), lat, lon };
+    if (!place.tz && off === null) { err.textContent = 'Add a UTC offset for custom coordinates.'; $('#adv').open = true; F.off.focus(); return; }
+    state = { ...state, name: F.name.value.trim(), date: F.date.value, time: F.time.value || '12:00', timeMode: F.mode.value, gender: F.gender.value, place, offset: off, sample: false };
+    save(); run(); document.getElementById('chart').scrollIntoView();
+  });
+  $('#btn-reset').addEventListener('click', () => { try { localStorage.removeItem(STORE); } catch (e) { /* storage blocked */ } state = JSON.parse(JSON.stringify(DEFAULT)); fillForm(); run(); });
+
+  // ---------- chart drawing ----------
+  const HOUSE_POLY = [null,
+    [[200, 200], [100, 100], [200, 0], [300, 100]], [[0, 0], [200, 0], [100, 100]], [[0, 0], [100, 100], [0, 200]], [[0, 200], [100, 100], [200, 200], [100, 300]],
+    [[0, 200], [100, 300], [0, 400]], [[0, 400], [100, 300], [200, 400]], [[200, 200], [100, 300], [200, 400], [300, 300]], [[200, 400], [300, 300], [400, 400]],
+    [[400, 400], [300, 300], [400, 200]], [[400, 200], [300, 300], [200, 200], [300, 100]], [[400, 200], [300, 100], [400, 0]], [[400, 0], [300, 100], [200, 0]],
+  ];
+  const HOUSE_C = [null, [200, 104], [100, 36], [36, 100], [100, 200], [36, 300], [100, 364], [200, 296], [300, 364], [364, 300], [300, 200], [364, 100], [300, 36]];
+  const SIGN_AT = [null, [200, 182], [100, 84], [84, 100], [182, 200], [84, 300], [100, 318], [200, 222], [300, 318], [318, 300], [222, 200], [318, 100], [300, 84]];
+  function chartSVG(lagnaSign, items, showDeg) {
+    // items: [{ab, sign, deg, flags}]
+    const L = (pts) => pts.map((p) => p.join(',')).join(' ');
+    let s = `<svg class="chart-svg" viewBox="-8 -8 416 416" role="img" aria-label="North Indian chart">`;
+    s += `<rect x="-8" y="-8" width="416" height="416" fill="var(--night)"/>`;
+    s += `<polygon points="${L(HOUSE_POLY[1])}" fill="var(--brass)" fill-opacity=".13"/>`;
+    s += `<g fill="none" stroke="var(--brass)" stroke-width="1.4" stroke-linejoin="round"><rect x="0" y="0" width="400" height="400"/><path d="M0 0 L400 400 M400 0 L0 400 M200 0 L400 200 L200 400 L0 200 Z"/></g>`;
+    for (let h = 1; h <= 12; h++) {
+      const sign = (lagnaSign + h - 1) % 12;
+      s += `<text x="${SIGN_AT[h][0]}" y="${SIGN_AT[h][1]}" fill="var(--brass)" font-size="13" text-anchor="middle" dominant-baseline="middle" font-family="Mukta, sans-serif" opacity=".9">${sign + 1}</text>`;
+      const here = items.filter((it) => it.sign === sign);
+      const tri = ![1, 4, 7, 10].includes(h);
+      const lines = [];
+      if (tri && here.length > 3) { for (let i = 0; i < here.length; i += 2) lines.push(here.slice(i, i + 2)); } else here.forEach((x) => lines.push([x]));
+      const lh = 16, y0 = HOUSE_C[h][1] - ((lines.length - 1) * lh) / 2 + (h === 1 && lines.length ? 6 : 0);
+      lines.forEach((ln, i) => {
+        const txt = ln.map((x) => `<tspan fill="${x.ab === 'Asc' ? 'var(--brass)' : 'var(--parchment)'}" font-weight="${x.ab === 'Asc' ? 700 : 600}">${x.ab}</tspan>${x.flags ? `<tspan font-size="12" font-weight="700" fill="var(--brass)" dy="-4">${x.flags}</tspan><tspan dy="4"> </tspan>` : ' '}${showDeg && x.deg != null ? `<tspan font-size="11" fill="#C9C1AA">${Math.floor(x.deg)}°</tspan>` : ''}`).join('<tspan>  </tspan>');
+        s += `<text x="${HOUSE_C[h][0]}" y="${y0 + i * lh}" font-size="14" text-anchor="middle" dominant-baseline="middle" font-family="Mukta, sans-serif">${txt}</text>`;
+      });
+    }
+    return s + '</svg>';
+  }
+  let chartMode = 'd1';
+  function drawChart() {
+    const c = current.chart; const p = c.p;
+    const flags = (n) => (p[n].retro && n !== 'Rahu' && n !== 'Ketu' ? 'R' : '') + (p[n].dignity === 'exalted' ? '↑' : p[n].dignity === 'debilitated' ? '↓' : '');
+    let lag, items, deg = true, title;
+    if (chartMode === 'd9') {
+      lag = c.timeKnown ? c.asc.nav : p.Moon.nav; deg = false; title = 'Navamsa (D9)';
+      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].nav, flags: '' }));
+    } else if (chartMode === 'moon') {
+      lag = p.Moon.sign; title = 'Chandra lagna (Moon chart)';
+      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+    } else {
+      lag = c.lagnaSign; title = c.timeKnown ? 'Rashi chart (D1)' : 'Rashi chart from the Moon';
+      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+    }
+    if (c.timeKnown || chartMode === 'moon') items.unshift({ ab: 'Asc', sign: chartMode === 'd9' ? c.asc.nav : lag, deg: chartMode === 'd1' ? c.asc.deg : null, flags: '' });
+    if (chartMode === 'moon') items = items.filter((x) => x.ab !== 'Asc');
+    $('#chart-box').innerHTML = chartSVG(lag, items, deg);
+    $('#slate-title').textContent = title;
+    document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.chart === chartMode)));
+  }
+  document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => { chartMode = b.dataset.chart; drawChart(); }));
+
+  // ---------- render ----------
+  let current = null;
+  let activeGroup = 'now';
+  const GROUPS = [['now', 'Right now'], ['money', 'Money & business'], ['career', 'Career & fame'], ['love', 'Love & marriage'], ['life', 'Life & luck']];
+  const TONE = { great: 'good', good: 'kesar', steady: '' };
+  const TIER_VAR = { Golden: 'var(--tier-golden)', Rising: 'var(--tier-rising)', Growth: 'var(--tier-growth)', Foundation: 'var(--tier-foundation)' };
+
+  function compute() {
+    const [y, m, d] = state.date.split('-').map(Number);
+    const unknown = state.timeMode === 'unknown';
+    const [hh, mm] = unknown ? [12, 0] : state.time.split(':').map(Number);
+    const zone = state.offset != null && state.offset !== '' ? { offset: Math.round(state.offset * 60) } : { tz: state.place.tz || 'Asia/Kolkata' };
+    const utcMs = toUtc(y, m, d, hh, mm, zone);
+    const input = { utcMs, lat: state.place.lat, lon: state.place.lon, timeKnown: !unknown, localWeekday: new Date(Date.UTC(y, m - 1, d)).getUTCDay(), localMidnightUtc: toUtc(y, m, d, 0, 0, zone) };
+    const chart = J.computeChart(input);
+    const family = FAMILY.map((f) => ({ relation: f.relation, dob: f.dobLabel, moonSign: J.signOf(J.sidereal('Moon', toUtc(...f.date, 12, 0, { tz: 'Asia/Kolkata' }))) }));
+    const reading = R.analyse(chart, { now: Date.now(), zone, gender: state.gender, family });
+    let window_ = null;
+    if (!unknown) {
+      const sign = J.signOf(J.ascendant(utcMs, input.lat, input.lon));
+      let a = utcMs, b = utcMs; const step = 60000;
+      while (a > utcMs - 6 * 3600000 && J.signOf(J.ascendant(a - step, input.lat, input.lon)) === sign) a -= step;
+      while (b < utcMs + 6 * 3600000 && J.signOf(J.ascendant(b + step, input.lat, input.lon)) === sign) b += step;
+      window_ = { sign, start: a, end: b };
+    }
+    let moonRange = null;
+    if (unknown) {
+      const a = J.sidereal('Moon', toUtc(y, m, d, 0, 0, zone)), b = J.sidereal('Moon', toUtc(y, m, d, 23, 59, zone));
+      moonRange = { a, b };
+    }
+    return { chart, reading, zone, input, lagnaWindow: window_, moonRange };
+  }
+
+  function renderHero() {
+    const { chart: c, reading: r, zone } = current; const S = r.summary;
+    $('#hero-name').textContent = state.name || 'Your kundli';
+    $('#hero-eyebrow').textContent = state.sample ? 'Example chart' : 'Vedic birth chart · Lahiri ayanamsa';
+    const [y, m, d] = state.date.split('-').map(Number);
+    const dateLabel = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d)));
+    const timeLabel = state.timeMode === 'unknown' ? 'time unknown' : tm(current.input.utcMs, zone) + (state.timeMode === 'approx' ? ' (approx.)' : '');
+    $('#hero-birth').textContent = `${dateLabel} · ${timeLabel} · ${state.place.label}`;
+    const nk = R.NAKS[c.p.Moon.nak];
+    const facts = [
+      ['Lagna', c.timeKnown ? `${S.lagna}` : 'Needs birth time', c.timeKnown ? `${dms(c.asc.deg)} · ruled by ${J.SIGN_LORD[c.asc.sign]}` : 'Houses are read from the Moon'],
+      ['Rashi (Moon sign)', S.rashi, `${dms(c.p.Moon.deg)} · ruled by ${J.SIGN_LORD[c.p.Moon.sign]}`],
+      ['Nakshatra', S.nak, `Lord ${nk.lord} · deity ${nk.deity.split(',')[0]}`],
+      ['Running dasha', S.dasha, `Sub-period until ${S.dashaEnd}`],
+      ['Sun sign (sidereal)', S.sunSign, `${dms(c.p.Sun.deg)}`],
+      ['Namakshar', `"${S.syllable}"`, `Gana ${S.gana} · Nadi ${S.nadi}`],
+    ];
+    $('#hero-facts').innerHTML = facts.map(([k, v, sub]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}<span>${esc(sub)}</span></dd></div>`).join('');
+    const note = $('#hero-note');
+    note.className = 'note';
+    if (state.sample) { note.hidden = false; note.classList.add('example-note'); note.textContent = 'This is an example chart. Enter your birth details below to see yours.'; }
+    else if (state.timeMode === 'approx' && current.lagnaWindow) {
+      const w = current.lagnaWindow; note.hidden = false;
+      note.textContent = `Approximate time. Your lagna stays ${R.SIGNS[w.sign].sa} (${R.SIGNS[w.sign].en}) for births between ${tm(w.start, zone)} and ${tm(w.end, zone)}. If you find the exact time, update it below.`;
+    } else if (state.timeMode === 'unknown') {
+      note.hidden = false;
+      const a = current.moonRange.a, b = current.moonRange.b;
+      const sameNak = J.nakOf(a) === J.nakOf(b), sameSign = J.signOf(a) === J.signOf(b);
+      note.textContent = `Birth time unknown, so houses are read from your Moon (Chandra lagna). ${sameSign && sameNak ? 'Your Moon sign and nakshatra are the same all day, so those are reliable.' : `During that day the Moon moved from ${R.NAKS[J.nakOf(a)].name} to ${R.NAKS[J.nakOf(b)].name}${sameSign ? '' : ` and from ${R.SIGNS[J.signOf(a)].en} to ${R.SIGNS[J.signOf(b)].en}`}, so the nakshatra depends on the time.`}`;
+    } else note.hidden = true;
+    drawChart();
+  }
+
+  function renderAreas() {
+    $('#areas-grid').innerHTML = current.reading.areas.map((a) => `
+      <div class="area">
+        <div class="area-top"><span class="area-name">${esc(a.name)}</span><span class="chip ${a.score >= 81 ? 'good' : 'kesar'}">${esc(a.label)}</span></div>
+        <div class="area-score num">${a.score}</div>
+        <div class="meter" aria-hidden="true"><i style="width:${a.score}%"></i></div>
+        <div class="area-basis">${esc(a.basis)}</div>
+      </div>`).join('');
+  }
+
+  function renderQuestions() {
+    $('#groups').innerHTML = GROUPS.map(([k, l]) => `<button type="button" data-g="${k}" aria-pressed="${k === activeGroup}">${esc(l)}</button>`).join('');
+    const qs = current.reading.questions.filter((q) => q.group === activeGroup);
+    $('#qlist').innerHTML = qs.map((q, i) => `
+      <details class="q" ${i === 0 ? 'open' : ''}>
+        <summary><h3>${esc(q.q)}</h3><span class="verdict"><span class="chip ${TONE[q.tone] || ''}">${esc(q.verdict)}</span></span></summary>
+        <div class="qbody">
+          <div class="prose">${q.body.map((b) => `<p>${esc(b)}</p>`).join('')}
+            ${q.timing && q.timing.length ? `<div class="timing">${q.timing.map((t) => `<div><b>${esc(t.label)}</b><span class="num">${esc(t.range)}</span></div>`).join('')}</div>` : ''}
+          </div>
+          <div class="why"><h4>Why the chart says this</h4><ul>${q.factors.map((f) => `<li>${esc(f)}</li>`).join('')}</ul></div>
+        </div>
+      </details>`).join('');
+  }
+  $('#groups').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; activeGroup = b.dataset.g; renderQuestions(); });
+
+  function renderTimeline() {
+    const r = current.reading;
+    const maxAge = 90;
+    const ageNow = (Date.now() - current.input.utcMs) / J.YEAR;
+    const pct = (a) => `${Math.max(0, Math.min(100, (a / maxAge) * 100))}%`;
+    const ticks = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+    let html = `<div class="tl-axis"><span>Age</span><div class="tl-ticks">${ticks.map((t) => `<span style="left:${pct(t)}">${t}</span>`).join('')}</div></div>`;
+    for (const t of r.timeline.filter((t) => t.startAge < maxAge)) {
+      const sa = (t.start - current.input.utcMs) / J.YEAR, ea = Math.min(maxAge, (t.end - current.input.utcMs) / J.YEAR);
+      html += `<details class="tl-row ${t.current ? 'current' : ''}" ${t.current ? 'open' : ''}>
+        <summary>
+          <div class="tl-name"><b>${esc(t.lord)} · ${esc(R.PL[t.lord].sa)}</b><span class="num">${r.fmt.fmtY(t.start)}–${r.fmt.fmtY(t.end)} · age ${t.startAge}–${t.endAge}</span></div>
+          <div class="tl-track"><div class="tl-seg" style="left:${pct(sa)};width:calc(${pct(ea)} - ${pct(sa)});background:${TIER_VAR[t.tier]}"></div>${t.current ? `<div class="tl-now" style="left:${pct(ageNow)}"></div>` : ''}</div>
+        </summary>
+        <div class="tl-detail"><span></span><div>
+          <p class="prose"><span class="chip ${t.tier === 'Golden' ? 'kesar' : t.tier === 'Rising' ? 'kesar' : ''}">${esc(t.tier)} period</span> ${esc(t.theme)}</p>
+          <div class="subs">${t.sub.map((a) => `<div class="${a.current ? 'cur' : ''}"><span>${esc(a.lord)}</span><span class="num muted">${r.fmt.fmtMY(a.start)}</span></div>`).join('')}</div>
+        </div></div>
+      </details>`;
+    }
+    $('#tl').innerHTML = html;
+  }
+
+  // launch dates
+  let launch = null;
+  function renderDates() {
+    const lc = launch || (state.launch && state.launch.lat != null ? state.launch : state.place);
+    const zone = lc.tz ? { tz: lc.tz } : current.zone;
+    $('#f-lcity').value = lc.label;
+    const startMs = toUtc(...new Intl.DateTimeFormat('en-CA', { timeZone: zone.tz || 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).split('-').map(Number), 0, 0, zone);
+    const list = J.muhurtaDays(current.chart, { lat: lc.lat, lon: lc.lon, startMs, days: 60, weekdayOf: (ms) => weekdayIn(ms, zone) });
+    const good = list.filter((x) => x.ok).sort((a, b) => b.score - a.score).slice(0, 6).sort((a, b) => a.sunrise - b.sunrise);
+    $('#dates-sum').textContent = `${list.filter((x) => x.ok).length} of the next 60 days pass every check. The six strongest are below, timed for ${lc.label.split(',')[0]}.`;
+    const WDN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    $('#days').innerHTML = good.map((x) => `
+      <div class="day">
+        <div class="day-date"><b class="num">${zfmt(x.sunrise, zone, { day: 'numeric' })}</b><span>${zfmt(x.sunrise, zone, { month: 'short', year: 'numeric' })} · ${WDN[x.weekday]}</span></div>
+        <dl class="kv">
+          <dt>Tithi</dt><dd>${esc(x.tithi)}</dd>
+          <dt>Nakshatra</dt><dd>${esc(R.NAKS[x.nak].name)}</dd>
+          <dt>Tara</dt><dd>${esc(x.tara)}</dd>
+          ${x.abhijit ? `<dt>Best window</dt><dd class="num">${tm(x.abhijit[0], zone)} to ${tm(x.abhijit[1], zone)} (Abhijit)</dd>` : `<dt>Best window</dt><dd>Morning, after sunrise ${tm(x.sunrise, zone)}</dd>`}
+          <dt>Avoid</dt><dd class="num">${tm(x.rahuKaal[0], zone)} to ${tm(x.rahuKaal[1], zone)} (Rahu Kaal)</dd>
+        </dl>
+        <ul>${x.why.slice(0, 3).map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
+      </div>`).join('') || '<p class="muted">No day in the next 60 passes every check. Try again next month.</p>';
+  }
+  combo($('#f-lcity'), $('#lcity-list'), (c) => { launch = { label: placeLabel(c), lat: c.lat, lon: c.lon, tz: c.tz }; state.launch = launch; save(); renderDates(); });
+
+  function renderYogas() {
+    const KIND = { wealth: 'Wealth', power: 'Status', fame: 'Fame', mind: 'Mind' };
+    const ys = current.chart.yogas;
+    $('#yoga-list').innerHTML = ys.map((y) => `
+      <div class="yoga">
+        <div class="yoga-top"><b>${esc(y.name)}</b><span class="chip ${y.kind === 'wealth' ? 'good' : y.kind === 'power' ? 'kesar' : ''}">${KIND[y.kind]}${y.planets.length ? ' · ' + esc(y.planets.join(' + ')) : ''}</span></div>
+        <p>${esc(y.text)}</p>
+      </div>`).join('') || '<p class="muted">No classical yogas detected with these settings.</p>';
+  }
+
+  function renderPositions() {
+    const c = current.chart, p = c.p;
+    const DIG = { exalted: 'Exalted', moolatrikona: 'Moolatrikona', own: 'Own sign', friend: 'Friend', neutral: 'Neutral', enemy: 'Enemy sign', debilitated: 'Debilitated' };
+    const rows = [];
+    if (c.timeKnown) rows.push(`<tr><td><b>Lagna</b></td><td>${esc(R.SIGNS[c.asc.sign].sa)} · ${esc(R.SIGNS[c.asc.sign].en)}</td><td class="num">${dms(c.asc.deg)}</td><td>${esc(R.NAKS[c.asc.nak].name)} ${c.asc.pada}</td><td class="num">1</td><td>Ruled by ${J.SIGN_LORD[c.asc.sign]}</td><td></td><td></td></tr>`);
+    for (const n of J.PLANETS) {
+      const x = p[n];
+      const notes = [x.retro && n !== 'Rahu' && n !== 'Ketu' ? 'Retrograde' : '', x.combust ? 'Close to Sun' : '', x.vargottama ? 'Vargottama' : '', x.digBala ? 'Dig bala' : '', x.neechaBhanga ? 'Neecha bhanga' : '', c.karakas.atma === n ? 'Atmakaraka' : '', c.karakas.amatya === n ? 'Amatyakaraka' : ''].filter(Boolean).join(', ');
+      rows.push(`<tr><td><b>${n}</b> <span class="muted">${R.PL[n].sa}</span></td><td>${esc(R.SIGNS[x.sign].sa)} · ${esc(R.SIGNS[x.sign].en)}</td><td class="num">${dms(x.deg)}</td><td>${esc(R.NAKS[x.nak].name)} ${x.pada}</td><td class="num">${x.house}</td><td>${n === 'Rahu' || n === 'Ketu' ? (x.dignity === 'exalted' || x.dignity === 'debilitated' ? DIG[x.dignity] : 'Node') : DIG[x.dignity]}</td><td><span class="sbar"><i style="width:${x.strength}%"></i></span><span class="num">${x.strength}</span></td><td class="muted">${esc(notes)}</td></tr>`);
+    }
+    $('#ptable').innerHTML = `<thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Nakshatra</th><th>House</th><th>Dignity</th><th>Strength</th><th>Notes</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+    $('#ayan-note').textContent = `Lahiri ayanamsa at birth: ${dms(c.ayanamsa)}. Houses are whole signs from the ${c.timeKnown ? 'lagna' : 'Moon'}. Strength combines dignity, house, dig bala, vargottama and combustion.`;
+    const sav = c.ashtakavarga.byHouse;
+    $('#sav').innerHTML = sav.slice(1).map((b, i) => `<div class="${b >= 30 ? 'hi' : ''}"><b class="num">${b}</b><span>House ${i + 1}</span></div>`).join('');
+    $('#sav-note').textContent = `Sarvashtakavarga total ${c.ashtakavarga.total}. Houses with 30 or more bindus are highlighted; 28 is average.`;
+    const P = c.panchang;
+    const panch = [['Tithi', `${P.paksha} ${P.tithi}`], ['Vaar', P.vaara || 'n/a'], ['Nakshatra', R.NAKS[P.nak].name], ['Yoga', P.yoga], ['Karana', P.karana], ['Paksha', P.paksha === 'Shukla' ? 'Shukla (waxing)' : 'Krishna (waning)'], ['Sunrise', P.sunrise ? tm(P.sunrise, current.zone) : 'n/a'], ['Ayanamsa', 'Lahiri']];
+    $('#panch').innerHTML = panch.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+  }
+
+  function run() {
+    try {
+      current = compute();
+    } catch (e) {
+      $('#form-error').textContent = 'Could not calculate this chart. Check the date, time and place.';
+      console.error(e); return;
+    }
+    renderHero(); renderAreas(); renderQuestions(); renderTimeline(); renderDates(); renderYogas(); renderPositions();
+  }
+
+  // ---------- ask Claude ----------
+  let sample = null, ctl = null;
+  const SUGG = ['What should I focus on in the next 12 months?', 'How do I make the most of my next Mahadasha?', 'Which kind of clients or partners suit me best?'];
+  $('#sugg').innerHTML = SUGG.map((s) => `<button type="button">${esc(s)}</button>`).join('');
+  $('#sugg').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { $('#ask-q').value = b.textContent; $('#ask-q').focus(); } });
+  const ERR = { rate_limited: 'Too many questions at once. Try again in a minute.', session_expired: 'Sign in to Claude again, then ask.', refused: 'Claude could not answer that one. Try asking it differently.', empty_completion: 'No answer came back. Try a shorter question.', prompt_too_large: 'That question is too long. Shorten it and ask again.', upstream_error: 'The answer was interrupted. Ask again.' };
+  const HIDE = ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'];
+  $('#ask-btn').addEventListener('click', async () => {
+    const q = $('#ask-q').value.trim();
+    if (!q || !sample || !current) { $('#ask-status').textContent = q ? '' : 'Type a question first.'; return; }
+    ctl = new AbortController();
+    $('#ask-btn').disabled = true; $('#ask-stop').hidden = false; $('#ask-status').textContent = 'Thinking...'; $('#ask-out').textContent = '';
+    const prompt = `You are a warm, encouraging Vedic astrologer trained in Parashari Jyotish. Answer the question using only the chart data below. Name the specific planets, houses, dashas, transits or yogas you are using. Keep the tone positive and practical, written in plain English for a smart 18 to 30 year old. 120 to 200 words in short paragraphs. No headings, no bullet lists, no em dashes. Never invent placements that are not in the data. If the chart cannot answer something, say what it does show instead.\n\nToday: ${new Date().toDateString()}.\n\nChart data:\n${R.chartText(current.chart, current.reading, state.name)}\n\nQuestion: ${q}`;
+    try {
+      await sample(prompt, { signal: ctl.signal, onText: ({ text }) => { $('#ask-status').textContent = ''; $('#ask-out').textContent = text; } });
+      $('#ask-status').textContent = '';
+    } catch (e) {
+      $('#ask-out').textContent = e && e.text ? e.text : '';
+      if (e && HIDE.includes(e.code)) { $('#ask-sec').hidden = true; }
+      else if (!e || e.code !== 'cancelled') $('#ask-status').textContent = ERR[e && e.code] || ERR.upstream_error;
+      else $('#ask-status').textContent = '';
+    } finally { $('#ask-btn').disabled = false; $('#ask-stop').hidden = true; }
+  });
+  $('#ask-stop').addEventListener('click', () => ctl && ctl.abort());
+  (async () => {
+    try {
+      if (!window.claude || typeof window.claude.use !== 'function') return;
+      const s = await window.claude.use('sample');
+      if (s) { sample = s; $('#ask-sec').hidden = false; }
+    } catch (e) { /* not available in this view */ }
+  })();
+
+  fillForm();
+  run();
+})();
+</script>
