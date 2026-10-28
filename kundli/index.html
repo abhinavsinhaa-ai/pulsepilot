@@ -1,4 +1,4 @@
-<title>Janma Kundli</title>
+<title>Vedic Birth Chart</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,6 +145,15 @@ details.adv[open] summary::before { content: "– "; }
 .meter i { display: block; height: 100%; background: var(--kesar); border-radius: 99px; }
 .area-basis { font-size: 13.5px; color: var(--ink-3); line-height: 1.4; }
 
+/* month strip */
+.months { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-bottom: 22px; }
+.mo { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); padding: 10px 10px 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.mo.best { border-color: var(--kesar); box-shadow: 0 0 0 1px var(--kesar); }
+.mo b { font-weight: 600; font-size: 15px; }
+.mo span.f { font-size: 13.5px; color: var(--ink-2); line-height: 1.35; }
+@media (max-width: 960px) { .months { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .months { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* questions */
 .groups { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 .groups button { border: 1px solid var(--rule); background: var(--card); color: var(--ink-2); border-radius: 999px; padding: 7px 14px; min-height: 40px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .1s ease; }
@@ -277,10 +286,10 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <div class="wrap">
     <div class="brand">
       <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="3" fill="none" stroke="var(--kesar)" stroke-width="1.6"/><path d="M1 1 L25 25 M25 1 L1 25 M13 1 L25 13 L13 25 L1 13 Z" fill="none" stroke="var(--kesar)" stroke-width="1.2"/></svg>
-      Janma Kundli
+      Birth Chart
     </div>
     <nav class="nav" aria-label="Sections">
-      <a href="#chart">Chart</a><a href="#details">Birth details</a><a href="#areas">Life areas</a><a href="#questions">Questions</a><a href="#timeline">Timeline</a><a href="#dates">Launch dates</a><a href="#yogas">Yogas</a><a href="#positions">Positions</a>
+      <a href="#chart">Chart</a><a href="#details">Birth details</a><a href="#areas">Life areas</a><a href="#questions">Questions</a><a href="#timeline">Timeline</a><a href="#dates">Launch dates</a><a href="#yogas">Combinations</a><a href="#positions">Positions</a>
     </nav>
   </div>
 </header>
@@ -297,15 +306,15 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       </div>
       <div class="slate" aria-label="Birth chart">
         <div class="slate-top">
-          <div class="slate-title" id="slate-title">Rashi chart (D1)</div>
+          <div class="slate-title" id="slate-title">Birth chart</div>
           <div class="seg" role="group" aria-label="Chart type">
-            <button type="button" data-chart="d1" aria-pressed="true">D1</button>
-            <button type="button" data-chart="d9" aria-pressed="false">Navamsa</button>
+            <button type="button" data-chart="d1" aria-pressed="true">Birth</button>
+            <button type="button" data-chart="d9" aria-pressed="false">Marriage</button>
             <button type="button" data-chart="moon" aria-pressed="false">Moon</button>
           </div>
         </div>
         <div id="chart-box"></div>
-        <div class="slate-foot"><span>North Indian style. Numbers are signs (1 Mesha to 12 Meena).</span><span>R retrograde · ↑ exalted · ↓ debilitated</span></div>
+        <div class="slate-foot"><span>North Indian style. Numbers are signs (1 Aries to 12 Pisces). NN North Node, SN South Node.</span><span>R retrograde · ↑ strongest sign · ↓ weakest sign</span></div>
       </div>
     </div>
   </div>
@@ -353,7 +362,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     <div class="wrap">
       <div class="sec-head">
         <div><div class="eyebrow">At a glance</div><h2>Life areas</h2></div>
-        <p class="muted small">Scored from Ashtakavarga bindus, house lords, occupants and yogas. 28 bindus is the classical average for a house.</p>
+        <p class="muted small">Scored from the classic strength-point system (28 points is average for a house), house rulers, the planets in each house and lucky combinations.</p>
       </div>
       <div class="areas" id="areas-grid"></div>
     </div>
@@ -365,6 +374,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
         <div><div class="eyebrow">Ask the chart</div><h2>Your questions, answered</h2></div>
         <p class="muted small">The questions people ask astrologers most, answered from your own placements. Each answer lists the chart factors behind it.</p>
       </div>
+      <div class="months" id="months"></div>
       <div class="groups" role="group" aria-label="Question topics" id="groups"></div>
       <div class="qlist" id="qlist"></div>
     </div>
@@ -392,7 +402,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <section id="timeline">
     <div class="wrap">
       <div class="sec-head">
-        <div><div class="eyebrow">Vimshottari dasha</div><h2>Life timeline</h2></div>
+        <div><div class="eyebrow">Planetary periods</div><h2>Life timeline</h2></div>
         <p class="muted small">Your life in planetary chapters, from birth. Open a chapter to see what it brings and its sub-periods.</p>
       </div>
       <div class="tl" id="tl"></div>
@@ -403,8 +413,8 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <section id="dates">
     <div class="wrap">
       <div class="sec-head">
-        <div><div class="eyebrow">Muhurta</div><h2>Best dates to launch</h2></div>
-        <p class="muted small">Days in the next 60 that pass the classical checks for opening a business: tithi, vaar, nakshatra, Tarabala and Chandrabala from your birth star, with Bhadra avoided.</p>
+        <div><div class="eyebrow">Business launch</div><h2>Best dates to launch</h2></div>
+        <p class="muted small">Days in the next 60 that pass the classic checks for starting something new: the lunar day, the weekday, the Moon's star, how that star matches your birth star, and the Moon's position from your birth Moon.</p>
       </div>
       <div class="launch-city">
         <div class="field"><label for="f-lcity">Launch city</label>
@@ -419,8 +429,8 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <section id="yogas">
     <div class="wrap">
       <div class="sec-head">
-        <div><div class="eyebrow">Classical combinations</div><h2>Yogas in your chart</h2></div>
-        <p class="muted small">Detected using the rules in Brihat Parashara Hora Shastra and Phaladeepika.</p>
+        <div><div class="eyebrow">Classic combinations</div><h2>Lucky combinations in your chart</h2></div>
+        <p class="muted small">Detected with the rules from the classic Vedic astrology texts.</p>
       </div>
       <div class="yogas" id="yoga-list"></div>
     </div>
@@ -435,12 +445,12 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       <div class="tbl-wrap"><table id="ptable"></table></div>
       <div class="ref-grid">
         <div>
-          <h3 style="margin-bottom:12px">Ashtakavarga by house</h3>
+          <h3 style="margin-bottom:12px">Strength points by house</h3>
           <div class="sav" id="sav"></div>
           <p class="muted small" style="margin-top:10px" id="sav-note"></p>
         </div>
         <div>
-          <h3 style="margin-bottom:12px">Birth panchang</h3>
+          <h3 style="margin-bottom:12px">Your birth day</h3>
           <dl class="panch" id="panch"></dl>
         </div>
       </div>
@@ -453,11 +463,12 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     <div class="eyebrow">How this is calculated</div>
     <ul>
       <li>Planet positions from astronomy-engine, checked against Swiss Ephemeris to within 20 arcseconds.</li>
-      <li>Lahiri (Chitrapaksha) ayanamsa, whole-sign houses, mean node for Rahu and Ketu.</li>
-      <li>Vimshottari dasha with 365.25-day years. Parashari Ashtakavarga. Yogas from BPHS and Phaladeepika.</li>
-      <li>Muhurta at local sunrise with Rahu Kaal and Abhijit muhurta from the day's real sunrise and sunset.</li>
+      <li>Sidereal zodiac (Lahiri method), whole-sign houses, mean lunar nodes.</li>
+      <li>120-year planetary period system with 365.25-day years, the classic strength-point system, and combinations from the classic Vedic texts.</li>
+      <li>Monthly outlook from each planet's real position mid-month, counted from your birth Moon.</li>
+      <li>Launch dates checked at local sunrise, with the midday window and unlucky slot from that day's real sunrise and sunset.</li>
     </ul>
-    <p style="margin-top:14px">Jyotish is a lens for reflection. Read it, think, then decide for yourself.</p>
+    <p style="margin-top:14px">Astrology is a lens for reflection. Read it, think, then decide for yourself.</p>
   </div>
 </footer>
 
@@ -751,7 +762,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     };
   }
 
-  // ---------- yogas ----------
+  // ---------- yogas (classical combinations, described in plain English) ----------
   function findYogas(c) {
     const { p } = c;
     const Y = [];
@@ -760,26 +771,22 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     const mutualAspect = (a, b) => c.aspects(a).includes(p[b].house) && c.aspects(b).includes(p[a].house);
     const exchange = (a, b) => a !== b && SIGN_LORD[p[a].sign] === b && SIGN_LORD[p[b].sign] === a;
     const connected = (a, b) => a !== b && (sameSign(a, b) || exchange(a, b) || mutualAspect(a, b));
-    const how = (a, b) => sameSign(a, b) ? 'sit together' : exchange(a, b) ? 'exchange signs' : 'aspect each other';
+    const how = (a, b) => sameSign(a, b) ? 'sit together' : exchange(a, b) ? 'swap signs' : 'face each other';
     const fromMoon = (n) => houseFrom(p[n].sign, p.Moon.sign);
     const strong = (n) => ['exalted', 'moolatrikona', 'own'].includes(p[n].dignity);
+    const hs = (n) => c.housesOwned(n).join(' & ');
 
-    // Gajakesari
     if (KENDRA.includes(fromMoon('Jupiter')))
-      add('Gajakesari Yoga', 'fame', 'Jupiter stands in a kendra from your Moon. Classical texts promise lasting reputation, intelligence, a respected voice and the ability to win people over.', ['Jupiter', 'Moon'], p.Jupiter.dignity === 'debilitated' && !p.Jupiter.neechaBhanga ? 'mild' : 'strong');
-    // Budhaditya
+      add('Lasting reputation', 'fame', 'Jupiter sits at a strong angle from your Moon. This is one of the best-known lucky combinations: respect, intelligence and the ability to win people over.', ['Jupiter', 'Moon'], p.Jupiter.dignity === 'debilitated' && !p.Jupiter.neechaBhanga ? 'mild' : 'strong');
     if (sameSign('Sun', 'Mercury'))
-      add('Budhaditya Yoga', 'mind', 'Sun and Mercury share a sign. This is the yoga of sharp business intelligence, clear communication and skill with numbers and negotiation.', ['Sun', 'Mercury'], p.Mercury.combust && angDist(p.Mercury.lon, p.Sun.lon) < 4 ? 'mild' : 'strong');
-    // Chandra-Mangala
+      add('Sharp business mind', 'mind', 'Sun and Mercury share a sign. This gives business intelligence, clear communication and skill with numbers and negotiation.', ['Sun', 'Mercury'], p.Mercury.combust && angDist(p.Mercury.lon, p.Sun.lon) < 4 ? 'mild' : 'strong');
     if (sameSign('Moon', 'Mars') || mutualAspect('Moon', 'Mars'))
-      add('Chandra-Mangala Yoga', 'wealth', 'Moon and Mars ' + how('Moon', 'Mars') + '. This is a classic earning yoga: money through enterprise, quick decisions and a hunger to build.', ['Moon', 'Mars']);
-    // Pancha Mahapurusha
-    const MP = { Mars: ['Ruchaka Yoga', 'courage, leadership and command over competition'], Mercury: ['Bhadra Yoga', 'brilliant intellect, eloquence and natural trading sense'], Jupiter: ['Hamsa Yoga', 'wisdom, good fortune and the respect of learned people'], Venus: ['Malavya Yoga', 'charm, luxury, artistic taste and a comfortable life'], Saturn: ['Sasa Yoga', 'authority over large groups, discipline and long-term power'] };
+      add('Money through enterprise', 'wealth', `Moon and Mars ${how('Moon', 'Mars')}. A classic earning combination: money from quick decisions and the hunger to build.`, ['Moon', 'Mars']);
+    const MP = { Mars: 'courage, leadership and command over competition', Mercury: 'a brilliant mind, way with words and natural trading sense', Jupiter: 'wisdom, good fortune and the respect of smart people', Venus: 'charm, taste, luxury and a comfortable life', Saturn: 'authority over large groups, discipline and long-term power' };
     for (const n of Object.keys(MP)) {
-      if (['exalted', 'moolatrikona', 'own'].includes(p[n].dignity) && KENDRA.includes(p[n].house))
-        add(MP[n][0], 'power', `One of the five Mahapurusha yogas. ${n} is in its own or exalted sign in a kendra, giving ${MP[n][1]}.`, [n], 'strong');
+      if (strong(n) && KENDRA.includes(p[n].house))
+        add(`${n} at full power`, 'power', `${n} is in its strongest sign and in one of the four power houses (1, 4, 7, 10). This is one of the five "great person" combinations and gives ${MP[n]}.`, [n], 'strong');
     }
-    // Raja yogas: kendra lord + trikona lord
     const ks = new Set(), seen = new Set();
     for (const k of [1, 4, 7, 10]) for (const t of [1, 5, 9]) {
       const a = c.lordOf(k), b = c.lordOf(t);
@@ -787,10 +794,9 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       const key = [a, b].sort().join('+');
       if (seen.has(key) || !connected(a, b)) continue;
       seen.add(key);
-      add('Raja Yoga', 'power', `${a} (lord of house ${c.housesOwned(a).join(' & ')}) and ${b} (lord of house ${c.housesOwned(b).join(' & ')}) ${how(a, b)}. A kendra lord joining a trikona lord is the core Parashari formula for rise in status and authority.`, [a, b], 'strong');
+      add('Success and status', 'power', `${a} (ruler of house ${hs(a)}) and ${b} (ruler of house ${hs(b)}) ${how(a, b)}. A power-house ruler joining a luck-house ruler is the core formula for rising in status.`, [a, b], 'strong');
     }
-    for (const yk of ks) add('Yogakaraka ' + yk, 'power', `${yk} rules both a kendra and a trikona for your lagna, which makes it your single most rewarding planet. Its periods tend to bring promotions, recognition and big wins.`, [yk], strong(yk) || KENDRA.includes(p[yk].house) || TRIKONA.includes(p[yk].house) ? 'strong' : 'present');
-    // Dhana yogas
+    for (const yk of ks) add(`${yk} is your success planet`, 'power', `${yk} rules both a power house and a luck house for your rising sign, making it your most rewarding planet. Its periods tend to bring promotions, recognition and big wins.`, [yk], strong(yk) || KENDRA.includes(p[yk].house) || TRIKONA.includes(p[yk].house) ? 'strong' : 'present');
     const dseen = new Set();
     for (const w of [2, 11]) for (const f of [1, 5, 9]) {
       const a = c.lordOf(w), b = c.lordOf(f);
@@ -798,63 +804,52 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       const key = [a, b].sort().join('+');
       if (dseen.has(key) || !connected(a, b)) continue;
       dseen.add(key);
-      add('Dhana Yoga', 'wealth', `${a} (wealth lord of house ${w}) and ${b} (fortune lord of house ${f}) ${how(a, b)}. This links your money houses with your luck houses, a classical sign of accumulated wealth.`, [a, b], 'strong');
+      add('Wealth combination', 'wealth', `${a} (ruler of money house ${w}) and ${b} (ruler of luck house ${f}) ${how(a, b)}. This links your money houses with your luck houses, a classic sign of building wealth.`, [a, b], 'strong');
     }
     if (c.lordOf(2) !== c.lordOf(11) && connected(c.lordOf(2), c.lordOf(11)))
-      add('Dhana Yoga', 'wealth', `Your 2nd lord ${c.lordOf(2)} and 11th lord ${c.lordOf(11)} ${how(c.lordOf(2), c.lordOf(11))}. Income and savings feed each other, so what you earn tends to stay and grow.`, [c.lordOf(2), c.lordOf(11)], 'strong');
-    // Lakshmi
+      add('Wealth combination', 'wealth', `The rulers of your savings house (${c.lordOf(2)}) and income house (${c.lordOf(11)}) ${how(c.lordOf(2), c.lordOf(11))}. What you earn tends to stay and grow.`, [c.lordOf(2), c.lordOf(11)], 'strong');
     const L9 = c.lordOf(9), L1 = c.lordOf(1);
     if (strong(L9) && (KENDRA.includes(p[L9].house) || TRIKONA.includes(p[L9].house)) && p[L1].dignity !== 'debilitated')
-      add('Lakshmi Yoga', 'wealth', `Your 9th lord ${L9} is dignified and well placed while your lagna lord is steady. Named after the goddess of wealth, this yoga gives prosperity, generosity and a graceful life.`, [L9, L1], 'strong');
-    // Dharma-Karmadhipati
+      add('Prosperity combination', 'wealth', `Your luck ruler ${L9} is in a strong sign and a strong house. Named after the goddess of wealth, this combination gives prosperity, generosity and a graceful life.`, [L9, L1], 'strong');
     const L10 = c.lordOf(10);
     if (L9 !== L10 && connected(L9, L10))
-      add('Dharma-Karmadhipati Yoga', 'power', `Your 9th lord ${L9} and 10th lord ${L10} ${how(L9, L10)}. Luck and career are tied together, the strongest classical signal for a meaningful, successful career.`, [L9, L10], 'strong');
+      add('Luck meets career', 'power', `Your luck ruler ${L9} and career ruler ${L10} ${how(L9, L10)}. Luck and career are tied together, the strongest classic signal for a meaningful, successful career.`, [L9, L10], 'strong');
     else if (L9 === L10)
-      add('Dharma-Karmadhipati Yoga', 'power', `${L9} rules both your 9th and 10th houses, so luck and career are carried by one planet. Its strength becomes your career's engine.`, [L9], 'present');
-    // Vipreet raja
-    const VR = { 6: 'Harsha', 8: 'Sarala', 12: 'Vimala' };
+      add('Luck meets career', 'power', `${L9} rules both your luck and career houses, so one planet carries both.`, [L9], 'present');
     for (const h of [6, 8, 12]) {
       const l = c.lordOf(h);
       if (DUSTHANA.includes(p[l].house) && !c.housesOwned(l).some((x) => [1, 5, 9].includes(x)))
-        add(VR[h] + ' Vipreet Raja Yoga', 'power', `Your ${h}th lord ${l} sits in a dusthana. This reverse raja yoga turns setbacks into springboards: you win when situations look difficult and often gain from others' losses.`, [l]);
+        add('Comeback combination', 'power', `The ruler of your ${h}th house (${l}) sits in another difficult house, which cancels the difficulty out. You do your best when things look hard, and you often gain where others lose.`, [l]);
     }
-    // Neecha bhanga
     for (const n of SEVEN) if (p[n].neechaBhanga)
-      add('Neecha Bhanga Raja Yoga', 'power', `${n} is debilitated but the debilitation is cancelled. Classical texts rate this among the most powerful raja yogas: a slow or humble start that turns into a remarkable rise.`, [n], 'strong');
-    // Parivartana
+      add('Weakness turned strength', 'power', `${n} starts in its weakest sign, but the weakness is cancelled. Classic texts rate this among the most powerful success combinations: a slow or humble start that turns into a remarkable rise.`, [n], 'strong');
     const pseen = new Set();
     for (const a of SEVEN) for (const b of SEVEN) {
       if (a >= b || !exchange(a, b)) continue;
       const key = a + b;
       if (pseen.has(key)) continue; pseen.add(key);
       const bad = DUSTHANA.includes(p[a].house) || DUSTHANA.includes(p[b].house);
-      add('Parivartana Yoga', bad ? 'mind' : 'power', `${a} and ${b} sit in each other's signs (houses ${p[a].house} and ${p[b].house}). The two houses they rule work as a team and strengthen each other.`, [a, b], bad ? 'present' : 'strong');
+      add('Planet exchange', bad ? 'mind' : 'power', `${a} and ${b} sit in each other's signs (houses ${p[a].house} and ${p[b].house}). The two areas they rule work as a team.`, [a, b], bad ? 'present' : 'strong');
     }
-    // Moon yogas
     const others = ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
     const second = others.filter((n) => fromMoon(n) === 2), twelfth = others.filter((n) => fromMoon(n) === 12);
-    if (second.length && twelfth.length) add('Durudhara Yoga', 'wealth', `Planets on both sides of your Moon (${second.concat(twelfth).join(', ')}). Classical results: wealth, vehicles, generosity and a well supported life.`, second.concat(twelfth));
-    else if (second.length) add('Sunapha Yoga', 'wealth', `${second.join(', ')} in the 2nd from your Moon. You build self-earned wealth and a reputation through your own intelligence.`, second);
-    else if (twelfth.length) add('Anapha Yoga', 'mind', `${twelfth.join(', ')} in the 12th from your Moon. Graceful personality, good health and a generous, magnetic presence.`, twelfth);
+    if (second.length && twelfth.length) add('Supported on both sides', 'wealth', `Planets on both sides of your Moon (${second.concat(twelfth).join(', ')}). Classic results: wealth, comfort and a well supported life.`, second.concat(twelfth));
+    else if (second.length) add('Self-made wealth', 'wealth', `${second.join(', ')} just after your Moon. You build your own money and reputation through your own intelligence.`, second);
+    else if (twelfth.length) add('Magnetic presence', 'mind', `${twelfth.join(', ')} just before your Moon. A graceful, generous and magnetic personality.`, twelfth);
     const adhi = ['Mercury', 'Jupiter', 'Venus'].filter((n) => [6, 7, 8].includes(fromMoon(n)));
-    if (adhi.length >= 2) add('Adhi Yoga', 'power', `${adhi.join(' and ')} in the 6th, 7th or 8th from your Moon. Adhi yoga is linked to leadership, a comfortable life and success over rivals.`, adhi, adhi.length === 3 ? 'strong' : 'present');
-    // Amala
+    if (adhi.length >= 2) add('Leadership combination', 'power', `${adhi.join(' and ')} sit opposite your Moon. Linked to leadership, a comfortable life and winning over rivals.`, adhi, adhi.length === 3 ? 'strong' : 'present');
     const amala = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 10 || fromMoon(n) === 10);
-    if (amala.length) add('Amala Yoga', 'fame', `${amala.join(' and ')} in the 10th house. Amala means spotless: a clean, lasting reputation and work people admire.`, amala);
-    // Saraswati
+    if (amala.length) add('Clean reputation', 'fame', `${amala.join(' and ')} in your career house. A clean, lasting reputation and work people admire.`, amala);
     const good = [1, 2, 4, 5, 7, 9, 10];
     if (['Jupiter', 'Venus', 'Mercury'].every((n) => good.includes(p[n].house)) && ['exalted', 'moolatrikona', 'own', 'friend'].includes(p.Jupiter.dignity))
-      add('Saraswati Yoga', 'mind', 'Jupiter, Venus and Mercury all occupy kendras, trikonas or the 2nd house with Jupiter well disposed. Named after the goddess of learning: gifted with words, creativity and knowledge.', ['Jupiter', 'Venus', 'Mercury'], 'strong');
-    // Shubha kartari on lagna
+      add('Gift of learning', 'mind', 'Jupiter, Venus and Mercury all sit in strong houses with Jupiter well placed. Named after the goddess of learning: gifted with words, creativity and knowledge.', ['Jupiter', 'Venus', 'Mercury'], 'strong');
     const b12 = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 12), b2 = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 2);
-    if (b12.length && b2.length) add('Shubha Kartari Yoga', 'mind', 'Benefics on both sides of your lagna protect your health, image and self-confidence.', b12.concat(b2));
-    // Vesi / Vasi / Ubhayachari
+    if (b12.length && b2.length) add('Protected self', 'mind', 'Helpful planets on both sides of your rising sign protect your health, image and confidence.', b12.concat(b2));
     const fromSun = (n) => houseFrom(p[n].sign, p.Sun.sign);
     const s2 = others.filter((n) => fromSun(n) === 2), s12 = others.filter((n) => fromSun(n) === 12);
-    if (s2.length && s12.length) add('Ubhayachari Yoga', 'fame', 'Planets on both sides of your Sun. Equal to a king in comfort, says Phaladeepika: confident, eloquent and well resourced.', s2.concat(s12));
-    else if (s2.length) add('Vesi Yoga', 'mind', `${s2.join(', ')} in the 2nd from your Sun. Truthful, balanced and steadily prosperous.`, s2);
-    else if (s12.length) add('Vasi Yoga', 'mind', `${s12.join(', ')} in the 12th from your Sun. Charitable, skilful and happy.`, s12);
+    if (s2.length && s12.length) add('Confidence and resources', 'fame', 'Planets on both sides of your Sun: confident, well spoken and well resourced.', s2.concat(s12));
+    else if (s2.length) add('Balanced success', 'mind', `${s2.join(', ')} just after your Sun. Truthful, balanced and steadily prosperous.`, s2);
+    else if (s12.length) add('Skill and generosity', 'mind', `${s12.join(', ')} just before your Sun. Skilful, generous and happy.`, s12);
     return Y;
   }
 
@@ -903,7 +898,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
   const AVOID_NAK = [1, 2, 5, 8, 9, 10, 15, 17, 18, 19, 24];
   const GOOD_TITHI = [2, 3, 5, 7, 10, 11, 13];
   const BAD_TITHI = [4, 8, 9, 14, 30];
-  const TARA = ['Janma', 'Sampat', 'Vipat', 'Kshema', 'Pratyari', 'Sadhana', 'Naidhana', 'Mitra', 'Param Mitra'];
+  const TARA = ['Birth', 'Wealth', 'Danger', 'Well-being', 'Obstacle', 'Achievement', 'Loss', 'Friend', 'Best friend'];
   const RAHU_KAAL_SEG = [8, 2, 7, 5, 6, 4, 3]; // 1-indexed eighth of daytime, Sunday first
 
   function muhurtaDays(chart, opts) {
@@ -925,25 +920,25 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       let score = 0;
       const why = [], hard = [];
       const tNum = ti.n <= 15 ? ti.n : ti.n - 15;
-      if (ti.n === 30 || BAD_TITHI.includes(tNum)) { hard.push(ti.n === 30 ? 'Amavasya' : 'Rikta / avoided tithi'); score -= 4; }
-      else if (GOOD_TITHI.includes(tNum)) { score += 2; why.push(`${ti.paksha} ${ti.name}, an auspicious tithi`); }
+      if (ti.n === 30 || BAD_TITHI.includes(tNum)) { hard.push(ti.n === 30 ? 'new Moon' : 'unlucky lunar day'); score -= 4; }
+      else if (GOOD_TITHI.includes(tNum)) { score += 2; why.push(`${ti.paksha === 'Shukla' ? 'Waxing' : 'Waning'} Moon, lucky lunar day ${ti.n <= 15 ? ti.n : ti.n - 15}`); }
       if (ti.paksha === 'Shukla') score += 1;
       if ([3, 4, 5].includes(wd)) { score += 2; why.push(['', '', '', 'Wednesday, ruled by Mercury: commerce and deals', 'Thursday, ruled by Jupiter: growth and blessings', 'Friday, ruled by Venus: brand, beauty and money'][wd]); }
       else if (wd === 1 || wd === 0) score += 1;
       else { hard.push('Tuesday / Saturday'); score -= 3; }
-      if (BUSINESS_NAK.includes(nk)) { score += 2; why.push(`Moon in a nakshatra favoured for opening a business`); }
-      else if (AVOID_NAK.includes(nk)) { hard.push('sharp or mixed nakshatra'); score -= 2; }
-      if ([1, 3, 5, 7, 8].includes(taraN)) { score += 2; why.push(`${TARA[taraN]} tara from your birth star`); }
-      else if ([2, 4, 6].includes(taraN)) { hard.push(`${TARA[taraN]} tara`); score -= 3; }
-      if ([1, 3, 6, 7, 10, 11].includes(chandra)) { score += 1; why.push('Moon transiting a favourable house from your natal Moon (Chandrabala)'); }
-      else if (chandra === 8) { hard.push('Chandrashtama'); score -= 4; }
-      if (ti.karana === 'Vishti') { hard.push('Bhadra (Vishti karana)'); score -= 2; }
+      if (BUSINESS_NAK.includes(nk)) { score += 2; why.push(`Moon in a birth star favoured for opening a business`); }
+      else if (AVOID_NAK.includes(nk)) { hard.push('harsh star'); score -= 2; }
+      if ([1, 3, 5, 7, 8].includes(taraN)) { score += 2; why.push(`"${TARA[taraN]}" match with your birth star`); }
+      else if ([2, 4, 6].includes(taraN)) { hard.push(`${TARA[taraN]} star match`); score -= 3; }
+      if ([1, 3, 6, 7, 10, 11].includes(chandra)) { score += 1; why.push('Moon in a lucky position from your birth Moon'); }
+      else if (chandra === 8) { hard.push('Moon 8th from birth Moon'); score -= 4; }
+      if (ti.karana === 'Vishti') { hard.push('unlucky half-day'); score -= 2; }
       const dayLen = ev.set && ev.set > ev.rise ? ev.set - ev.rise : 12 * 3600000;
       const seg = dayLen / 8;
       const rk = ev.rise + (RAHU_KAAL_SEG[wd] - 1) * seg;
       const noon = ev.rise + dayLen / 2;
       out.push({
-        sunrise: ev.rise, sunset: ev.set, weekday: wd, tithi: `${ti.paksha} ${ti.name}`, nak: nk, tara: TARA[taraN], chandra,
+        sunrise: ev.rise, sunset: ev.set, weekday: wd, tithi: `${ti.paksha === 'Shukla' ? 'Waxing' : 'Waning'} Moon, day ${ti.n <= 15 ? ti.n : ti.n - 15}`, nak: nk, tara: TARA[taraN], chandra,
         score, why: why.filter(Boolean), hard, ok: hard.length === 0,
         rahuKaal: [rk, rk + seg], abhijit: wd === 3 ? null : [noon - 24 * 60000, noon + 24 * 60000],
       });
@@ -967,20 +962,21 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
   const { PLANETS, SIGN_LORD, KENDRA, TRIKONA, DUSTHANA, DIGNITY_PTS, YEAR, DAY, houseFrom, signOf } = J;
 
   const SIGNS = [
-    { en: 'Aries', sa: 'Mesha', el: 'Fire', body: 'head and face', lagna: 'You start things. Mesha lagna gives initiative, physical energy and the nerve to go first, and you learn fastest by doing.', moon: 'Your mind is quick and direct. You recharge by starting something new.', spouse: 'energetic, direct and independent' },
-    { en: 'Taurus', sa: 'Vrishabha', el: 'Earth', body: 'throat, neck and face', lagna: 'You build things that last. Vrishabha lagna gives patience, taste and a steady hand with money, and people trust you because you stay calm.', moon: 'The Moon is exalted in Vrishabha, giving a calm, steady and sensual mind with excellent taste.', spouse: 'loyal, attractive, steady and fond of comfort' },
-    { en: 'Gemini', sa: 'Mithuna', el: 'Air', body: 'shoulders, arms and lungs', lagna: 'You connect ideas and people. Mithuna lagna gives a quick mind, wit and a gift for communication, and you can run several projects at once.', moon: 'Your mind is curious and witty and needs conversation and variety.', spouse: 'witty, youthful, talkative and smart' },
-    { en: 'Cancer', sa: 'Karka', el: 'Water', body: 'chest and stomach', lagna: 'You lead by caring. Karka lagna gives emotional intelligence, protectiveness and a strong memory, and people feel at home around you.', moon: 'The Moon is in its own sign, so your instincts are reliable and your feelings run deep.', spouse: 'caring, emotional, family-minded and protective' },
-    { en: 'Leo', sa: 'Simha', el: 'Fire', body: 'heart and spine', lagna: 'You are built to lead. Simha lagna gives presence, dignity and generosity, and you do your best work when you own the outcome.', moon: 'Your mind is proud, warm and big-hearted. You give loyalty and expect respect.', spouse: 'confident, dignified, generous and proud' },
-    { en: 'Virgo', sa: 'Kanya', el: 'Earth', body: 'digestion and intestines', lagna: 'You make things work. Kanya lagna, ruled by Mercury, gives an analytical mind, precision and a talent for improving systems. You notice what others miss, which makes you a sharp strategist and operator.', moon: 'Your mind is thoughtful and precise and calms down when things are organised.', spouse: 'intelligent, practical, health-conscious and helpful' },
-    { en: 'Libra', sa: 'Tula', el: 'Air', body: 'kidneys and lower back', lagna: 'You create balance and close deals. Tula lagna gives charm, fairness and an eye for design, and you are a natural negotiator.', moon: 'Your mind is diplomatic and aesthetic. You think best in partnership.', spouse: 'graceful, fair-minded, stylish and social' },
-    { en: 'Scorpio', sa: 'Vrishchika', el: 'Water', body: 'reproductive and eliminative organs', lagna: 'You go deep. Vrishchika lagna gives intensity, focus and resilience, and you read people and situations quickly.', moon: 'Your mind is intense, private and perceptive, with real staying power.', spouse: 'intense, loyal, private and magnetic' },
-    { en: 'Sagittarius', sa: 'Dhanu', el: 'Fire', body: 'hips, thighs and liver', lagna: 'You aim high. Dhanu lagna gives optimism, a love of learning and a strong moral compass, and you inspire people with vision.', moon: 'Your mind is optimistic and philosophical. You need a bigger purpose to feel settled.', spouse: 'principled, cheerful, educated and adventurous' },
-    { en: 'Capricorn', sa: 'Makara', el: 'Earth', body: 'knees, bones and joints', lagna: 'You climb. Makara lagna gives discipline, ambition and practicality, and your success compounds with age.', moon: 'Your mind is practical and goal-driven. You show love through reliability.', spouse: 'mature, responsible, hardworking and grounded' },
-    { en: 'Aquarius', sa: 'Kumbha', el: 'Air', body: 'calves, ankles and circulation', lagna: 'You think ahead of the crowd. Kumbha lagna gives originality, a systems mind and a strong network, and you are drawn to work that helps many people.', moon: 'Your mind is independent, original and future-focused. You process feelings through ideas, and friends and networks matter a lot to you.', spouse: 'independent, unconventional, friendly and idealistic' },
-    { en: 'Pisces', sa: 'Meena', el: 'Water', body: 'feet, sleep and immunity', lagna: 'You sense what others miss. Meena lagna gives imagination, compassion and intuition, and you shine in creative and advisory work.', moon: 'Your mind is gentle, imaginative and compassionate. Music, art and quiet time restore you.', spouse: 'kind, artistic, intuitive and spiritual' },
+    { en: 'Aries', sa: 'Mesha', el: 'Fire', body: 'head and face', lagna: 'You start things. Aries rising gives initiative, physical energy and the nerve to go first, and you learn fastest by doing.', moon: 'Your mind is quick and direct. You recharge by starting something new.', spouse: 'energetic, direct and independent' },
+    { en: 'Taurus', sa: 'Vrishabha', el: 'Earth', body: 'throat, neck and face', lagna: 'You build things that last. Taurus rising gives patience, taste and a steady hand with money, and people trust you because you stay calm.', moon: 'The Moon is exalted in Taurus, giving a calm, steady and sensual mind with excellent taste.', spouse: 'loyal, attractive, steady and fond of comfort' },
+    { en: 'Gemini', sa: 'Mithuna', el: 'Air', body: 'shoulders, arms and lungs', lagna: 'You connect ideas and people. Gemini rising gives a quick mind, wit and a gift for communication, and you can run several projects at once.', moon: 'Your mind is curious and witty and needs conversation and variety.', spouse: 'witty, youthful, talkative and smart' },
+    { en: 'Cancer', sa: 'Karka', el: 'Water', body: 'chest and stomach', lagna: 'You lead by caring. Cancer rising gives emotional intelligence, protectiveness and a strong memory, and people feel at home around you.', moon: 'The Moon is in its own sign, so your instincts are reliable and your feelings run deep.', spouse: 'caring, emotional, family-minded and protective' },
+    { en: 'Leo', sa: 'Simha', el: 'Fire', body: 'heart and spine', lagna: 'You are built to lead. Leo rising gives presence, dignity and generosity, and you do your best work when you own the outcome.', moon: 'Your mind is proud, warm and big-hearted. You give loyalty and expect respect.', spouse: 'confident, dignified, generous and proud' },
+    { en: 'Virgo', sa: 'Kanya', el: 'Earth', body: 'digestion and intestines', lagna: 'You make things work. Virgo rising, ruled by Mercury, gives an analytical mind, precision and a talent for improving systems. You notice what others miss, which makes you a sharp strategist and operator.', moon: 'Your mind is thoughtful and precise and calms down when things are organised.', spouse: 'intelligent, practical, health-conscious and helpful' },
+    { en: 'Libra', sa: 'Tula', el: 'Air', body: 'kidneys and lower back', lagna: 'You create balance and close deals. Libra rising gives charm, fairness and an eye for design, and you are a natural negotiator.', moon: 'Your mind is diplomatic and aesthetic. You think best in partnership.', spouse: 'graceful, fair-minded, stylish and social' },
+    { en: 'Scorpio', sa: 'Vrishchika', el: 'Water', body: 'reproductive and eliminative organs', lagna: 'You go deep. Scorpio rising gives intensity, focus and resilience, and you read people and situations quickly.', moon: 'Your mind is intense, private and perceptive, with real staying power.', spouse: 'intense, loyal, private and magnetic' },
+    { en: 'Sagittarius', sa: 'Dhanu', el: 'Fire', body: 'hips, thighs and liver', lagna: 'You aim high. Sagittarius rising gives optimism, a love of learning and a strong moral compass, and you inspire people with vision.', moon: 'Your mind is optimistic and philosophical. You need a bigger purpose to feel settled.', spouse: 'principled, cheerful, educated and adventurous' },
+    { en: 'Capricorn', sa: 'Makara', el: 'Earth', body: 'knees, bones and joints', lagna: 'You climb. Capricorn rising gives discipline, ambition and practicality, and your success compounds with age.', moon: 'Your mind is practical and goal-driven. You show love through reliability.', spouse: 'mature, responsible, hardworking and grounded' },
+    { en: 'Aquarius', sa: 'Kumbha', el: 'Air', body: 'calves, ankles and circulation', lagna: 'You think ahead of the crowd. Aquarius rising gives originality, a systems mind and a strong network, and you are drawn to work that helps many people.', moon: 'Your mind is independent, original and future-focused. You process feelings through ideas, and friends and networks matter a lot to you.', spouse: 'independent, unconventional, friendly and idealistic' },
+    { en: 'Pisces', sa: 'Meena', el: 'Water', body: 'feet, sleep and immunity', lagna: 'You sense what others miss. Pisces rising gives imagination, compassion and intuition, and you shine in creative and advisory work.', moon: 'Your mind is gentle, imaginative and compassionate. Music, art and quiet time restore you.', spouse: 'kind, artistic, intuitive and spiritual' },
   ];
 
+  const NAK_EN = ['The Horse Healers', 'The Bearer', 'The Flame', 'The Red Star', "The Deer's Head", 'The Storm', 'Return of the Light', 'The Nourisher', 'The Serpent', 'The Throne', 'The Former Red Star', 'The Latter Red Star', 'The Hand', 'The Bright Jewel', 'The Wind', 'The Forked Branch', 'The Lotus', 'The Eldest', 'The Root', 'Early Victory', 'Final Victory', 'The Ear', 'The Drum', 'The Hundred Healers', 'The Fire Visionary', 'The Deep Serpent', 'The Fish'];
   const NAKS = [
     ['Ashwini', 'the Ashwini Kumaras, divine healers', "a horse's head", 'speed, healing and fresh starts', ['Chu', 'Che', 'Cho', 'La']],
     ['Bharani', 'Yama, lord of dharma', 'the yoni', 'willpower, responsibility and the strength to carry big loads', ['Li', 'Lu', 'Le', 'Lo']],
@@ -1009,21 +1005,21 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     ['Purva Bhadrapada', 'Aja Ekapada, the one-footed fire serpent', 'the front of a cot', 'idealism, vision and the courage to transform things', ['Se', 'So', 'Da', 'Di']],
     ['Uttara Bhadrapada', 'Ahir Budhnya, the serpent of the deep', 'the back of a cot', 'depth, wisdom and steadiness', ['Du', 'Tha', 'Jha', 'Na']],
     ['Revati', 'Pushan, the guide and nourisher', 'a fish', 'nourishment, guidance and prosperous journeys', ['De', 'Do', 'Cha', 'Chi']],
-  ].map(([name, deity, symbol, gift, syl], i) => ({ name, deity, symbol, gift, syl, lord: J.DASHA_ORDER[i % 9] }));
+  ].map(([name, deity, symbol, gift, syl], i) => ({ name, en: NAK_EN[i], deity, symbol, gift, syl, lord: J.DASHA_ORDER[i % 9] }));
   const GANA = 'DMRMDMDDRRMMDRDRDRRMMDRRMMD'; // per nakshatra: Deva / Manushya / Rakshasa
   const GANA_TEXT = { D: ['Deva', 'gentle, generous and idealistic'], M: ['Manushya', 'practical, balanced and ambitious'], R: ['Rakshasa', 'fearless, intense and protective'] };
   const NADI = ['Adi', 'Madhya', 'Antya', 'Antya', 'Madhya', 'Adi'];
 
   const PL = {
-    Sun: { sa: 'Surya', ab: 'Su', means: 'soul, confidence, authority and father', theme: 'visibility, authority and leadership', fields: ['leadership and management roles', 'government and policy', 'medicine', 'running your own show'], edge: 'You lead from the front and people follow a confident founder.', gem: 'Ruby (Manik)', color: 'saffron and copper red', day: 'Sunday', num: 1, deity: 'Surya', mantra: 'Om Suryaya Namah', dir: 'East', verb: 'brings visibility and authority to' },
-    Moon: { sa: 'Chandra', ab: 'Mo', means: 'mind, emotions, mother and the public', theme: 'public connection, home and emotional growth', fields: ['anything mass-market or public-facing', 'hospitality and food', 'healthcare and care work', 'travel'], edge: 'You read what people feel, which is the core of marketing.', gem: 'Pearl (Moti)', color: 'white and silver', day: 'Monday', num: 2, deity: 'Shiva and Parvati', mantra: 'Om Chandraya Namah', dir: 'North-west', verb: 'puts your heart and attention into' },
-    Mars: { sa: 'Mangal', ab: 'Ma', means: 'energy, courage, property and competition', theme: 'action, courage and bold starts', fields: ['startups and fast execution', 'engineering and technology', 'real estate', 'sports and fitness'], edge: 'You execute fast and you are not afraid of competition.', gem: 'Red Coral (Moonga)', color: 'red', day: 'Tuesday', num: 9, deity: 'Hanuman', mantra: 'Om Mangalaya Namah', dir: 'South', verb: 'brings drive and fight to' },
-    Mercury: { sa: 'Budh', ab: 'Me', means: 'intellect, speech, trade and numbers', theme: 'business, communication and smart deals', fields: ['business and trading', 'marketing and media', 'writing and content', 'consulting, IT and analytics'], edge: 'You think in deals, words and numbers. Selling and negotiating come naturally.', gem: 'Emerald (Panna)', color: 'green', day: 'Wednesday', num: 5, deity: 'Vishnu and Ganesha', mantra: 'Om Budhaya Namah', dir: 'North', verb: 'brings intelligence and deal-making to' },
-    Jupiter: { sa: 'Guru', ab: 'Ju', means: 'wisdom, wealth, teachers and growth', theme: 'growth, wisdom, mentors and wealth', fields: ['education and teaching', 'finance and investing', 'law and advisory', 'mentoring and coaching'], edge: 'People trust your judgement. You grow by teaching and advising.', gem: 'Yellow Sapphire (Pukhraj)', color: 'yellow and gold', day: 'Thursday', num: 3, deity: 'Vishnu and Brihaspati', mantra: 'Om Gurave Namah', dir: 'North-east', verb: 'blesses and expands' },
-    Venus: { sa: 'Shukra', ab: 'Ve', means: 'love, beauty, art, luxury and comfort', theme: 'money, love, creativity and brand', fields: ['brands, fashion and beauty', 'design and the arts', 'entertainment and the creator economy', 'luxury and hospitality'], edge: 'You have taste. Brands, design and relationships are where you win.', gem: 'Diamond (Heera) or White Sapphire', color: 'white, cream and pastels', day: 'Friday', num: 6, deity: 'Lakshmi', mantra: 'Om Shukraya Namah', dir: 'South-east', verb: 'brings charm, comfort and luck to' },
-    Saturn: { sa: 'Shani', ab: 'Sa', means: 'discipline, time, scale and hard work', theme: 'discipline, structure and long-term foundations', fields: ['operations and systems', 'manufacturing and infrastructure', 'large organisations', 'anything built to scale over years'], edge: 'You outlast people. Systems and patience are your unfair advantage.', gem: 'Blue Sapphire (Neelam)', color: 'dark blue and black', day: 'Saturday', num: 8, deity: 'Shani Dev and Hanuman', mantra: 'Om Shanaischaraya Namah', dir: 'West', verb: 'builds slow, durable strength in' },
-    Rahu: { sa: 'Rahu', ab: 'Ra', means: 'ambition, technology, foreign links and the masses', theme: 'ambition, technology, foreign links and big jumps', fields: ['technology and AI', 'social media and mass media', 'foreign markets', 'new-age, unconventional industries'], edge: 'You spot what is new before others do and you are hungry to grow.', gem: 'Hessonite (Gomed)', color: 'smoky blue', day: 'Saturday', num: 4, deity: 'Durga', mantra: 'Om Rahave Namah', dir: 'South-west', verb: 'creates hunger and unconventional growth in' },
-    Ketu: { sa: 'Ketu', ab: 'Ke', means: 'detachment, research, intuition and mastery', theme: 'focus, research and deep mastery', fields: ['research and analysis', 'coding and technical depth', 'spiritual and healing work', 'niche expertise'], edge: 'You go deeper than anyone else in your niche.', gem: "Cat's Eye (Lehsunia)", color: 'grey and earthy tones', day: 'Tuesday', num: 7, deity: 'Ganesha', mantra: 'Om Ketave Namah', dir: 'North-west', verb: 'brings detached mastery to' },
+    Sun: { sa: 'Surya', ab: 'Su', means: 'soul, confidence, authority and father', theme: 'visibility, authority and leadership', fields: ['leadership and management roles', 'government and policy', 'medicine', 'running your own show'], edge: 'You lead from the front and people follow a confident founder.', gem: 'Ruby', color: 'saffron and copper red', day: 'Sunday', num: 1, deity: 'Surya', mantra: 'Om Suryaya Namah', dir: 'East', verb: 'brings visibility and authority to' },
+    Moon: { sa: 'Chandra', ab: 'Mo', means: 'mind, emotions, mother and the public', theme: 'public connection, home and emotional growth', fields: ['anything mass-market or public-facing', 'hospitality and food', 'healthcare and care work', 'travel'], edge: 'You read what people feel, which is the core of marketing.', gem: 'Pearl', color: 'white and silver', day: 'Monday', num: 2, deity: 'Shiva and Parvati', mantra: 'Om Chandraya Namah', dir: 'North-west', verb: 'puts your heart and attention into' },
+    Mars: { sa: 'Mangal', ab: 'Ma', means: 'energy, courage, property and competition', theme: 'action, courage and bold starts', fields: ['startups and fast execution', 'engineering and technology', 'real estate', 'sports and fitness'], edge: 'You execute fast and you are not afraid of competition.', gem: 'Red Coral', color: 'red', day: 'Tuesday', num: 9, deity: 'Hanuman', mantra: 'Om Mangalaya Namah', dir: 'South', verb: 'brings drive and fight to' },
+    Mercury: { sa: 'Budh', ab: 'Me', means: 'intellect, speech, trade and numbers', theme: 'business, communication and smart deals', fields: ['business and trading', 'marketing and media', 'writing and content', 'consulting, IT and analytics'], edge: 'You think in deals, words and numbers. Selling and negotiating come naturally.', gem: 'Emerald', color: 'green', day: 'Wednesday', num: 5, deity: 'Vishnu and Ganesha', mantra: 'Om Budhaya Namah', dir: 'North', verb: 'brings intelligence and deal-making to' },
+    Jupiter: { sa: 'Guru', ab: 'Ju', means: 'wisdom, wealth, teachers and growth', theme: 'growth, wisdom, mentors and wealth', fields: ['education and teaching', 'finance and investing', 'law and advisory', 'mentoring and coaching'], edge: 'People trust your judgement. You grow by teaching and advising.', gem: 'Yellow Sapphire', color: 'yellow and gold', day: 'Thursday', num: 3, deity: 'Vishnu and Brihaspati', mantra: 'Om Gurave Namah', dir: 'North-east', verb: 'blesses and expands' },
+    Venus: { sa: 'Shukra', ab: 'Ve', means: 'love, beauty, art, luxury and comfort', theme: 'money, love, creativity and brand', fields: ['brands, fashion and beauty', 'design and the arts', 'entertainment and the creator economy', 'luxury and hospitality'], edge: 'You have taste. Brands, design and relationships are where you win.', gem: 'Diamond or White Sapphire', color: 'white, cream and pastels', day: 'Friday', num: 6, deity: 'Lakshmi', mantra: 'Om Shukraya Namah', dir: 'South-east', verb: 'brings charm, comfort and luck to' },
+    Saturn: { sa: 'Shani', ab: 'Sa', means: 'discipline, time, scale and hard work', theme: 'discipline, structure and long-term foundations', fields: ['operations and systems', 'manufacturing and infrastructure', 'large organisations', 'anything built to scale over years'], edge: 'You outlast people. Systems and patience are your unfair advantage.', gem: 'Blue Sapphire', color: 'dark blue and black', day: 'Saturday', num: 8, deity: 'Shani Dev and Hanuman', mantra: 'Om Shanaischaraya Namah', dir: 'West', verb: 'builds slow, durable strength in' },
+    Rahu: { sa: 'Rahu', ab: 'Ra', means: 'ambition, technology, foreign links and the masses', theme: 'ambition, technology, foreign links and big jumps', fields: ['technology and AI', 'social media and mass media', 'foreign markets', 'new-age, unconventional industries'], edge: 'You spot what is new before others do and you are hungry to grow.', gem: 'Hessonite', color: 'smoky blue', day: 'Saturday', num: 4, deity: 'Durga', mantra: 'Om Rahave Namah', dir: 'South-west', verb: 'creates hunger and unconventional growth in' },
+    Ketu: { sa: 'Ketu', ab: 'Ke', means: 'detachment, research, intuition and mastery', theme: 'focus, research and deep mastery', fields: ['research and analysis', 'coding and technical depth', 'spiritual and healing work', 'niche expertise'], edge: 'You go deeper than anyone else in your niche.', gem: "Cat's Eye", color: 'grey and earthy tones', day: 'Tuesday', num: 7, deity: 'Ganesha', mantra: 'Om Ketave Namah', dir: 'North-west', verb: 'brings detached mastery to' },
   };
 
   const HOUSES = [null,
@@ -1043,7 +1039,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
 
   const ord = (n) => n + (n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th');
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-  const DIG_WORD = { exalted: 'exalted', moolatrikona: 'in moolatrikona', own: 'in its own sign', friend: "in a friend's sign", neutral: 'in a neutral sign', enemy: 'in a challenging sign', debilitated: 'debilitated' };
+  const DIG_WORD = { exalted: 'exalted', moolatrikona: 'in a strong home sign', own: 'in its own sign', friend: "in a friend's sign", neutral: 'in a neutral sign', enemy: 'in a challenging sign', debilitated: 'debilitated' };
   const list = (a) => a.length <= 1 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
 
   function analyse(c, opts) {
@@ -1059,7 +1055,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     const fmtMY = (ms) => zf(ms, { month: 'short', year: 'numeric' });
     const fmtY = (ms) => zf(ms, { year: 'numeric' });
     const fmtD = (ms) => zf(ms, { day: 'numeric', month: 'short', year: 'numeric' });
-    const sg = (i) => `${SIGNS[i].sa} (${SIGNS[i].en})`;
+    const sg = (i) => SIGNS[i].en;
     const pdesc = (n) => `${n} ${digw(n)} in your ${ord(p[n].house)} house`;
     const digw = (n) => DIG_WORD[p[n].dignity] + (p[n].neechaBhanga ? ' with cancellation' : '');
     const chartWord = c.timeKnown ? '' : ' (from your Moon chart)';
@@ -1168,6 +1164,190 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     const Q = [];
     const add = (group, id, q, a) => Q.push({ group, id, q, ...a });
 
+    // ===== Next 8 months (transits from the Moon, the classical gochara rules, plus running sub-periods) =====
+    const GOOD_FROM_MOON = { Sun: [3, 6, 10, 11], Mars: [3, 6, 11], Mercury: [2, 4, 6, 8, 10, 11], Jupiter: [2, 5, 7, 9, 11], Venus: [1, 2, 3, 4, 5, 8, 9, 11, 12], Saturn: [3, 6, 11], Rahu: [3, 6, 11] };
+    const TW = { Jupiter: 3, Saturn: 2.5, Mars: 1.5, Venus: 1.2, Rahu: 1.2, Sun: 1, Mercury: 1 };
+    const subSub = (ad) => {
+      const out = []; let s = ad.start; const len = ad.end - ad.start; const i0 = J.DASHA_ORDER.indexOf(ad.lord);
+      for (let j = 0; j < 9; j++) { const l = J.DASHA_ORDER[(i0 + j) % 9]; const d = (len * J.DASHA_YEARS[l]) / 120; out.push({ lord: l, start: s, end: s + d }); s += d; }
+      return out;
+    };
+    const VERB = { Jupiter: 'Jupiter brings growth to', Saturn: 'Saturn rewards steady work in', Venus: 'Venus brings charm and money to', Mars: 'Mars fires up', Sun: 'The Sun spotlights', Mercury: 'Mercury helps deals in', Rahu: 'Rahu pushes fast growth in' };
+    const FOCUS = [null, 'Personal brand', 'Money', 'Content and sales', 'Home', 'Creativity and love', 'Work and health', 'Partners and clients', 'Deep work', 'Learning and travel', 'Career', 'Income and network', 'Global reach and recharge'];
+    const AREA = [null, 'personal image', 'savings', 'content and sales', 'home life', 'creativity and romance', 'daily work and health', 'partnerships and clients', 'research and deep work', 'luck and learning', 'career', 'income and network', 'foreign links and inner peace'];
+    const owns = (n, hs) => ownsOf(n).some((h) => hs.includes(h));
+    const d0 = new Date(now);
+    const startK = d0.getUTCDate() > 20 ? 1 : 0;
+    const months = [];
+    for (let k = startK; k < startK + 8; k++) {
+      const mid = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth() + k, 15, 6);
+      const mStart = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth() + k, 1), mEnd = Date.UTC(d0.getUTCFullYear(), d0.getUTCMonth() + k + 1, 1);
+      const pos = J.positionsAt(mid);
+      const da = J.dashaAt(c, mid);
+      const pd = subSub(da.ad).find((x) => mid >= x.start && mid < x.end);
+      const hm = (n) => fromMoon(pos[n].sign), hl = (n) => fromLagna(pos[n].sign);
+      let score = 0; const goods = [];
+      for (const n of Object.keys(TW)) {
+        const g = GOOD_FROM_MOON[n].includes(hm(n));
+        score += g ? TW[n] : -TW[n] * 0.4;
+        if (g) goods.push({ n, w: TW[n], h: hl(n) });
+      }
+      score += (periodScore(da.ad.lord) + periodScore(pd.lord)) * 0.15;
+      goods.sort((a, b) => b.w - a.w);
+      // money
+      let money = 0; const mWhy = [];
+      if ([2, 11].includes(hm('Jupiter')) || [2, 11].includes(hl('Jupiter'))) { money += 3; mWhy.push('Jupiter in a money house'); } else if (GOOD_FROM_MOON.Jupiter.includes(hm('Jupiter'))) money += 1;
+      for (const n of ['Venus', 'Mercury', 'Sun']) if ([2, 10, 11].includes(hl(n))) { money += n === 'Venus' ? 1.5 : 1; mWhy.push(`${n} in your ${ord(hl(n))} house`); }
+      if ([3, 6, 11].includes(hm('Saturn'))) { money += 1.5; mWhy.push('Saturn in a good position'); }
+      if ([3, 6, 11].includes(hm('Mars'))) { money += 1; mWhy.push('Mars in a good position'); }
+      if (owns(pd.lord, [2, 9, 10, 11]) || [2, 10, 11].includes(p[pd.lord].house)) { money += 1.5; mWhy.push(`${pd.lord} mini-period`); }
+      // love
+      let love = 0; const lWhy = [];
+      for (const [ref, nm] of [[c.lagnaSign, 'rising sign'], [p.Moon.sign, 'Moon']]) if ([1, 5, 7, 11].includes(houseFrom(pos.Venus.sign, ref))) { love += 1.5; lWhy.push(`Venus in your ${ord(houseFrom(pos.Venus.sign, ref))} from your ${nm}`); }
+      const jl = hl('Jupiter');
+      if ([5, 7].includes(jl) || [5, 7, 9].map((k2) => ((jl + k2 - 2) % 12) + 1).some((h) => h === 5 || h === 7)) { love += 1.5; lWhy.push('Jupiter blessing your love or partner house'); }
+      if ([5, 7].includes(hl('Mars'))) { love += 1; lWhy.push('Mars adding attraction'); }
+      if (['Venus', c.lordOf(7), c.lordOf(5), 'Moon', 'Rahu'].includes(pd.lord)) { love += 1.5; lWhy.push(`${pd.lord} mini-period`); }
+      if (['Venus', c.lordOf(7), c.lordOf(5)].includes(da.ad.lord)) love += 1;
+      // business and career
+      let biz = 0; const bWhy = [];
+      for (const n of ['Jupiter', 'Saturn', 'Mars', 'Sun', 'Mercury']) if ([10, 11, 7, 3].includes(hl(n)) && (GOOD_FROM_MOON[n].includes(hm(n)) || n === 'Jupiter')) { biz += TW[n] * 0.8; bWhy.push(`${n} in your ${ord(hl(n))} house`); }
+      if (owns(pd.lord, [1, 7, 10, 11])) { biz += 1.5; bWhy.push(`${pd.lord} mini-period`); }
+      // travel
+      let travel = 0;
+      for (const n of ['Jupiter', 'Rahu', 'Saturn', 'Mars', 'Venus']) if ([9, 12, 3].includes(hl(n))) travel += n === 'Jupiter' || n === 'Rahu' ? 1.5 : 0.7;
+      if (['Rahu', 'Ketu', c.lordOf(12), c.lordOf(9)].includes(pd.lord)) travel += 1;
+      const best = goods[0];
+      const head = best ? `${VERB[best.n]} your ${AREA[best.h]}` : `${pd.lord} mini-period: ${PL[pd.lord].theme.split(',')[0]}`;
+      const events = [];
+      if (da.ad.start >= mStart && da.ad.start < mEnd) events.push(`New sub-period begins: ${da.ad.lord}, ${PL[da.ad.lord].theme}`);
+      for (const n of ['Jupiter', 'Saturn', 'Rahu']) {
+        const a = J.signOf(J.sidereal(n, mStart)), b = J.signOf(J.sidereal(n, mEnd));
+        if (a !== b) events.push(`${n} moves into your ${ord(fromLagna(b))} house (${AREA[fromLagna(b)]})`);
+      }
+      months.push({ mid, label: fmtMY(mid), score, money, love, biz, travel, mWhy, lWhy, bWhy, head, focus: best ? FOCUS[best.h] : FOCUS[p[pd.lord].house], ad: da.ad.lord, pd: pd.lord, events, goods });
+    }
+    for (const m of months) m.overall = m.score + ((m.money + m.love + m.biz) / 3) * 1.2;
+    const rankBy = (key) => months.slice().sort((a, b) => b[key] - a[key]);
+    const ranked = rankBy('overall');
+    ranked.forEach((m, i) => { m.rating = i < 2 ? 'Best' : i < 5 ? 'Strong' : 'Steady'; });
+    const topOf = (key, n) => rankBy(key).slice(0, n).sort((a, b) => a.mid - b.mid);
+    const mlist = (arr) => list(arr.map((m) => m.label));
+    {
+      const first = months[0], last = months[months.length - 1];
+      const bestTwo = ranked.slice(0, 2).sort((a, b) => a.mid - b.mid);
+      const subs = [...new Set(months.map((m) => m.ad))];
+      add('soon', 'next8', 'How will my next 8 months look?', {
+        verdict: `Best months: ${mlist(bestTwo)}`, tone: 'great',
+        body: [
+          `From ${first.label} to ${last.label} you run the ${list(subs)} sub-period${subs.length > 1 ? 's' : ''} inside your ${curMD ? curMD.lord : ''} period. ${subs.map((s) => `${s} brings ${PL[s].theme}`).join('. ')}.`,
+          `Your two strongest months are ${mlist(bestTwo)}. That is when the slow planets (Jupiter and Saturn) and the fast ones line up best from your Moon.`,
+          ...months.flatMap((m) => m.events.map((e) => `${m.label}: ${e}.`)),
+          'Month by month:',
+        ],
+        factors: ['Planet positions computed for the middle of each month', 'Good and bad transit houses counted from your birth Moon, the classic method', 'Your running sub-period and mini-period for each month'],
+        timing: months.map((m) => ({ label: `${m.label} · ${m.rating}`, range: m.head })),
+      });
+    }
+    {
+      const top = topOf('money', 3);
+      const avg = months.reduce((a, m) => a + m.money, 0) / months.length;
+      add('soon', 'money8', 'Will I make good money in the next 8 months?', {
+        verdict: `Yes, peaking in ${mlist(top.slice(0, 2))}`, tone: 'great',
+        body: [
+          avg >= 3 ? 'Yes. The next 8 months carry strong money signals in your chart.' : 'Yes, with clear peaks. Money comes in waves over these months, so time your big pushes for the peak months.',
+          `Your best money months are ${mlist(top)}. ${top.map((m) => `${m.label}: ${list(m.mWhy.slice(0, 2)) || 'steady support'}`).join('. ')}.`,
+          `Your main money channel is still ${HOUSES[p[c.lordOf(11)].house].channel} and ${HOUSES[p[c.lordOf(2)].house].channel}. Pitch, close deals and send invoices in the peak months.`,
+        ],
+        factors: ['Jupiter, Venus, Mercury and the Sun in your money houses (2nd, 10th, 11th)', 'Saturn and Mars in good positions from your Moon', 'Mini-period rulers linked to your money houses'],
+        timing: top.map((m) => ({ label: m.label, range: list(m.mWhy.slice(0, 3)) || 'steady' })),
+      });
+    }
+    {
+      const top = topOf('love', 3);
+      add('soon', 'partner8', 'When will I meet my next partner?', {
+        verdict: `Best chances: ${mlist(top.slice(0, 2))}`, tone: 'great',
+        body: [
+          `Romance in a birth chart switches on when Venus moves through your 1st, 5th, 7th or 11th house, when Jupiter blesses your love or partner house, and during the mini-periods of Venus and your love-house rulers.`,
+          `In the next 8 months that lines up best in ${mlist(top)}. ${top.map((m) => `${m.label}: ${list(m.lWhy.slice(0, 2)) || 'good social energy'}`).join('. ')}.`,
+          `You are most likely to meet someone through ${HOUSES[7].area.includes('clients') ? 'work, clients and collaborations' : 'friends'} or your wider network, since your partner house is tied to the same planets as your work.`,
+          'For long-term commitment and marriage, see the Love tab. This answer is about meeting someone in the coming months.',
+        ],
+        factors: [`Your partner house is ${sg(c.signOfHouse(7))}, ruled by ${c.lordOf(7)}`, `Your love house is ${sg(c.signOfHouse(5))}, ruled by ${c.lordOf(5)}`, 'Venus transit checked from both your rising sign and your Moon'],
+        timing: top.map((m) => ({ label: m.label, range: list(m.lWhy.slice(0, 3)) || 'good social energy' })),
+      });
+      const soon = months.slice(0, 3).some((m) => top.slice(0, 2).includes(m));
+      const firstTop = top.slice().sort((a, b) => a.mid - b.mid)[0];
+      add('soon', 'look8', 'Should I actively look for love right now, or wait?', {
+        verdict: soon ? `Look now, best in ${firstTop.label}` : `Focus on work, open up from ${firstTop.label}`, tone: 'good',
+        body: [
+          soon ? `Look. One of your best love months, ${firstTop.label}, is right around the corner, so say yes to plans, events and new people.` : `You do not need to chase it right now. Your love signals peak from ${firstTop.label}, so put your energy into work and yourself until then, and be open when that window arrives.`,
+          `The quieter months for romance are ${mlist(rankBy('love').slice(-2).sort((a, b) => a.mid - b.mid))}. Use them for friendships and your own goals.`,
+        ],
+        factors: top.map((m) => `${m.label}: ${list(m.lWhy.slice(0, 2)) || 'support'}`),
+      });
+    }
+    {
+      const top = topOf('biz', 3);
+      add('soon', 'biz8', 'Will my business grow in the next 8 months?', {
+        verdict: `Yes, strongest in ${mlist(top.slice(0, 2))}`, tone: 'great',
+        body: [
+          `Yes. Business moves fastest when Jupiter, Saturn, Mars, Mercury or the Sun pass through your 3rd (effort), 7th (clients), 10th (career) or 11th (income) house in a good position from your Moon.`,
+          `Your strongest business months: ${mlist(top)}. ${top.map((m) => `${m.label}: ${list(m.bWhy.slice(0, 2)) || 'steady support'}`).join('. ')}.`,
+          'Launch, sign or announce in those months. The launch-dates section below gives exact days.',
+        ],
+        factors: ['Transits through your 3rd, 7th, 10th and 11th houses', 'Mini-period rulers linked to your 1st, 7th, 10th and 11th houses'],
+        timing: top.map((m) => ({ label: m.label, range: list(m.bWhy.slice(0, 3)) || 'steady support' })),
+      });
+    }
+    {
+      const ev = months.flatMap((m) => m.events.map((e) => ({ m, e })));
+      const jup = months.slice().sort((a, b) => (b.goods.some((g) => g.n === 'Jupiter') - a.goods.some((g) => g.n === 'Jupiter')) || b.score - a.score)[0];
+      add('soon', 'opp8', 'Will a big opportunity come soon?', {
+        verdict: `Yes, watch ${jup.label}`, tone: 'great',
+        body: [
+          `Big opportunities follow Jupiter. ${jup.goods.some((g) => g.n === 'Jupiter') ? `In ${jup.label} Jupiter sits in a lucky position from your Moon and brings growth to your ${AREA[jup.goods.find((g) => g.n === 'Jupiter').h]}.` : `${jup.label} is your strongest month overall.`}`,
+          ev.length ? `Turning points in this window: ${ev.map((x) => `${x.m.label}: ${x.e}`).join('; ')}.` : 'No slow planet changes sign in this window, so opportunities build steadily rather than arriving all at once.',
+          sadeNow && satRel === 2 ? `Saturn's 7.5-year phase is also wrapping up (around ${fmtMY(sadeNow.end)}), which takes pressure off and frees energy for bigger moves.` : '',
+        ].filter(Boolean),
+        factors: ['Jupiter position from your Moon each month', 'Sign changes of Jupiter, Saturn and Rahu in the window'],
+      });
+    }
+    {
+      const peaks = new Set(['money', 'love', 'biz'].flatMap((k) => rankBy(k).slice(0, 2)));
+      const low = (ranked.filter((m) => !peaks.has(m)).slice(-2).length === 2 ? ranked.filter((m) => !peaks.has(m)).slice(-2) : ranked.slice(-2)).sort((a, b) => a.mid - b.mid);
+      add('soon', 'slow8', 'Which months should I take it slow?', {
+        verdict: mlist(low), tone: 'steady',
+        body: [
+          `${mlist(low)} are your quieter months overall. Fewer planets sit in lucky positions for you, so results take more effort.`,
+          'Use them to plan, build systems, rest and fix what is not working. Push launches and big asks into your best months instead.',
+        ],
+        factors: low.map((m) => `${m.label}: ${m.goods.length} of 7 planets in lucky positions from your Moon`),
+      });
+    }
+    {
+      const top = topOf('travel', 2);
+      add('soon', 'travel8', 'Will I travel in the next 8 months?', {
+        verdict: top[0].travel >= 2 ? `Likely, around ${mlist(top)}` : 'Short trips, nothing major', tone: 'good',
+        body: [
+          top[0].travel >= 2 ? `Yes. Travel opens up in ${mlist(top)}, when planets pass through your travel houses (3rd for short trips, 9th for long journeys, 12th for abroad).` : 'Your travel houses stay fairly quiet in this window, so expect short trips rather than a big journey.',
+        ],
+        factors: ['Jupiter, Rahu, Saturn, Mars and Venus in your 3rd, 9th and 12th houses', 'Mini-periods of travel planets'],
+      });
+    }
+    {
+      const m = months[0];
+      add('soon', 'focus8', `What should I focus on in ${m.label}?`, {
+        verdict: m.focus, tone: 'great',
+        body: [
+          `${m.head}. Put your main effort into ${m.focus.toLowerCase()} this month.`,
+          `You are in the ${m.ad} sub-period and the ${m.pd} mini-period, which favours ${PL[m.pd].theme}.`,
+          m.goods.length ? `Planets helping you: ${list(m.goods.map((g) => `${g.n} (your ${ord(g.h)} house)`))}.` : '',
+        ].filter(Boolean),
+        factors: m.goods.map((g) => `${g.n} in a lucky position from your Moon`),
+      });
+    }
+
     // ===== Right now =====
     {
       const md = curMD, ad = curAD;
@@ -1182,7 +1362,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       }
       add('now', 'phase', 'What phase of life am I in right now?', {
         verdict: md ? `${md.lord} chapter, ${ad.lord} season` : 'Fresh start', tone: md && md.tier === 'Golden' ? 'great' : 'good', body,
-        factors: [`Moon in ${NAKS[p.Moon.nak].name} nakshatra starts your Vimshottari sequence with ${c.dasha.startLord}`, `Jupiter now transits your ${ord(jupNowMoon)} house from the Moon${JUP_GOOD.includes(jupNowMoon) ? ', a favourable position' : ''}`, `Saturn now transits your ${ord(satRel)} house from the Moon`],
+        factors: [`Moon in ${NAKS[p.Moon.nak].en} nakshatra starts your Vimshottari sequence with ${c.dasha.startLord}`, `Jupiter now transits your ${ord(jupNowMoon)} house from the Moon${JUP_GOOD.includes(jupNowMoon) ? ', a favourable position' : ''}`, `Saturn now transits your ${ord(satRel)} house from the Moon`],
       });
     }
     {
@@ -1197,9 +1377,9 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       }
       if (sadeNext) body.push(`Your next Sade Sati begins around ${fmtMY(sadeNext.start)} (age ${ageAt(sadeNext.start)}).`);
       const past = sadeList.filter((s) => s.end < now);
-      add('now', 'sadesati', 'Is Sade Sati running for me?', {
+      add('now', 'sadesati', "Am I in Saturn's tough 7.5-year phase?", {
         verdict: sadeNow ? (satRel === 2 ? 'Yes, in its last phase' : 'Yes') : 'No', tone: sadeNow ? 'steady' : 'great', body,
-        factors: [`Natal Moon in ${sg(p.Moon.sign)}`, `Transit Saturn in ${sg(tNow.Saturn.sign)} today`, 'Sade Sati = Saturn crossing the 12th, 1st and 2nd signs from the natal Moon'],
+        factors: [`Natal Moon in ${sg(p.Moon.sign)}`, `Transit Saturn in ${sg(tNow.Saturn.sign)} today`, 'The phase runs while Saturn crosses the sign before, on and after your Moon sign'],
         timing: sadeList.slice(0, 4).map((s) => ({ label: s.end < now ? 'Completed' : s.start > now ? 'Upcoming' : 'Running', range: `${fmtMY(s.start)} to ${fmtMY(s.end)}` })),
       });
     }
@@ -1261,7 +1441,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       ].filter(Boolean);
       add('money', 'source', 'Where will my money come from?', {
         verdict: HOUSES[main.h].channel.split(',')[0].replace(/^your /, '').replace(/^\w/, (m) => m.toUpperCase()), tone: 'great', body,
-        factors: chans.slice(0, 3).map((x) => `House ${x.h} (${HOUSES[x.h].sa}): ${x.why.join(', ')}`),
+        factors: chans.slice(0, 3).map((x) => `House ${x.h}: ${x.why.join(', ')}`),
       });
     }
     {
@@ -1334,11 +1514,11 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       add('money', 'name', 'What should I name my business?', {
         verdict: `Start with "${nk.syl[p.Moon.pada - 1]}"`, tone: 'good',
         body: [
-          `Your Janma nakshatra is ${nk.name}, pada ${p.Moon.pada}. Its namakshar (naming syllable) is "${nk.syl[p.Moon.pada - 1]}". The full set for ${nk.name} is ${nk.syl.map((s) => `"${s}"`).join(', ')}.`,
+          `Your birth star is ${nk.en}, quarter ${p.Moon.pada}. Its traditional lucky starting sound is "${nk.syl[p.Moon.pada - 1]}". The full set for your star is ${nk.syl.map((s) => `"${s}"`).join(', ')}.`,
           `Your lagna lord ${L1} carries the number ${PL[L1].num} and your 9th lord of luck ${L9} carries ${PL[L9].num}. Founders often use these numbers as a tie-breaker when two names feel equally good.`,
           `Use this as a filter on names you already like. A name that is clear, easy to say and easy to search will always do more work than the syllable alone.`,
         ],
-        factors: [`Moon in ${nk.name} pada ${p.Moon.pada}`, `Lagna lord ${L1} = ${PL[L1].num}`, `9th lord ${L9} = ${PL[L9].num}`],
+        factors: [`Moon in ${nk.en}, quarter ${p.Moon.pada}`, `Lagna lord ${L1} = ${PL[L1].num}`, `9th lord ${L9} = ${PL[L9].num}`],
       });
     }
 
@@ -1376,7 +1556,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
         body: [
           `Your fame potential reads ${d}/100. Fame in Jyotish comes from the 10th house (status), the 11th (reach), the lagna (your personal brand) and the Sun.`,
           pts.length ? `Working for you: ${list(pts)}.` : 'Your reputation builds steadily through results rather than hype.',
-          `Your Moon is in ${NAKS[p.Moon.nak].name}, giving ${NAKS[p.Moon.nak].gift}. Make that the tone of your public brand.`,
+          `Your Moon is in ${NAKS[p.Moon.nak].en}, giving ${NAKS[p.Moon.nak].gift}. Make that the tone of your public brand.`,
         ],
         factors: [`10th house: ${sav[10]} bindus`, `11th house: ${sav[11]} bindus`, `Lagna: ${sav[1]} bindus`, `Sun in house ${p.Sun.house}`],
       });
@@ -1463,12 +1643,12 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       if ([1, 7].includes(p.Jupiter.house) || [1, 7].includes(p.Venus.house)) cancel.push(`${[1, 7].includes(p.Jupiter.house) ? 'Jupiter' : 'Venus'} in the ${ord([1, 7].includes(p.Jupiter.house) ? p.Jupiter.house : p.Venus.house)} house`);
       const sm = { 2: [2, 5], 4: [0, 7], 7: [3, 9], 8: [8, 11], 12: [1, 6] };
       if (sm[mh] && sm[mh].includes(p.Mars.sign)) cancel.push(`Mars in ${SIGNS[p.Mars.sign].en} in the ${ord(mh)} house is a listed exception`);
-      const verdict = !lag && !moo ? 'Not Manglik' : cancel.length ? 'Manglik, cancelled' : 'Mangal energy present';
-      add('love', 'manglik', 'Am I Manglik?', {
+      const verdict = !lag && !moo ? 'No, Mars is clear' : cancel.length ? 'Mars issue, cancelled' : 'Strong Mars energy';
+      add('love', 'manglik', 'Does Mars cause problems in my marriage?', {
         verdict, tone: !lag && !moo ? 'great' : 'good',
         body: [
-          `Manglik dosha is checked by Mars in the 1st, 2nd, 4th, 7th, 8th or 12th house. Your Mars is in your ${ord(mh)} house from lagna${chartWord}, the ${ord(fm)} from your Moon and the ${ord(fv)} from Venus.`,
-          !lag && !moo ? 'By the two main checks, lagna and Moon, you are not Manglik.' + (ven ? ' Some astrologers also check from Venus, where it does appear; most treat that as minor.' : '') : cancel.length ? `It appears, and it is cancelled by: ${list(cancel)}.` : 'Mars energy here means a passionate, driven partner suits you best, and matching with someone of similar Mars energy is the traditional answer.',
+          `The classic Mars check for marriage (called Manglik in India) looks for Mars in the 1st, 2nd, 4th, 7th, 8th or 12th house. Your Mars is in your ${ord(mh)} house from lagna${chartWord}, the ${ord(fm)} from your Moon and the ${ord(fv)} from Venus.`,
+          !lag && !moo ? 'By the two main checks, from your rising sign and your Moon, Mars causes no marriage issue for you.' + (ven ? ' Some astrologers also check from Venus, where it does appear; most treat that as minor.' : '') : cancel.length ? `It appears, and it is cancelled by: ${list(cancel)}.` : 'Mars energy here means a passionate, driven partner suits you best, and matching with someone of similar Mars energy is the traditional answer.',
           'Mars in a good house gives drive, courage and protectiveness in relationships.',
         ],
         factors: [`Mars in ${sg(p.Mars.sign)}`, `From lagna: ${ord(mh)}`, `From Moon: ${ord(fm)}`, `From Venus: ${ord(fv)}`].concat(cancel),
@@ -1484,7 +1664,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
         body: [
           `${c.timeKnown ? `Your lagna is ${sg(c.asc.sign)}. ${SIGNS[c.asc.sign].lagna}` : `Your birth time is not set, so your Moon sign stands in for the lagna.`}`,
           `Your Moon is in ${sg(p.Moon.sign)}. ${SIGNS[p.Moon.sign].moon}`,
-          `Your nakshatra is ${nk.name}, ruled by ${nk.deity}, symbol ${nk.symbol}: ${nk.gift}. Its gana is ${g[0]}, meaning ${g[1]}.`,
+          `Your birth star is ${nk.en} (${nk.name}), symbolised by ${nk.symbol}: ${nk.gift}.`,
           `Your Atmakaraka (soul planet) is ${c.karakas.atma}, so your life purpose runs through ${PL[c.karakas.atma].means}.`,
           `Your three strongest planets: ${top3.map((n) => `${n} (${p[n].strength}/100, ${digw(n)} in house ${p[n].house})`).join('; ')}.`,
         ],
@@ -1569,7 +1749,6 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
           `These follow your lagna lord ${L1}, the classical choice because it rules your body and fortune. Supporting picks come from your 9th lord of luck, ${L9}.`,
           `Lucky numbers: ${P.num}${PL[L9].num !== P.num ? ' and ' + PL[L9].num : ''}. Colours: ${P.color}${L9 !== L1 ? ', plus ' + PL[L9].color : ''}. Days: ${P.day}${PL[L9].day !== P.day ? ' and ' + PL[L9].day : ''}. Direction: ${P.dir}.`,
           `Gemstone: ${P.gem} for ${L1}.${helpers.length ? ` Supporting stone${helpers.length > 1 ? 's' : ''}: ${helpers.map((l) => `${PL[l].gem} for ${l}, your ${c.housesOwned(l).map(ord).join(' and ')} lord`).join('; ')}.` : ''} Traditionally a stone is tried for a few days before committing to it.`,
-          `Mantra: "${P.mantra}", 108 times on ${P.day}s. Deity: ${P.deity}.`,
         ],
         factors: [`Lagna lord ${L1}`, `5th lord ${L5}`, `9th lord ${L9}`],
       });
@@ -1581,7 +1760,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       lagna: c.timeKnown ? sg(c.asc.sign) : 'Needs birth time',
       lagnaDeg: c.asc.deg,
       rashi: sg(p.Moon.sign),
-      nak: `${nk.name}, pada ${p.Moon.pada}`,
+      nak: `${nk.en}, pada ${p.Moon.pada}`,
       nakLord: nk.lord,
       sunSign: sg(p.Sun.sign),
       dasha: curMD ? `${curMD.lord} / ${curAD.lord}` : '',
@@ -1589,14 +1768,14 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       atma: c.karakas.atma,
       gana: GANA_TEXT[GANA[p.Moon.nak]][0], nadi: NADI[p.Moon.nak % 6], syllable: nk.syl[p.Moon.pada - 1],
     };
-    return { areas, A, H, questions: Q, timeline, cur: { md: curMD, ad: curAD }, transits: { now: tNow, jupiterPath, sadeList, satRel, jupNowMoon }, summary, top3, fmt: { fmtMY, fmtY, fmtD } };
+    return { months, areas, A, H, questions: Q, timeline, cur: { md: curMD, ad: curAD }, transits: { now: tNow, jupiterPath, sadeList, satRel, jupNowMoon }, summary, top3, fmt: { fmtMY, fmtY, fmtD } };
   }
 
   function chartText(c, r, name) {
     const p = c.p;
     const lines = [];
     lines.push(`Name: ${name || 'Native'}. Vedic chart, Lahiri ayanamsa, whole-sign houses${c.timeKnown ? '' : ', birth time unknown so houses are from the Moon'}.`);
-    lines.push(`Lagna ${c.timeKnown ? SIGNS[c.asc.sign].en + ' ' + c.asc.deg.toFixed(1) + '°' : 'unknown'}. Moon sign ${SIGNS[p.Moon.sign].en}, nakshatra ${NAKS[p.Moon.nak].name} pada ${p.Moon.pada}.`);
+    lines.push(`Rising sign ${c.timeKnown ? SIGNS[c.asc.sign].en + ' ' + c.asc.deg.toFixed(1) + '°' : 'unknown'}. Moon sign ${SIGNS[p.Moon.sign].en}, birth star ${NAKS[p.Moon.nak].en}.`);
     for (const n of PLANETS) { const x = p[n]; lines.push(`${n}: ${SIGNS[x.sign].en} ${x.deg.toFixed(1)}°, house ${x.house}, ${x.dignity}${x.neechaBhanga ? ' (neecha bhanga)' : ''}${x.retro && n !== 'Rahu' && n !== 'Ketu' ? ', retrograde' : ''}${x.combust ? ', combust' : ''}, strength ${x.strength}/100.`); }
     lines.push(`Ashtakavarga (SAV) by house 1-12: ${c.ashtakavarga.byHouse.slice(1).join(', ')}.`);
     lines.push(`Yogas: ${c.yogas.map((y) => y.name + ' (' + y.planets.join('+') + ')').join('; ') || 'none'}.`);
@@ -1617,6 +1796,17 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
   'use strict';
   const J = window.Jyotish, R = window.Reading;
   const $ = (s, el) => (el || document).querySelector(s);
+  // Plain-English filter for every reading string shown on the page
+  const EN = [[/In Vimshottari terms, /g, ''], [/(\w+) Mahadasha/g, '$1 period'], [/Mahadashas?/g, 'major period'], [/(\w+) Antardasha/g, '$1 sub-period'], [/Antardasha/g, 'sub-period'],
+    [/Vimshottari dasha/g, 'The planetary period system'], [/Vimshottari/g, 'planetary period'], [/\bdashas\b/g, 'planetary periods'], [/\bdasha\b/g, 'planetary period'],
+    [/Sade Sati/g, "Saturn's 7.5-year phase"], [/Jyotish/g, 'Vedic astrology'], [/ in Ashtakavarga/g, ' in the strength-point system'], [/Ashtakavarga/g, 'strength points'], [/bindus/g, 'strength points'],
+    [/Your Amatyakaraka, the Jaimini planet of profession, is/g, 'Your career planet is'], [/Amatyakaraka/g, 'career planet'], [/Atmakaraka \(soul planet\)/g, 'soul planet'], [/Atmakaraka/g, 'soul planet'],
+    [/Darakaraka \(Jaimini spouse planet\)/g, 'Partner planet'], [/Darakaraka/g, 'partner planet'], [/karaka of wealth/g, 'planet of wealth'], [/Spouse karaka/g, 'Partner planet'],
+    [/nakshatra/g, 'birth star'], [/Lagna lord/g, 'Rising-sign ruler'], [/lagna lord/g, 'rising-sign ruler'], [/Lagna/g, 'Rising sign'], [/lagna/g, 'rising sign'],
+    [/(\d+)(st|nd|rd|th) lord\b/g, '$1$2-house ruler'], [/\blords\b/g, 'rulers'], [/\blord\b/g, 'ruler'],
+    [/kendras/g, 'power houses'], [/kendra/g, 'power house'], [/trikonas/g, 'luck houses'], [/trikona/g, 'luck house'], [/dusthana/g, 'difficult house'], [/an upachaya house/g, 'a growth house'],
+    [/raja yogas/g, 'success combinations'], [/\byogas\b/g, 'combinations'], [/\byoga\b/g, 'combination'], [/Manglik/g, 'Mars-heavy'], [/\bRahu\b/g, 'North Node'], [/\bKetu\b/g, 'South Node']];
+  const en = (t) => EN.reduce((a, [re, to]) => a.replace(re, to), String(t));
   const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const STORE = 'janma-kundli.v1';
   const DEFAULT = window.KUNDLI_DEFAULT;
@@ -1754,20 +1944,22 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     }
     return s + '</svg>';
   }
+  const AB = { Sun: 'Su', Moon: 'Mo', Mars: 'Ma', Mercury: 'Me', Jupiter: 'Ju', Venus: 'Ve', Saturn: 'Sa', Rahu: 'NN', Ketu: 'SN' };
+  const PN = (n) => n === 'Rahu' ? 'North Node' : n === 'Ketu' ? 'South Node' : n;
   let chartMode = 'd1';
   function drawChart() {
     const c = current.chart; const p = c.p;
     const flags = (n) => (p[n].retro && n !== 'Rahu' && n !== 'Ketu' ? 'R' : '') + (p[n].dignity === 'exalted' ? '↑' : p[n].dignity === 'debilitated' ? '↓' : '');
     let lag, items, deg = true, title;
     if (chartMode === 'd9') {
-      lag = c.timeKnown ? c.asc.nav : p.Moon.nav; deg = false; title = 'Navamsa (D9)';
-      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].nav, flags: '' }));
+      lag = c.timeKnown ? c.asc.nav : p.Moon.nav; deg = false; title = 'Marriage chart (D9)';
+      items = J.PLANETS.map((n) => ({ ab: AB[n], sign: p[n].nav, flags: '' }));
     } else if (chartMode === 'moon') {
-      lag = p.Moon.sign; title = 'Chandra lagna (Moon chart)';
-      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+      lag = p.Moon.sign; title = 'Moon chart';
+      items = J.PLANETS.map((n) => ({ ab: AB[n], sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
     } else {
-      lag = c.lagnaSign; title = c.timeKnown ? 'Rashi chart (D1)' : 'Rashi chart from the Moon';
-      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+      lag = c.lagnaSign; title = c.timeKnown ? 'Birth chart' : 'Birth chart from the Moon';
+      items = J.PLANETS.map((n) => ({ ab: AB[n], sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
     }
     if (c.timeKnown || chartMode === 'moon') items.unshift({ ab: 'Asc', sign: chartMode === 'd9' ? c.asc.nav : lag, deg: chartMode === 'd1' ? c.asc.deg : null, flags: '' });
     if (chartMode === 'moon') items = items.filter((x) => x.ab !== 'Asc');
@@ -1779,8 +1971,8 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
 
   // ---------- render ----------
   let current = null;
-  let activeGroup = 'now';
-  const GROUPS = [['now', 'Right now'], ['money', 'Money & business'], ['career', 'Career & fame'], ['love', 'Love & marriage'], ['life', 'Life & luck']];
+  let activeGroup = 'soon';
+  const GROUPS = [['soon', 'Next 8 months'], ['now', 'Right now'], ['money', 'Money & business'], ['career', 'Career & fame'], ['love', 'Love & marriage'], ['life', 'Life & luck']];
   const TONE = { great: 'good', good: 'kesar', steady: '' };
   const TIER_VAR = { Golden: 'var(--tier-golden)', Rising: 'var(--tier-rising)', Growth: 'var(--tier-growth)', Foundation: 'var(--tier-foundation)' };
 
@@ -1813,19 +2005,19 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
   function renderHero() {
     const { chart: c, reading: r, zone } = current; const S = r.summary;
     $('#hero-name').textContent = state.name || 'Your kundli';
-    $('#hero-eyebrow').textContent = state.sample ? 'Example chart' : 'Vedic birth chart · Lahiri ayanamsa';
+    $('#hero-eyebrow').textContent = state.sample ? 'Example chart' : 'Vedic birth chart · sidereal zodiac';
     const [y, m, d] = state.date.split('-').map(Number);
     const dateLabel = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d)));
     const timeLabel = state.timeMode === 'unknown' ? 'time unknown' : tm(current.input.utcMs, zone) + (state.timeMode === 'approx' ? ' (approx.)' : '');
     $('#hero-birth').textContent = `${dateLabel} · ${timeLabel} · ${state.place.label}`;
     const nk = R.NAKS[c.p.Moon.nak];
     const facts = [
-      ['Lagna', c.timeKnown ? `${S.lagna}` : 'Needs birth time', c.timeKnown ? `${dms(c.asc.deg)} · ruled by ${J.SIGN_LORD[c.asc.sign]}` : 'Houses are read from the Moon'],
-      ['Rashi (Moon sign)', S.rashi, `${dms(c.p.Moon.deg)} · ruled by ${J.SIGN_LORD[c.p.Moon.sign]}`],
-      ['Nakshatra', S.nak, `Lord ${nk.lord} · deity ${nk.deity.split(',')[0]}`],
-      ['Running dasha', S.dasha, `Sub-period until ${S.dashaEnd}`],
-      ['Sun sign (sidereal)', S.sunSign, `${dms(c.p.Sun.deg)}`],
-      ['Namakshar', `"${S.syllable}"`, `Gana ${S.gana} · Nadi ${S.nadi}`],
+      ['Rising sign', c.timeKnown ? R.SIGNS[c.asc.sign].en : 'Needs birth time', c.timeKnown ? `${dms(c.asc.deg)} · ruled by ${J.SIGN_LORD[c.asc.sign]}` : 'Houses are read from the Moon'],
+      ['Moon sign', R.SIGNS[c.p.Moon.sign].en, `${dms(c.p.Moon.deg)} · ruled by ${J.SIGN_LORD[c.p.Moon.sign]}`],
+      ['Birth star', nk.en, `${nk.name}, quarter ${c.p.Moon.pada} · ruled by ${PN(nk.lord)}`],
+      ['Current period', en(S.dasha), `Sub-period until ${S.dashaEnd}`],
+      ['Sun sign (sidereal)', R.SIGNS[c.p.Sun.sign].en, `${dms(c.p.Sun.deg)}`],
+      ['Lucky name sound', `"${S.syllable}"`, 'From your birth star'],
     ];
     $('#hero-facts').innerHTML = facts.map(([k, v, sub]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}<span>${esc(sub)}</span></dd></div>`).join('');
     const note = $('#hero-note');
@@ -1833,12 +2025,12 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     if (state.sample) { note.hidden = false; note.classList.add('example-note'); note.textContent = 'This is an example chart. Enter your birth details below to see yours.'; }
     else if (state.timeMode === 'approx' && current.lagnaWindow) {
       const w = current.lagnaWindow; note.hidden = false;
-      note.textContent = `Approximate time. Your lagna stays ${R.SIGNS[w.sign].sa} (${R.SIGNS[w.sign].en}) for births between ${tm(w.start, zone)} and ${tm(w.end, zone)}. If you find the exact time, update it below.`;
+      note.textContent = `Approximate time. Your rising sign stays ${R.SIGNS[w.sign].en} for births between ${tm(w.start, zone)} and ${tm(w.end, zone)}. If you find the exact time, update it below.`;
     } else if (state.timeMode === 'unknown') {
       note.hidden = false;
       const a = current.moonRange.a, b = current.moonRange.b;
       const sameNak = J.nakOf(a) === J.nakOf(b), sameSign = J.signOf(a) === J.signOf(b);
-      note.textContent = `Birth time unknown, so houses are read from your Moon (Chandra lagna). ${sameSign && sameNak ? 'Your Moon sign and nakshatra are the same all day, so those are reliable.' : `During that day the Moon moved from ${R.NAKS[J.nakOf(a)].name} to ${R.NAKS[J.nakOf(b)].name}${sameSign ? '' : ` and from ${R.SIGNS[J.signOf(a)].en} to ${R.SIGNS[J.signOf(b)].en}`}, so the nakshatra depends on the time.`}`;
+      note.textContent = `Birth time unknown, so houses are read from your Moon. ${sameSign && sameNak ? 'Your Moon sign and birth star are the same all day, so those are reliable.' : `During that day the Moon moved from ${R.NAKS[J.nakOf(a)].en} to ${R.NAKS[J.nakOf(b)].en}${sameSign ? '' : ` and from ${R.SIGNS[J.signOf(a)].en} to ${R.SIGNS[J.signOf(b)].en}`}, so the birth star depends on the time.`}`;
     } else note.hidden = true;
     drawChart();
   }
@@ -1849,21 +2041,24 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
         <div class="area-top"><span class="area-name">${esc(a.name)}</span><span class="chip ${a.score >= 81 ? 'good' : 'kesar'}">${esc(a.label)}</span></div>
         <div class="area-score num">${a.score}</div>
         <div class="meter" aria-hidden="true"><i style="width:${a.score}%"></i></div>
-        <div class="area-basis">${esc(a.basis)}</div>
+        <div class="area-basis">${esc(en(a.basis))}</div>
       </div>`).join('');
   }
 
+  function renderMonths() {
+    $('#months').innerHTML = current.reading.months.map((m) => `<div class="mo ${m.rating === 'Best' ? 'best' : ''}"><b>${esc(m.label)}</b><span class="chip ${m.rating === 'Best' ? 'kesar' : m.rating === 'Strong' ? 'good' : ''}">${m.rating}</span><span class="f">${esc(en(m.focus))}</span></div>`).join('');
+  }
   function renderQuestions() {
     $('#groups').innerHTML = GROUPS.map(([k, l]) => `<button type="button" data-g="${k}" aria-pressed="${k === activeGroup}">${esc(l)}</button>`).join('');
     const qs = current.reading.questions.filter((q) => q.group === activeGroup);
     $('#qlist').innerHTML = qs.map((q, i) => `
       <details class="q" ${i === 0 ? 'open' : ''}>
-        <summary><h3>${esc(q.q)}</h3><span class="verdict"><span class="chip ${TONE[q.tone] || ''}">${esc(q.verdict)}</span></span></summary>
+        <summary><h3>${esc(en(q.q))}</h3><span class="verdict"><span class="chip ${TONE[q.tone] || ''}">${esc(en(q.verdict))}</span></span></summary>
         <div class="qbody">
-          <div class="prose">${q.body.map((b) => `<p>${esc(b)}</p>`).join('')}
-            ${q.timing && q.timing.length ? `<div class="timing">${q.timing.map((t) => `<div><b>${esc(t.label)}</b><span class="num">${esc(t.range)}</span></div>`).join('')}</div>` : ''}
+          <div class="prose">${q.body.map((b) => `<p>${esc(en(b))}</p>`).join('')}
+            ${q.timing && q.timing.length ? `<div class="timing">${q.timing.map((t) => `<div><b>${esc(en(t.label))}</b><span>${esc(en(t.range))}</span></div>`).join('')}</div>` : ''}
           </div>
-          <div class="why"><h4>Why the chart says this</h4><ul>${q.factors.map((f) => `<li>${esc(f)}</li>`).join('')}</ul></div>
+          <div class="why"><h4>Why the chart says this</h4><ul>${q.factors.map((f) => `<li>${esc(en(f))}</li>`).join('')}</ul></div>
         </div>
       </details>`).join('');
   }
@@ -1880,12 +2075,12 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       const sa = (t.start - current.input.utcMs) / J.YEAR, ea = Math.min(maxAge, (t.end - current.input.utcMs) / J.YEAR);
       html += `<details class="tl-row ${t.current ? 'current' : ''}" ${t.current ? 'open' : ''}>
         <summary>
-          <div class="tl-name"><b>${esc(t.lord)} · ${esc(R.PL[t.lord].sa)}</b><span class="num">${r.fmt.fmtY(t.start)}–${r.fmt.fmtY(t.end)} · age ${t.startAge}–${t.endAge}</span></div>
+          <div class="tl-name"><b>${esc(PN(t.lord))}</b><span class="num">${r.fmt.fmtY(t.start)}–${r.fmt.fmtY(t.end)} · age ${t.startAge}–${t.endAge}</span></div>
           <div class="tl-track"><div class="tl-seg" style="left:${pct(sa)};width:calc(${pct(ea)} - ${pct(sa)});background:${TIER_VAR[t.tier]}"></div>${t.current ? `<div class="tl-now" style="left:${pct(ageNow)}"></div>` : ''}</div>
         </summary>
         <div class="tl-detail"><span></span><div>
-          <p class="prose"><span class="chip ${t.tier === 'Golden' ? 'kesar' : t.tier === 'Rising' ? 'kesar' : ''}">${esc(t.tier)} period</span> ${esc(t.theme)}</p>
-          <div class="subs">${t.sub.map((a) => `<div class="${a.current ? 'cur' : ''}"><span>${esc(a.lord)}</span><span class="num muted">${r.fmt.fmtMY(a.start)}</span></div>`).join('')}</div>
+          <p class="prose"><span class="chip ${t.tier === 'Golden' ? 'kesar' : t.tier === 'Rising' ? 'kesar' : ''}">${esc(t.tier)} period</span> ${esc(en(t.theme))}</p>
+          <div class="subs">${t.sub.map((a) => `<div class="${a.current ? 'cur' : ''}"><span>${esc(PN(a.lord))}</span><span class="num muted">${r.fmt.fmtMY(a.start)}</span></div>`).join('')}</div>
         </div></div>
       </details>`;
     }
@@ -1907,11 +2102,11 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       <div class="day">
         <div class="day-date"><b class="num">${zfmt(x.sunrise, zone, { day: 'numeric' })}</b><span>${zfmt(x.sunrise, zone, { month: 'short', year: 'numeric' })} · ${WDN[x.weekday]}</span></div>
         <dl class="kv">
-          <dt>Tithi</dt><dd>${esc(x.tithi)}</dd>
-          <dt>Nakshatra</dt><dd>${esc(R.NAKS[x.nak].name)}</dd>
-          <dt>Tara</dt><dd>${esc(x.tara)}</dd>
-          ${x.abhijit ? `<dt>Best window</dt><dd class="num">${tm(x.abhijit[0], zone)} to ${tm(x.abhijit[1], zone)} (Abhijit)</dd>` : `<dt>Best window</dt><dd>Morning, after sunrise ${tm(x.sunrise, zone)}</dd>`}
-          <dt>Avoid</dt><dd class="num">${tm(x.rahuKaal[0], zone)} to ${tm(x.rahuKaal[1], zone)} (Rahu Kaal)</dd>
+          <dt>Lunar day</dt><dd>${esc(x.tithi)}</dd>
+          <dt>Moon's star</dt><dd>${esc(R.NAKS[x.nak].en)}</dd>
+          <dt>Star match</dt><dd>${esc(x.tara)}</dd>
+          ${x.abhijit ? `<dt>Best window</dt><dd class="num">${tm(x.abhijit[0], zone)} to ${tm(x.abhijit[1], zone)} (midday)</dd>` : `<dt>Best window</dt><dd>Morning, after sunrise ${tm(x.sunrise, zone)}</dd>`}
+          <dt>Avoid</dt><dd class="num">${tm(x.rahuKaal[0], zone)} to ${tm(x.rahuKaal[1], zone)} (unlucky slot)</dd>
         </dl>
         <ul>${x.why.slice(0, 3).map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
       </div>`).join('') || '<p class="muted">No day in the next 60 passes every check. Try again next month.</p>';
@@ -1919,32 +2114,32 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
   combo($('#f-lcity'), $('#lcity-list'), (c) => { launch = { label: placeLabel(c), lat: c.lat, lon: c.lon, tz: c.tz }; state.launch = launch; save(); renderDates(); });
 
   function renderYogas() {
-    const KIND = { wealth: 'Wealth', power: 'Status', fame: 'Fame', mind: 'Mind' };
+    const KIND = { wealth: 'Wealth', power: 'Success', fame: 'Fame', mind: 'Mind' };
     const ys = current.chart.yogas;
     $('#yoga-list').innerHTML = ys.map((y) => `
       <div class="yoga">
-        <div class="yoga-top"><b>${esc(y.name)}</b><span class="chip ${y.kind === 'wealth' ? 'good' : y.kind === 'power' ? 'kesar' : ''}">${KIND[y.kind]}${y.planets.length ? ' · ' + esc(y.planets.join(' + ')) : ''}</span></div>
-        <p>${esc(y.text)}</p>
-      </div>`).join('') || '<p class="muted">No classical yogas detected with these settings.</p>';
+        <div class="yoga-top"><b>${esc(en(y.name))}</b><span class="chip ${y.kind === 'wealth' ? 'good' : y.kind === 'power' ? 'kesar' : ''}">${KIND[y.kind]}${y.planets.length ? ' · ' + esc(y.planets.map(PN).join(' + ')) : ''}</span></div>
+        <p>${esc(en(y.text))}</p>
+      </div>`).join('') || '<p class="muted">No classic combinations found with these settings.</p>';
   }
 
   function renderPositions() {
     const c = current.chart, p = c.p;
-    const DIG = { exalted: 'Exalted', moolatrikona: 'Moolatrikona', own: 'Own sign', friend: 'Friend', neutral: 'Neutral', enemy: 'Enemy sign', debilitated: 'Debilitated' };
+    const DIG = { exalted: 'Strongest sign', moolatrikona: 'Strong home sign', own: 'Own sign', friend: 'Friendly sign', neutral: 'Neutral sign', enemy: 'Unfriendly sign', debilitated: 'Weakest sign' };
     const rows = [];
-    if (c.timeKnown) rows.push(`<tr><td><b>Lagna</b></td><td>${esc(R.SIGNS[c.asc.sign].sa)} · ${esc(R.SIGNS[c.asc.sign].en)}</td><td class="num">${dms(c.asc.deg)}</td><td>${esc(R.NAKS[c.asc.nak].name)} ${c.asc.pada}</td><td class="num">1</td><td>Ruled by ${J.SIGN_LORD[c.asc.sign]}</td><td></td><td></td></tr>`);
+    if (c.timeKnown) rows.push(`<tr><td><b>Rising sign</b></td><td>${esc(R.SIGNS[c.asc.sign].en)}</td><td class="num">${dms(c.asc.deg)}</td><td>${esc(R.NAKS[c.asc.nak].en)}</td><td class="num">1</td><td>Ruled by ${J.SIGN_LORD[c.asc.sign]}</td><td></td><td></td></tr>`);
     for (const n of J.PLANETS) {
       const x = p[n];
-      const notes = [x.retro && n !== 'Rahu' && n !== 'Ketu' ? 'Retrograde' : '', x.combust ? 'Close to Sun' : '', x.vargottama ? 'Vargottama' : '', x.digBala ? 'Dig bala' : '', x.neechaBhanga ? 'Neecha bhanga' : '', c.karakas.atma === n ? 'Atmakaraka' : '', c.karakas.amatya === n ? 'Amatyakaraka' : ''].filter(Boolean).join(', ');
-      rows.push(`<tr><td><b>${n}</b> <span class="muted">${R.PL[n].sa}</span></td><td>${esc(R.SIGNS[x.sign].sa)} · ${esc(R.SIGNS[x.sign].en)}</td><td class="num">${dms(x.deg)}</td><td>${esc(R.NAKS[x.nak].name)} ${x.pada}</td><td class="num">${x.house}</td><td>${n === 'Rahu' || n === 'Ketu' ? (x.dignity === 'exalted' || x.dignity === 'debilitated' ? DIG[x.dignity] : 'Node') : DIG[x.dignity]}</td><td><span class="sbar"><i style="width:${x.strength}%"></i></span><span class="num">${x.strength}</span></td><td class="muted">${esc(notes)}</td></tr>`);
+      const notes = [x.retro && n !== 'Rahu' && n !== 'Ketu' ? 'Retrograde' : '', x.combust ? 'Close to Sun' : '', x.vargottama ? 'Doubly strong' : '', x.digBala ? 'Directional strength' : '', x.neechaBhanga ? 'Weakness cancelled' : '', c.karakas.atma === n ? 'Soul planet' : '', c.karakas.amatya === n ? 'Career planet' : ''].filter(Boolean).join(', ');
+      rows.push(`<tr><td><b>${PN(n)}</b></td><td>${esc(R.SIGNS[x.sign].en)}</td><td class="num">${dms(x.deg)}</td><td>${esc(R.NAKS[x.nak].en)}</td><td class="num">${x.house}</td><td>${n === 'Rahu' || n === 'Ketu' ? (x.dignity === 'exalted' || x.dignity === 'debilitated' ? DIG[x.dignity] : 'Lunar node') : DIG[x.dignity]}</td><td><span class="sbar"><i style="width:${x.strength}%"></i></span><span class="num">${x.strength}</span></td><td class="muted">${esc(notes)}</td></tr>`);
     }
-    $('#ptable').innerHTML = `<thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Nakshatra</th><th>House</th><th>Dignity</th><th>Strength</th><th>Notes</th></tr></thead><tbody>${rows.join('')}</tbody>`;
-    $('#ayan-note').textContent = `Lahiri ayanamsa at birth: ${dms(c.ayanamsa)}. Houses are whole signs from the ${c.timeKnown ? 'lagna' : 'Moon'}. Strength combines dignity, house, dig bala, vargottama and combustion.`;
+    $('#ptable').innerHTML = `<thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Birth star</th><th>House</th><th>Sign strength</th><th>Strength</th><th>Notes</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+    $('#ayan-note').textContent = `Sidereal zodiac (Lahiri method), ${dms(c.ayanamsa)} behind the Western zodiac at your birth. Houses are whole signs counted from your ${c.timeKnown ? 'rising sign' : 'Moon'}. Strength combines sign, house, direction and closeness to the Sun.`;
     const sav = c.ashtakavarga.byHouse;
     $('#sav').innerHTML = sav.slice(1).map((b, i) => `<div class="${b >= 30 ? 'hi' : ''}"><b class="num">${b}</b><span>House ${i + 1}</span></div>`).join('');
-    $('#sav-note').textContent = `Sarvashtakavarga total ${c.ashtakavarga.total}. Houses with 30 or more bindus are highlighted; 28 is average.`;
+    $('#sav-note').textContent = `Total ${c.ashtakavarga.total} points. Houses with 30 or more are highlighted; 28 is average.`;
     const P = c.panchang;
-    const panch = [['Tithi', `${P.paksha} ${P.tithi}`], ['Vaar', P.vaara || 'n/a'], ['Nakshatra', R.NAKS[P.nak].name], ['Yoga', P.yoga], ['Karana', P.karana], ['Paksha', P.paksha === 'Shukla' ? 'Shukla (waxing)' : 'Krishna (waning)'], ['Sunrise', P.sunrise ? tm(P.sunrise, current.zone) : 'n/a'], ['Ayanamsa', 'Lahiri']];
+    const panch = [['Weekday', P.vaara ? P.vaara.replace(/.*\((\w+)\)/, '$1') : 'n/a'], ['Moon phase', P.paksha === 'Shukla' ? 'Waxing' : 'Waning'], ['Lunar day', `Day ${P.tithiNum <= 15 ? P.tithiNum : P.tithiNum - 15} of the ${P.paksha === 'Shukla' ? 'waxing' : 'waning'} Moon`], ["Moon's star", R.NAKS[P.nak].en], ['Sunrise', P.sunrise ? tm(P.sunrise, current.zone) : 'n/a'], ['Zodiac', 'Sidereal (Lahiri)']];
     $('#panch').innerHTML = panch.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   }
 
@@ -1955,7 +2150,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
       $('#form-error').textContent = 'Could not calculate this chart. Check the date, time and place.';
       console.error(e); return;
     }
-    renderHero(); renderAreas(); renderQuestions(); renderTimeline(); renderDates(); renderYogas(); renderPositions();
+    renderHero(); renderAreas(); renderMonths(); renderQuestions(); renderTimeline(); renderDates(); renderYogas(); renderPositions();
   }
 
   // ---------- ask Claude ----------
@@ -1970,7 +2165,7 @@ window.CITIES="Mumbai|Maharashtra|IN|19.017|72.857|0~Delhi|Delhi|IN|28.67|77.23|
     if (!q || !sample || !current) { $('#ask-status').textContent = q ? '' : 'Type a question first.'; return; }
     ctl = new AbortController();
     $('#ask-btn').disabled = true; $('#ask-stop').hidden = false; $('#ask-status').textContent = 'Thinking...'; $('#ask-out').textContent = '';
-    const prompt = `You are a warm, encouraging Vedic astrologer trained in Parashari Jyotish. Answer the question using only the chart data below. Name the specific planets, houses, dashas, transits or yogas you are using. Keep the tone positive and practical, written in plain English for a smart 18 to 30 year old. 120 to 200 words in short paragraphs. No headings, no bullet lists, no em dashes. Never invent placements that are not in the data. If the chart cannot answer something, say what it does show instead.\n\nToday: ${new Date().toDateString()}.\n\nChart data:\n${R.chartText(current.chart, current.reading, state.name)}\n\nQuestion: ${q}`;
+    const prompt = `You are a warm, encouraging Vedic astrologer. Answer the question using only the chart data below. Name the specific planets, houses, dashas, transits or yogas you are using. Keep the tone positive and practical, written in plain English for a smart 18 to 30 year old. 120 to 200 words in short paragraphs. No headings, no bullet lists, no em dashes. Use only plain English: no Sanskrit or Hindi terms, call Rahu the North Node and Ketu the South Node, and say rising sign, birth star, period and sub-period. Never invent placements that are not in the data. If the chart cannot answer something, say what it does show instead.\n\nToday: ${new Date().toDateString()}.\n\nChart data:\n${R.chartText(current.chart, current.reading, state.name)}\n\nQuestion: ${q}`;
     try {
       await sample(prompt, { signal: ctl.signal, onText: ({ text }) => { $('#ask-status').textContent = ''; $('#ask-out').textContent = text; } });
       $('#ask-status').textContent = '';

@@ -1,11 +1,11 @@
-# Janma Kundli
+# Vedic Birth Chart
 
-A single-file Vedic birth chart reader. Open `index.html` in a browser.
+A single-file Vedic birth chart reader in plain English. Open `index.html` in a browser.
 
 - Sidereal positions (Lahiri ayanamsa) from astronomy-engine, checked against Swiss Ephemeris to within 20 arcseconds
 - Whole-sign houses, North Indian chart (D1, Navamsa, Moon chart)
 - Vimshottari dasha timeline, Parashari Ashtakavarga, classical yogas (BPHS, Phaladeepika)
-- Plain-English answers to common questions (money, business, career, marriage, Sade Sati, lucky factors)
+- Plain-English answers to common questions, including a month-by-month outlook for the next 8 months (money, love, business, travel)
 - Business launch dates from muhurta rules (tithi, vaar, nakshatra, Tarabala, Chandrabala, Rahu Kaal)
 
 ## Build

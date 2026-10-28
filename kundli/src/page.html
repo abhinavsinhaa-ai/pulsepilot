@@ -1,4 +1,4 @@
-<title>Janma Kundli</title>
+<title>Vedic Birth Chart</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,6 +145,15 @@ details.adv[open] summary::before { content: "– "; }
 .meter i { display: block; height: 100%; background: var(--kesar); border-radius: 99px; }
 .area-basis { font-size: 13.5px; color: var(--ink-3); line-height: 1.4; }
 
+/* month strip */
+.months { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; margin-bottom: 22px; }
+.mo { background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-sm); padding: 10px 10px 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.mo.best { border-color: var(--kesar); box-shadow: 0 0 0 1px var(--kesar); }
+.mo b { font-weight: 600; font-size: 15px; }
+.mo span.f { font-size: 13.5px; color: var(--ink-2); line-height: 1.35; }
+@media (max-width: 960px) { .months { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .months { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 /* questions */
 .groups { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 .groups button { border: 1px solid var(--rule); background: var(--card); color: var(--ink-2); border-radius: 999px; padding: 7px 14px; min-height: 40px; font-weight: 600; font-size: 15px; cursor: pointer; transition: transform .1s ease; }
@@ -277,10 +286,10 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <div class="wrap">
     <div class="brand">
       <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="3" fill="none" stroke="var(--kesar)" stroke-width="1.6"/><path d="M1 1 L25 25 M25 1 L1 25 M13 1 L25 13 L13 25 L1 13 Z" fill="none" stroke="var(--kesar)" stroke-width="1.2"/></svg>
-      Janma Kundli
+      Birth Chart
     </div>
     <nav class="nav" aria-label="Sections">
-      <a href="#chart">Chart</a><a href="#details">Birth details</a><a href="#areas">Life areas</a><a href="#questions">Questions</a><a href="#timeline">Timeline</a><a href="#dates">Launch dates</a><a href="#yogas">Yogas</a><a href="#positions">Positions</a>
+      <a href="#chart">Chart</a><a href="#details">Birth details</a><a href="#areas">Life areas</a><a href="#questions">Questions</a><a href="#timeline">Timeline</a><a href="#dates">Launch dates</a><a href="#yogas">Combinations</a><a href="#positions">Positions</a>
     </nav>
   </div>
 </header>
@@ -297,15 +306,15 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       </div>
       <div class="slate" aria-label="Birth chart">
         <div class="slate-top">
-          <div class="slate-title" id="slate-title">Rashi chart (D1)</div>
+          <div class="slate-title" id="slate-title">Birth chart</div>
           <div class="seg" role="group" aria-label="Chart type">
-            <button type="button" data-chart="d1" aria-pressed="true">D1</button>
-            <button type="button" data-chart="d9" aria-pressed="false">Navamsa</button>
+            <button type="button" data-chart="d1" aria-pressed="true">Birth</button>
+            <button type="button" data-chart="d9" aria-pressed="false">Marriage</button>
             <button type="button" data-chart="moon" aria-pressed="false">Moon</button>
           </div>
         </div>
         <div id="chart-box"></div>
-        <div class="slate-foot"><span>North Indian style. Numbers are signs (1 Mesha to 12 Meena).</span><span>R retrograde · ↑ exalted · ↓ debilitated</span></div>
+        <div class="slate-foot"><span>North Indian style. Numbers are signs (1 Aries to 12 Pisces). NN North Node, SN South Node.</span><span>R retrograde · ↑ strongest sign · ↓ weakest sign</span></div>
       </div>
     </div>
   </div>
@@ -353,7 +362,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     <div class="wrap">
       <div class="sec-head">
         <div><div class="eyebrow">At a glance</div><h2>Life areas</h2></div>
-        <p class="muted small">Scored from Ashtakavarga bindus, house lords, occupants and yogas. 28 bindus is the classical average for a house.</p>
+        <p class="muted small">Scored from the classic strength-point system (28 points is average for a house), house rulers, the planets in each house and lucky combinations.</p>
       </div>
       <div class="areas" id="areas-grid"></div>
     </div>
@@ -365,6 +374,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
         <div><div class="eyebrow">Ask the chart</div><h2>Your questions, answered</h2></div>
         <p class="muted small">The questions people ask astrologers most, answered from your own placements. Each answer lists the chart factors behind it.</p>
       </div>
+      <div class="months" id="months"></div>
       <div class="groups" role="group" aria-label="Question topics" id="groups"></div>
       <div class="qlist" id="qlist"></div>
     </div>
@@ -392,7 +402,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <section id="timeline">
     <div class="wrap">
       <div class="sec-head">
-        <div><div class="eyebrow">Vimshottari dasha</div><h2>Life timeline</h2></div>
+        <div><div class="eyebrow">Planetary periods</div><h2>Life timeline</h2></div>
         <p class="muted small">Your life in planetary chapters, from birth. Open a chapter to see what it brings and its sub-periods.</p>
       </div>
       <div class="tl" id="tl"></div>
@@ -403,8 +413,8 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <section id="dates">
     <div class="wrap">
       <div class="sec-head">
-        <div><div class="eyebrow">Muhurta</div><h2>Best dates to launch</h2></div>
-        <p class="muted small">Days in the next 60 that pass the classical checks for opening a business: tithi, vaar, nakshatra, Tarabala and Chandrabala from your birth star, with Bhadra avoided.</p>
+        <div><div class="eyebrow">Business launch</div><h2>Best dates to launch</h2></div>
+        <p class="muted small">Days in the next 60 that pass the classic checks for starting something new: the lunar day, the weekday, the Moon's star, how that star matches your birth star, and the Moon's position from your birth Moon.</p>
       </div>
       <div class="launch-city">
         <div class="field"><label for="f-lcity">Launch city</label>
@@ -419,8 +429,8 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   <section id="yogas">
     <div class="wrap">
       <div class="sec-head">
-        <div><div class="eyebrow">Classical combinations</div><h2>Yogas in your chart</h2></div>
-        <p class="muted small">Detected using the rules in Brihat Parashara Hora Shastra and Phaladeepika.</p>
+        <div><div class="eyebrow">Classic combinations</div><h2>Lucky combinations in your chart</h2></div>
+        <p class="muted small">Detected with the rules from the classic Vedic astrology texts.</p>
       </div>
       <div class="yogas" id="yoga-list"></div>
     </div>
@@ -435,12 +445,12 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       <div class="tbl-wrap"><table id="ptable"></table></div>
       <div class="ref-grid">
         <div>
-          <h3 style="margin-bottom:12px">Ashtakavarga by house</h3>
+          <h3 style="margin-bottom:12px">Strength points by house</h3>
           <div class="sav" id="sav"></div>
           <p class="muted small" style="margin-top:10px" id="sav-note"></p>
         </div>
         <div>
-          <h3 style="margin-bottom:12px">Birth panchang</h3>
+          <h3 style="margin-bottom:12px">Your birth day</h3>
           <dl class="panch" id="panch"></dl>
         </div>
       </div>
@@ -453,11 +463,12 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     <div class="eyebrow">How this is calculated</div>
     <ul>
       <li>Planet positions from astronomy-engine, checked against Swiss Ephemeris to within 20 arcseconds.</li>
-      <li>Lahiri (Chitrapaksha) ayanamsa, whole-sign houses, mean node for Rahu and Ketu.</li>
-      <li>Vimshottari dasha with 365.25-day years. Parashari Ashtakavarga. Yogas from BPHS and Phaladeepika.</li>
-      <li>Muhurta at local sunrise with Rahu Kaal and Abhijit muhurta from the day's real sunrise and sunset.</li>
+      <li>Sidereal zodiac (Lahiri method), whole-sign houses, mean lunar nodes.</li>
+      <li>120-year planetary period system with 365.25-day years, the classic strength-point system, and combinations from the classic Vedic texts.</li>
+      <li>Monthly outlook from each planet's real position mid-month, counted from your birth Moon.</li>
+      <li>Launch dates checked at local sunrise, with the midday window and unlucky slot from that day's real sunrise and sunset.</li>
     </ul>
-    <p style="margin-top:14px">Jyotish is a lens for reflection. Read it, think, then decide for yourself.</p>
+    <p style="margin-top:14px">Astrology is a lens for reflection. Read it, think, then decide for yourself.</p>
   </div>
 </footer>
 
@@ -471,6 +482,17 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   'use strict';
   const J = window.Jyotish, R = window.Reading;
   const $ = (s, el) => (el || document).querySelector(s);
+  // Plain-English filter for every reading string shown on the page
+  const EN = [[/In Vimshottari terms, /g, ''], [/(\w+) Mahadasha/g, '$1 period'], [/Mahadashas?/g, 'major period'], [/(\w+) Antardasha/g, '$1 sub-period'], [/Antardasha/g, 'sub-period'],
+    [/Vimshottari dasha/g, 'The planetary period system'], [/Vimshottari/g, 'planetary period'], [/\bdashas\b/g, 'planetary periods'], [/\bdasha\b/g, 'planetary period'],
+    [/Sade Sati/g, "Saturn's 7.5-year phase"], [/Jyotish/g, 'Vedic astrology'], [/ in Ashtakavarga/g, ' in the strength-point system'], [/Ashtakavarga/g, 'strength points'], [/bindus/g, 'strength points'],
+    [/Your Amatyakaraka, the Jaimini planet of profession, is/g, 'Your career planet is'], [/Amatyakaraka/g, 'career planet'], [/Atmakaraka \(soul planet\)/g, 'soul planet'], [/Atmakaraka/g, 'soul planet'],
+    [/Darakaraka \(Jaimini spouse planet\)/g, 'Partner planet'], [/Darakaraka/g, 'partner planet'], [/karaka of wealth/g, 'planet of wealth'], [/Spouse karaka/g, 'Partner planet'],
+    [/nakshatra/g, 'birth star'], [/Lagna lord/g, 'Rising-sign ruler'], [/lagna lord/g, 'rising-sign ruler'], [/Lagna/g, 'Rising sign'], [/lagna/g, 'rising sign'],
+    [/(\d+)(st|nd|rd|th) lord\b/g, '$1$2-house ruler'], [/\blords\b/g, 'rulers'], [/\blord\b/g, 'ruler'],
+    [/kendras/g, 'power houses'], [/kendra/g, 'power house'], [/trikonas/g, 'luck houses'], [/trikona/g, 'luck house'], [/dusthana/g, 'difficult house'], [/an upachaya house/g, 'a growth house'],
+    [/raja yogas/g, 'success combinations'], [/\byogas\b/g, 'combinations'], [/\byoga\b/g, 'combination'], [/Manglik/g, 'Mars-heavy'], [/\bRahu\b/g, 'North Node'], [/\bKetu\b/g, 'South Node']];
+  const en = (t) => EN.reduce((a, [re, to]) => a.replace(re, to), String(t));
   const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const STORE = 'janma-kundli.v1';
   const DEFAULT = window.KUNDLI_DEFAULT;
@@ -608,20 +630,22 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     }
     return s + '</svg>';
   }
+  const AB = { Sun: 'Su', Moon: 'Mo', Mars: 'Ma', Mercury: 'Me', Jupiter: 'Ju', Venus: 'Ve', Saturn: 'Sa', Rahu: 'NN', Ketu: 'SN' };
+  const PN = (n) => n === 'Rahu' ? 'North Node' : n === 'Ketu' ? 'South Node' : n;
   let chartMode = 'd1';
   function drawChart() {
     const c = current.chart; const p = c.p;
     const flags = (n) => (p[n].retro && n !== 'Rahu' && n !== 'Ketu' ? 'R' : '') + (p[n].dignity === 'exalted' ? '↑' : p[n].dignity === 'debilitated' ? '↓' : '');
     let lag, items, deg = true, title;
     if (chartMode === 'd9') {
-      lag = c.timeKnown ? c.asc.nav : p.Moon.nav; deg = false; title = 'Navamsa (D9)';
-      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].nav, flags: '' }));
+      lag = c.timeKnown ? c.asc.nav : p.Moon.nav; deg = false; title = 'Marriage chart (D9)';
+      items = J.PLANETS.map((n) => ({ ab: AB[n], sign: p[n].nav, flags: '' }));
     } else if (chartMode === 'moon') {
-      lag = p.Moon.sign; title = 'Chandra lagna (Moon chart)';
-      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+      lag = p.Moon.sign; title = 'Moon chart';
+      items = J.PLANETS.map((n) => ({ ab: AB[n], sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
     } else {
-      lag = c.lagnaSign; title = c.timeKnown ? 'Rashi chart (D1)' : 'Rashi chart from the Moon';
-      items = J.PLANETS.map((n) => ({ ab: R.PL[n].ab, sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
+      lag = c.lagnaSign; title = c.timeKnown ? 'Birth chart' : 'Birth chart from the Moon';
+      items = J.PLANETS.map((n) => ({ ab: AB[n], sign: p[n].sign, deg: p[n].deg, flags: flags(n) }));
     }
     if (c.timeKnown || chartMode === 'moon') items.unshift({ ab: 'Asc', sign: chartMode === 'd9' ? c.asc.nav : lag, deg: chartMode === 'd1' ? c.asc.deg : null, flags: '' });
     if (chartMode === 'moon') items = items.filter((x) => x.ab !== 'Asc');
@@ -633,8 +657,8 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
 
   // ---------- render ----------
   let current = null;
-  let activeGroup = 'now';
-  const GROUPS = [['now', 'Right now'], ['money', 'Money & business'], ['career', 'Career & fame'], ['love', 'Love & marriage'], ['life', 'Life & luck']];
+  let activeGroup = 'soon';
+  const GROUPS = [['soon', 'Next 8 months'], ['now', 'Right now'], ['money', 'Money & business'], ['career', 'Career & fame'], ['love', 'Love & marriage'], ['life', 'Life & luck']];
   const TONE = { great: 'good', good: 'kesar', steady: '' };
   const TIER_VAR = { Golden: 'var(--tier-golden)', Rising: 'var(--tier-rising)', Growth: 'var(--tier-growth)', Foundation: 'var(--tier-foundation)' };
 
@@ -667,19 +691,19 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   function renderHero() {
     const { chart: c, reading: r, zone } = current; const S = r.summary;
     $('#hero-name').textContent = state.name || 'Your kundli';
-    $('#hero-eyebrow').textContent = state.sample ? 'Example chart' : 'Vedic birth chart · Lahiri ayanamsa';
+    $('#hero-eyebrow').textContent = state.sample ? 'Example chart' : 'Vedic birth chart · sidereal zodiac';
     const [y, m, d] = state.date.split('-').map(Number);
     const dateLabel = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d)));
     const timeLabel = state.timeMode === 'unknown' ? 'time unknown' : tm(current.input.utcMs, zone) + (state.timeMode === 'approx' ? ' (approx.)' : '');
     $('#hero-birth').textContent = `${dateLabel} · ${timeLabel} · ${state.place.label}`;
     const nk = R.NAKS[c.p.Moon.nak];
     const facts = [
-      ['Lagna', c.timeKnown ? `${S.lagna}` : 'Needs birth time', c.timeKnown ? `${dms(c.asc.deg)} · ruled by ${J.SIGN_LORD[c.asc.sign]}` : 'Houses are read from the Moon'],
-      ['Rashi (Moon sign)', S.rashi, `${dms(c.p.Moon.deg)} · ruled by ${J.SIGN_LORD[c.p.Moon.sign]}`],
-      ['Nakshatra', S.nak, `Lord ${nk.lord} · deity ${nk.deity.split(',')[0]}`],
-      ['Running dasha', S.dasha, `Sub-period until ${S.dashaEnd}`],
-      ['Sun sign (sidereal)', S.sunSign, `${dms(c.p.Sun.deg)}`],
-      ['Namakshar', `"${S.syllable}"`, `Gana ${S.gana} · Nadi ${S.nadi}`],
+      ['Rising sign', c.timeKnown ? R.SIGNS[c.asc.sign].en : 'Needs birth time', c.timeKnown ? `${dms(c.asc.deg)} · ruled by ${J.SIGN_LORD[c.asc.sign]}` : 'Houses are read from the Moon'],
+      ['Moon sign', R.SIGNS[c.p.Moon.sign].en, `${dms(c.p.Moon.deg)} · ruled by ${J.SIGN_LORD[c.p.Moon.sign]}`],
+      ['Birth star', nk.en, `${nk.name}, quarter ${c.p.Moon.pada} · ruled by ${PN(nk.lord)}`],
+      ['Current period', en(S.dasha), `Sub-period until ${S.dashaEnd}`],
+      ['Sun sign (sidereal)', R.SIGNS[c.p.Sun.sign].en, `${dms(c.p.Sun.deg)}`],
+      ['Lucky name sound', `"${S.syllable}"`, 'From your birth star'],
     ];
     $('#hero-facts').innerHTML = facts.map(([k, v, sub]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}<span>${esc(sub)}</span></dd></div>`).join('');
     const note = $('#hero-note');
@@ -687,12 +711,12 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     if (state.sample) { note.hidden = false; note.classList.add('example-note'); note.textContent = 'This is an example chart. Enter your birth details below to see yours.'; }
     else if (state.timeMode === 'approx' && current.lagnaWindow) {
       const w = current.lagnaWindow; note.hidden = false;
-      note.textContent = `Approximate time. Your lagna stays ${R.SIGNS[w.sign].sa} (${R.SIGNS[w.sign].en}) for births between ${tm(w.start, zone)} and ${tm(w.end, zone)}. If you find the exact time, update it below.`;
+      note.textContent = `Approximate time. Your rising sign stays ${R.SIGNS[w.sign].en} for births between ${tm(w.start, zone)} and ${tm(w.end, zone)}. If you find the exact time, update it below.`;
     } else if (state.timeMode === 'unknown') {
       note.hidden = false;
       const a = current.moonRange.a, b = current.moonRange.b;
       const sameNak = J.nakOf(a) === J.nakOf(b), sameSign = J.signOf(a) === J.signOf(b);
-      note.textContent = `Birth time unknown, so houses are read from your Moon (Chandra lagna). ${sameSign && sameNak ? 'Your Moon sign and nakshatra are the same all day, so those are reliable.' : `During that day the Moon moved from ${R.NAKS[J.nakOf(a)].name} to ${R.NAKS[J.nakOf(b)].name}${sameSign ? '' : ` and from ${R.SIGNS[J.signOf(a)].en} to ${R.SIGNS[J.signOf(b)].en}`}, so the nakshatra depends on the time.`}`;
+      note.textContent = `Birth time unknown, so houses are read from your Moon. ${sameSign && sameNak ? 'Your Moon sign and birth star are the same all day, so those are reliable.' : `During that day the Moon moved from ${R.NAKS[J.nakOf(a)].en} to ${R.NAKS[J.nakOf(b)].en}${sameSign ? '' : ` and from ${R.SIGNS[J.signOf(a)].en} to ${R.SIGNS[J.signOf(b)].en}`}, so the birth star depends on the time.`}`;
     } else note.hidden = true;
     drawChart();
   }
@@ -703,21 +727,24 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
         <div class="area-top"><span class="area-name">${esc(a.name)}</span><span class="chip ${a.score >= 81 ? 'good' : 'kesar'}">${esc(a.label)}</span></div>
         <div class="area-score num">${a.score}</div>
         <div class="meter" aria-hidden="true"><i style="width:${a.score}%"></i></div>
-        <div class="area-basis">${esc(a.basis)}</div>
+        <div class="area-basis">${esc(en(a.basis))}</div>
       </div>`).join('');
   }
 
+  function renderMonths() {
+    $('#months').innerHTML = current.reading.months.map((m) => `<div class="mo ${m.rating === 'Best' ? 'best' : ''}"><b>${esc(m.label)}</b><span class="chip ${m.rating === 'Best' ? 'kesar' : m.rating === 'Strong' ? 'good' : ''}">${m.rating}</span><span class="f">${esc(en(m.focus))}</span></div>`).join('');
+  }
   function renderQuestions() {
     $('#groups').innerHTML = GROUPS.map(([k, l]) => `<button type="button" data-g="${k}" aria-pressed="${k === activeGroup}">${esc(l)}</button>`).join('');
     const qs = current.reading.questions.filter((q) => q.group === activeGroup);
     $('#qlist').innerHTML = qs.map((q, i) => `
       <details class="q" ${i === 0 ? 'open' : ''}>
-        <summary><h3>${esc(q.q)}</h3><span class="verdict"><span class="chip ${TONE[q.tone] || ''}">${esc(q.verdict)}</span></span></summary>
+        <summary><h3>${esc(en(q.q))}</h3><span class="verdict"><span class="chip ${TONE[q.tone] || ''}">${esc(en(q.verdict))}</span></span></summary>
         <div class="qbody">
-          <div class="prose">${q.body.map((b) => `<p>${esc(b)}</p>`).join('')}
-            ${q.timing && q.timing.length ? `<div class="timing">${q.timing.map((t) => `<div><b>${esc(t.label)}</b><span class="num">${esc(t.range)}</span></div>`).join('')}</div>` : ''}
+          <div class="prose">${q.body.map((b) => `<p>${esc(en(b))}</p>`).join('')}
+            ${q.timing && q.timing.length ? `<div class="timing">${q.timing.map((t) => `<div><b>${esc(en(t.label))}</b><span>${esc(en(t.range))}</span></div>`).join('')}</div>` : ''}
           </div>
-          <div class="why"><h4>Why the chart says this</h4><ul>${q.factors.map((f) => `<li>${esc(f)}</li>`).join('')}</ul></div>
+          <div class="why"><h4>Why the chart says this</h4><ul>${q.factors.map((f) => `<li>${esc(en(f))}</li>`).join('')}</ul></div>
         </div>
       </details>`).join('');
   }
@@ -734,12 +761,12 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       const sa = (t.start - current.input.utcMs) / J.YEAR, ea = Math.min(maxAge, (t.end - current.input.utcMs) / J.YEAR);
       html += `<details class="tl-row ${t.current ? 'current' : ''}" ${t.current ? 'open' : ''}>
         <summary>
-          <div class="tl-name"><b>${esc(t.lord)} · ${esc(R.PL[t.lord].sa)}</b><span class="num">${r.fmt.fmtY(t.start)}–${r.fmt.fmtY(t.end)} · age ${t.startAge}–${t.endAge}</span></div>
+          <div class="tl-name"><b>${esc(PN(t.lord))}</b><span class="num">${r.fmt.fmtY(t.start)}–${r.fmt.fmtY(t.end)} · age ${t.startAge}–${t.endAge}</span></div>
           <div class="tl-track"><div class="tl-seg" style="left:${pct(sa)};width:calc(${pct(ea)} - ${pct(sa)});background:${TIER_VAR[t.tier]}"></div>${t.current ? `<div class="tl-now" style="left:${pct(ageNow)}"></div>` : ''}</div>
         </summary>
         <div class="tl-detail"><span></span><div>
-          <p class="prose"><span class="chip ${t.tier === 'Golden' ? 'kesar' : t.tier === 'Rising' ? 'kesar' : ''}">${esc(t.tier)} period</span> ${esc(t.theme)}</p>
-          <div class="subs">${t.sub.map((a) => `<div class="${a.current ? 'cur' : ''}"><span>${esc(a.lord)}</span><span class="num muted">${r.fmt.fmtMY(a.start)}</span></div>`).join('')}</div>
+          <p class="prose"><span class="chip ${t.tier === 'Golden' ? 'kesar' : t.tier === 'Rising' ? 'kesar' : ''}">${esc(t.tier)} period</span> ${esc(en(t.theme))}</p>
+          <div class="subs">${t.sub.map((a) => `<div class="${a.current ? 'cur' : ''}"><span>${esc(PN(a.lord))}</span><span class="num muted">${r.fmt.fmtMY(a.start)}</span></div>`).join('')}</div>
         </div></div>
       </details>`;
     }
@@ -761,11 +788,11 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       <div class="day">
         <div class="day-date"><b class="num">${zfmt(x.sunrise, zone, { day: 'numeric' })}</b><span>${zfmt(x.sunrise, zone, { month: 'short', year: 'numeric' })} · ${WDN[x.weekday]}</span></div>
         <dl class="kv">
-          <dt>Tithi</dt><dd>${esc(x.tithi)}</dd>
-          <dt>Nakshatra</dt><dd>${esc(R.NAKS[x.nak].name)}</dd>
-          <dt>Tara</dt><dd>${esc(x.tara)}</dd>
-          ${x.abhijit ? `<dt>Best window</dt><dd class="num">${tm(x.abhijit[0], zone)} to ${tm(x.abhijit[1], zone)} (Abhijit)</dd>` : `<dt>Best window</dt><dd>Morning, after sunrise ${tm(x.sunrise, zone)}</dd>`}
-          <dt>Avoid</dt><dd class="num">${tm(x.rahuKaal[0], zone)} to ${tm(x.rahuKaal[1], zone)} (Rahu Kaal)</dd>
+          <dt>Lunar day</dt><dd>${esc(x.tithi)}</dd>
+          <dt>Moon's star</dt><dd>${esc(R.NAKS[x.nak].en)}</dd>
+          <dt>Star match</dt><dd>${esc(x.tara)}</dd>
+          ${x.abhijit ? `<dt>Best window</dt><dd class="num">${tm(x.abhijit[0], zone)} to ${tm(x.abhijit[1], zone)} (midday)</dd>` : `<dt>Best window</dt><dd>Morning, after sunrise ${tm(x.sunrise, zone)}</dd>`}
+          <dt>Avoid</dt><dd class="num">${tm(x.rahuKaal[0], zone)} to ${tm(x.rahuKaal[1], zone)} (unlucky slot)</dd>
         </dl>
         <ul>${x.why.slice(0, 3).map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
       </div>`).join('') || '<p class="muted">No day in the next 60 passes every check. Try again next month.</p>';
@@ -773,32 +800,32 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
   combo($('#f-lcity'), $('#lcity-list'), (c) => { launch = { label: placeLabel(c), lat: c.lat, lon: c.lon, tz: c.tz }; state.launch = launch; save(); renderDates(); });
 
   function renderYogas() {
-    const KIND = { wealth: 'Wealth', power: 'Status', fame: 'Fame', mind: 'Mind' };
+    const KIND = { wealth: 'Wealth', power: 'Success', fame: 'Fame', mind: 'Mind' };
     const ys = current.chart.yogas;
     $('#yoga-list').innerHTML = ys.map((y) => `
       <div class="yoga">
-        <div class="yoga-top"><b>${esc(y.name)}</b><span class="chip ${y.kind === 'wealth' ? 'good' : y.kind === 'power' ? 'kesar' : ''}">${KIND[y.kind]}${y.planets.length ? ' · ' + esc(y.planets.join(' + ')) : ''}</span></div>
-        <p>${esc(y.text)}</p>
-      </div>`).join('') || '<p class="muted">No classical yogas detected with these settings.</p>';
+        <div class="yoga-top"><b>${esc(en(y.name))}</b><span class="chip ${y.kind === 'wealth' ? 'good' : y.kind === 'power' ? 'kesar' : ''}">${KIND[y.kind]}${y.planets.length ? ' · ' + esc(y.planets.map(PN).join(' + ')) : ''}</span></div>
+        <p>${esc(en(y.text))}</p>
+      </div>`).join('') || '<p class="muted">No classic combinations found with these settings.</p>';
   }
 
   function renderPositions() {
     const c = current.chart, p = c.p;
-    const DIG = { exalted: 'Exalted', moolatrikona: 'Moolatrikona', own: 'Own sign', friend: 'Friend', neutral: 'Neutral', enemy: 'Enemy sign', debilitated: 'Debilitated' };
+    const DIG = { exalted: 'Strongest sign', moolatrikona: 'Strong home sign', own: 'Own sign', friend: 'Friendly sign', neutral: 'Neutral sign', enemy: 'Unfriendly sign', debilitated: 'Weakest sign' };
     const rows = [];
-    if (c.timeKnown) rows.push(`<tr><td><b>Lagna</b></td><td>${esc(R.SIGNS[c.asc.sign].sa)} · ${esc(R.SIGNS[c.asc.sign].en)}</td><td class="num">${dms(c.asc.deg)}</td><td>${esc(R.NAKS[c.asc.nak].name)} ${c.asc.pada}</td><td class="num">1</td><td>Ruled by ${J.SIGN_LORD[c.asc.sign]}</td><td></td><td></td></tr>`);
+    if (c.timeKnown) rows.push(`<tr><td><b>Rising sign</b></td><td>${esc(R.SIGNS[c.asc.sign].en)}</td><td class="num">${dms(c.asc.deg)}</td><td>${esc(R.NAKS[c.asc.nak].en)}</td><td class="num">1</td><td>Ruled by ${J.SIGN_LORD[c.asc.sign]}</td><td></td><td></td></tr>`);
     for (const n of J.PLANETS) {
       const x = p[n];
-      const notes = [x.retro && n !== 'Rahu' && n !== 'Ketu' ? 'Retrograde' : '', x.combust ? 'Close to Sun' : '', x.vargottama ? 'Vargottama' : '', x.digBala ? 'Dig bala' : '', x.neechaBhanga ? 'Neecha bhanga' : '', c.karakas.atma === n ? 'Atmakaraka' : '', c.karakas.amatya === n ? 'Amatyakaraka' : ''].filter(Boolean).join(', ');
-      rows.push(`<tr><td><b>${n}</b> <span class="muted">${R.PL[n].sa}</span></td><td>${esc(R.SIGNS[x.sign].sa)} · ${esc(R.SIGNS[x.sign].en)}</td><td class="num">${dms(x.deg)}</td><td>${esc(R.NAKS[x.nak].name)} ${x.pada}</td><td class="num">${x.house}</td><td>${n === 'Rahu' || n === 'Ketu' ? (x.dignity === 'exalted' || x.dignity === 'debilitated' ? DIG[x.dignity] : 'Node') : DIG[x.dignity]}</td><td><span class="sbar"><i style="width:${x.strength}%"></i></span><span class="num">${x.strength}</span></td><td class="muted">${esc(notes)}</td></tr>`);
+      const notes = [x.retro && n !== 'Rahu' && n !== 'Ketu' ? 'Retrograde' : '', x.combust ? 'Close to Sun' : '', x.vargottama ? 'Doubly strong' : '', x.digBala ? 'Directional strength' : '', x.neechaBhanga ? 'Weakness cancelled' : '', c.karakas.atma === n ? 'Soul planet' : '', c.karakas.amatya === n ? 'Career planet' : ''].filter(Boolean).join(', ');
+      rows.push(`<tr><td><b>${PN(n)}</b></td><td>${esc(R.SIGNS[x.sign].en)}</td><td class="num">${dms(x.deg)}</td><td>${esc(R.NAKS[x.nak].en)}</td><td class="num">${x.house}</td><td>${n === 'Rahu' || n === 'Ketu' ? (x.dignity === 'exalted' || x.dignity === 'debilitated' ? DIG[x.dignity] : 'Lunar node') : DIG[x.dignity]}</td><td><span class="sbar"><i style="width:${x.strength}%"></i></span><span class="num">${x.strength}</span></td><td class="muted">${esc(notes)}</td></tr>`);
     }
-    $('#ptable').innerHTML = `<thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Nakshatra</th><th>House</th><th>Dignity</th><th>Strength</th><th>Notes</th></tr></thead><tbody>${rows.join('')}</tbody>`;
-    $('#ayan-note').textContent = `Lahiri ayanamsa at birth: ${dms(c.ayanamsa)}. Houses are whole signs from the ${c.timeKnown ? 'lagna' : 'Moon'}. Strength combines dignity, house, dig bala, vargottama and combustion.`;
+    $('#ptable').innerHTML = `<thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Birth star</th><th>House</th><th>Sign strength</th><th>Strength</th><th>Notes</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+    $('#ayan-note').textContent = `Sidereal zodiac (Lahiri method), ${dms(c.ayanamsa)} behind the Western zodiac at your birth. Houses are whole signs counted from your ${c.timeKnown ? 'rising sign' : 'Moon'}. Strength combines sign, house, direction and closeness to the Sun.`;
     const sav = c.ashtakavarga.byHouse;
     $('#sav').innerHTML = sav.slice(1).map((b, i) => `<div class="${b >= 30 ? 'hi' : ''}"><b class="num">${b}</b><span>House ${i + 1}</span></div>`).join('');
-    $('#sav-note').textContent = `Sarvashtakavarga total ${c.ashtakavarga.total}. Houses with 30 or more bindus are highlighted; 28 is average.`;
+    $('#sav-note').textContent = `Total ${c.ashtakavarga.total} points. Houses with 30 or more are highlighted; 28 is average.`;
     const P = c.panchang;
-    const panch = [['Tithi', `${P.paksha} ${P.tithi}`], ['Vaar', P.vaara || 'n/a'], ['Nakshatra', R.NAKS[P.nak].name], ['Yoga', P.yoga], ['Karana', P.karana], ['Paksha', P.paksha === 'Shukla' ? 'Shukla (waxing)' : 'Krishna (waning)'], ['Sunrise', P.sunrise ? tm(P.sunrise, current.zone) : 'n/a'], ['Ayanamsa', 'Lahiri']];
+    const panch = [['Weekday', P.vaara ? P.vaara.replace(/.*\((\w+)\)/, '$1') : 'n/a'], ['Moon phase', P.paksha === 'Shukla' ? 'Waxing' : 'Waning'], ['Lunar day', `Day ${P.tithiNum <= 15 ? P.tithiNum : P.tithiNum - 15} of the ${P.paksha === 'Shukla' ? 'waxing' : 'waning'} Moon`], ["Moon's star", R.NAKS[P.nak].en], ['Sunrise', P.sunrise ? tm(P.sunrise, current.zone) : 'n/a'], ['Zodiac', 'Sidereal (Lahiri)']];
     $('#panch').innerHTML = panch.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   }
 
@@ -809,7 +836,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
       $('#form-error').textContent = 'Could not calculate this chart. Check the date, time and place.';
       console.error(e); return;
     }
-    renderHero(); renderAreas(); renderQuestions(); renderTimeline(); renderDates(); renderYogas(); renderPositions();
+    renderHero(); renderAreas(); renderMonths(); renderQuestions(); renderTimeline(); renderDates(); renderYogas(); renderPositions();
   }
 
   // ---------- ask Claude ----------
@@ -824,7 +851,7 @@ footer ul { margin: 10px 0 0; padding-left: 18px; display: flex; flex-direction:
     if (!q || !sample || !current) { $('#ask-status').textContent = q ? '' : 'Type a question first.'; return; }
     ctl = new AbortController();
     $('#ask-btn').disabled = true; $('#ask-stop').hidden = false; $('#ask-status').textContent = 'Thinking...'; $('#ask-out').textContent = '';
-    const prompt = `You are a warm, encouraging Vedic astrologer trained in Parashari Jyotish. Answer the question using only the chart data below. Name the specific planets, houses, dashas, transits or yogas you are using. Keep the tone positive and practical, written in plain English for a smart 18 to 30 year old. 120 to 200 words in short paragraphs. No headings, no bullet lists, no em dashes. Never invent placements that are not in the data. If the chart cannot answer something, say what it does show instead.\n\nToday: ${new Date().toDateString()}.\n\nChart data:\n${R.chartText(current.chart, current.reading, state.name)}\n\nQuestion: ${q}`;
+    const prompt = `You are a warm, encouraging Vedic astrologer. Answer the question using only the chart data below. Name the specific planets, houses, dashas, transits or yogas you are using. Keep the tone positive and practical, written in plain English for a smart 18 to 30 year old. 120 to 200 words in short paragraphs. No headings, no bullet lists, no em dashes. Use only plain English: no Sanskrit or Hindi terms, call Rahu the North Node and Ketu the South Node, and say rising sign, birth star, period and sub-period. Never invent placements that are not in the data. If the chart cannot answer something, say what it does show instead.\n\nToday: ${new Date().toDateString()}.\n\nChart data:\n${R.chartText(current.chart, current.reading, state.name)}\n\nQuestion: ${q}`;
     try {
       await sample(prompt, { signal: ctl.signal, onText: ({ text }) => { $('#ask-status').textContent = ''; $('#ask-out').textContent = text; } });
       $('#ask-status').textContent = '';

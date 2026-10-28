@@ -284,7 +284,7 @@
     };
   }
 
-  // ---------- yogas ----------
+  // ---------- yogas (classical combinations, described in plain English) ----------
   function findYogas(c) {
     const { p } = c;
     const Y = [];
@@ -293,26 +293,22 @@
     const mutualAspect = (a, b) => c.aspects(a).includes(p[b].house) && c.aspects(b).includes(p[a].house);
     const exchange = (a, b) => a !== b && SIGN_LORD[p[a].sign] === b && SIGN_LORD[p[b].sign] === a;
     const connected = (a, b) => a !== b && (sameSign(a, b) || exchange(a, b) || mutualAspect(a, b));
-    const how = (a, b) => sameSign(a, b) ? 'sit together' : exchange(a, b) ? 'exchange signs' : 'aspect each other';
+    const how = (a, b) => sameSign(a, b) ? 'sit together' : exchange(a, b) ? 'swap signs' : 'face each other';
     const fromMoon = (n) => houseFrom(p[n].sign, p.Moon.sign);
     const strong = (n) => ['exalted', 'moolatrikona', 'own'].includes(p[n].dignity);
+    const hs = (n) => c.housesOwned(n).join(' & ');
 
-    // Gajakesari
     if (KENDRA.includes(fromMoon('Jupiter')))
-      add('Gajakesari Yoga', 'fame', 'Jupiter stands in a kendra from your Moon. Classical texts promise lasting reputation, intelligence, a respected voice and the ability to win people over.', ['Jupiter', 'Moon'], p.Jupiter.dignity === 'debilitated' && !p.Jupiter.neechaBhanga ? 'mild' : 'strong');
-    // Budhaditya
+      add('Lasting reputation', 'fame', 'Jupiter sits at a strong angle from your Moon. This is one of the best-known lucky combinations: respect, intelligence and the ability to win people over.', ['Jupiter', 'Moon'], p.Jupiter.dignity === 'debilitated' && !p.Jupiter.neechaBhanga ? 'mild' : 'strong');
     if (sameSign('Sun', 'Mercury'))
-      add('Budhaditya Yoga', 'mind', 'Sun and Mercury share a sign. This is the yoga of sharp business intelligence, clear communication and skill with numbers and negotiation.', ['Sun', 'Mercury'], p.Mercury.combust && angDist(p.Mercury.lon, p.Sun.lon) < 4 ? 'mild' : 'strong');
-    // Chandra-Mangala
+      add('Sharp business mind', 'mind', 'Sun and Mercury share a sign. This gives business intelligence, clear communication and skill with numbers and negotiation.', ['Sun', 'Mercury'], p.Mercury.combust && angDist(p.Mercury.lon, p.Sun.lon) < 4 ? 'mild' : 'strong');
     if (sameSign('Moon', 'Mars') || mutualAspect('Moon', 'Mars'))
-      add('Chandra-Mangala Yoga', 'wealth', 'Moon and Mars ' + how('Moon', 'Mars') + '. This is a classic earning yoga: money through enterprise, quick decisions and a hunger to build.', ['Moon', 'Mars']);
-    // Pancha Mahapurusha
-    const MP = { Mars: ['Ruchaka Yoga', 'courage, leadership and command over competition'], Mercury: ['Bhadra Yoga', 'brilliant intellect, eloquence and natural trading sense'], Jupiter: ['Hamsa Yoga', 'wisdom, good fortune and the respect of learned people'], Venus: ['Malavya Yoga', 'charm, luxury, artistic taste and a comfortable life'], Saturn: ['Sasa Yoga', 'authority over large groups, discipline and long-term power'] };
+      add('Money through enterprise', 'wealth', `Moon and Mars ${how('Moon', 'Mars')}. A classic earning combination: money from quick decisions and the hunger to build.`, ['Moon', 'Mars']);
+    const MP = { Mars: 'courage, leadership and command over competition', Mercury: 'a brilliant mind, way with words and natural trading sense', Jupiter: 'wisdom, good fortune and the respect of smart people', Venus: 'charm, taste, luxury and a comfortable life', Saturn: 'authority over large groups, discipline and long-term power' };
     for (const n of Object.keys(MP)) {
-      if (['exalted', 'moolatrikona', 'own'].includes(p[n].dignity) && KENDRA.includes(p[n].house))
-        add(MP[n][0], 'power', `One of the five Mahapurusha yogas. ${n} is in its own or exalted sign in a kendra, giving ${MP[n][1]}.`, [n], 'strong');
+      if (strong(n) && KENDRA.includes(p[n].house))
+        add(`${n} at full power`, 'power', `${n} is in its strongest sign and in one of the four power houses (1, 4, 7, 10). This is one of the five "great person" combinations and gives ${MP[n]}.`, [n], 'strong');
     }
-    // Raja yogas: kendra lord + trikona lord
     const ks = new Set(), seen = new Set();
     for (const k of [1, 4, 7, 10]) for (const t of [1, 5, 9]) {
       const a = c.lordOf(k), b = c.lordOf(t);
@@ -320,10 +316,9 @@
       const key = [a, b].sort().join('+');
       if (seen.has(key) || !connected(a, b)) continue;
       seen.add(key);
-      add('Raja Yoga', 'power', `${a} (lord of house ${c.housesOwned(a).join(' & ')}) and ${b} (lord of house ${c.housesOwned(b).join(' & ')}) ${how(a, b)}. A kendra lord joining a trikona lord is the core Parashari formula for rise in status and authority.`, [a, b], 'strong');
+      add('Success and status', 'power', `${a} (ruler of house ${hs(a)}) and ${b} (ruler of house ${hs(b)}) ${how(a, b)}. A power-house ruler joining a luck-house ruler is the core formula for rising in status.`, [a, b], 'strong');
     }
-    for (const yk of ks) add('Yogakaraka ' + yk, 'power', `${yk} rules both a kendra and a trikona for your lagna, which makes it your single most rewarding planet. Its periods tend to bring promotions, recognition and big wins.`, [yk], strong(yk) || KENDRA.includes(p[yk].house) || TRIKONA.includes(p[yk].house) ? 'strong' : 'present');
-    // Dhana yogas
+    for (const yk of ks) add(`${yk} is your success planet`, 'power', `${yk} rules both a power house and a luck house for your rising sign, making it your most rewarding planet. Its periods tend to bring promotions, recognition and big wins.`, [yk], strong(yk) || KENDRA.includes(p[yk].house) || TRIKONA.includes(p[yk].house) ? 'strong' : 'present');
     const dseen = new Set();
     for (const w of [2, 11]) for (const f of [1, 5, 9]) {
       const a = c.lordOf(w), b = c.lordOf(f);
@@ -331,63 +326,52 @@
       const key = [a, b].sort().join('+');
       if (dseen.has(key) || !connected(a, b)) continue;
       dseen.add(key);
-      add('Dhana Yoga', 'wealth', `${a} (wealth lord of house ${w}) and ${b} (fortune lord of house ${f}) ${how(a, b)}. This links your money houses with your luck houses, a classical sign of accumulated wealth.`, [a, b], 'strong');
+      add('Wealth combination', 'wealth', `${a} (ruler of money house ${w}) and ${b} (ruler of luck house ${f}) ${how(a, b)}. This links your money houses with your luck houses, a classic sign of building wealth.`, [a, b], 'strong');
     }
     if (c.lordOf(2) !== c.lordOf(11) && connected(c.lordOf(2), c.lordOf(11)))
-      add('Dhana Yoga', 'wealth', `Your 2nd lord ${c.lordOf(2)} and 11th lord ${c.lordOf(11)} ${how(c.lordOf(2), c.lordOf(11))}. Income and savings feed each other, so what you earn tends to stay and grow.`, [c.lordOf(2), c.lordOf(11)], 'strong');
-    // Lakshmi
+      add('Wealth combination', 'wealth', `The rulers of your savings house (${c.lordOf(2)}) and income house (${c.lordOf(11)}) ${how(c.lordOf(2), c.lordOf(11))}. What you earn tends to stay and grow.`, [c.lordOf(2), c.lordOf(11)], 'strong');
     const L9 = c.lordOf(9), L1 = c.lordOf(1);
     if (strong(L9) && (KENDRA.includes(p[L9].house) || TRIKONA.includes(p[L9].house)) && p[L1].dignity !== 'debilitated')
-      add('Lakshmi Yoga', 'wealth', `Your 9th lord ${L9} is dignified and well placed while your lagna lord is steady. Named after the goddess of wealth, this yoga gives prosperity, generosity and a graceful life.`, [L9, L1], 'strong');
-    // Dharma-Karmadhipati
+      add('Prosperity combination', 'wealth', `Your luck ruler ${L9} is in a strong sign and a strong house. Named after the goddess of wealth, this combination gives prosperity, generosity and a graceful life.`, [L9, L1], 'strong');
     const L10 = c.lordOf(10);
     if (L9 !== L10 && connected(L9, L10))
-      add('Dharma-Karmadhipati Yoga', 'power', `Your 9th lord ${L9} and 10th lord ${L10} ${how(L9, L10)}. Luck and career are tied together, the strongest classical signal for a meaningful, successful career.`, [L9, L10], 'strong');
+      add('Luck meets career', 'power', `Your luck ruler ${L9} and career ruler ${L10} ${how(L9, L10)}. Luck and career are tied together, the strongest classic signal for a meaningful, successful career.`, [L9, L10], 'strong');
     else if (L9 === L10)
-      add('Dharma-Karmadhipati Yoga', 'power', `${L9} rules both your 9th and 10th houses, so luck and career are carried by one planet. Its strength becomes your career's engine.`, [L9], 'present');
-    // Vipreet raja
-    const VR = { 6: 'Harsha', 8: 'Sarala', 12: 'Vimala' };
+      add('Luck meets career', 'power', `${L9} rules both your luck and career houses, so one planet carries both.`, [L9], 'present');
     for (const h of [6, 8, 12]) {
       const l = c.lordOf(h);
       if (DUSTHANA.includes(p[l].house) && !c.housesOwned(l).some((x) => [1, 5, 9].includes(x)))
-        add(VR[h] + ' Vipreet Raja Yoga', 'power', `Your ${h}th lord ${l} sits in a dusthana. This reverse raja yoga turns setbacks into springboards: you win when situations look difficult and often gain from others' losses.`, [l]);
+        add('Comeback combination', 'power', `The ruler of your ${h}th house (${l}) sits in another difficult house, which cancels the difficulty out. You do your best when things look hard, and you often gain where others lose.`, [l]);
     }
-    // Neecha bhanga
     for (const n of SEVEN) if (p[n].neechaBhanga)
-      add('Neecha Bhanga Raja Yoga', 'power', `${n} is debilitated but the debilitation is cancelled. Classical texts rate this among the most powerful raja yogas: a slow or humble start that turns into a remarkable rise.`, [n], 'strong');
-    // Parivartana
+      add('Weakness turned strength', 'power', `${n} starts in its weakest sign, but the weakness is cancelled. Classic texts rate this among the most powerful success combinations: a slow or humble start that turns into a remarkable rise.`, [n], 'strong');
     const pseen = new Set();
     for (const a of SEVEN) for (const b of SEVEN) {
       if (a >= b || !exchange(a, b)) continue;
       const key = a + b;
       if (pseen.has(key)) continue; pseen.add(key);
       const bad = DUSTHANA.includes(p[a].house) || DUSTHANA.includes(p[b].house);
-      add('Parivartana Yoga', bad ? 'mind' : 'power', `${a} and ${b} sit in each other's signs (houses ${p[a].house} and ${p[b].house}). The two houses they rule work as a team and strengthen each other.`, [a, b], bad ? 'present' : 'strong');
+      add('Planet exchange', bad ? 'mind' : 'power', `${a} and ${b} sit in each other's signs (houses ${p[a].house} and ${p[b].house}). The two areas they rule work as a team.`, [a, b], bad ? 'present' : 'strong');
     }
-    // Moon yogas
     const others = ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
     const second = others.filter((n) => fromMoon(n) === 2), twelfth = others.filter((n) => fromMoon(n) === 12);
-    if (second.length && twelfth.length) add('Durudhara Yoga', 'wealth', `Planets on both sides of your Moon (${second.concat(twelfth).join(', ')}). Classical results: wealth, vehicles, generosity and a well supported life.`, second.concat(twelfth));
-    else if (second.length) add('Sunapha Yoga', 'wealth', `${second.join(', ')} in the 2nd from your Moon. You build self-earned wealth and a reputation through your own intelligence.`, second);
-    else if (twelfth.length) add('Anapha Yoga', 'mind', `${twelfth.join(', ')} in the 12th from your Moon. Graceful personality, good health and a generous, magnetic presence.`, twelfth);
+    if (second.length && twelfth.length) add('Supported on both sides', 'wealth', `Planets on both sides of your Moon (${second.concat(twelfth).join(', ')}). Classic results: wealth, comfort and a well supported life.`, second.concat(twelfth));
+    else if (second.length) add('Self-made wealth', 'wealth', `${second.join(', ')} just after your Moon. You build your own money and reputation through your own intelligence.`, second);
+    else if (twelfth.length) add('Magnetic presence', 'mind', `${twelfth.join(', ')} just before your Moon. A graceful, generous and magnetic personality.`, twelfth);
     const adhi = ['Mercury', 'Jupiter', 'Venus'].filter((n) => [6, 7, 8].includes(fromMoon(n)));
-    if (adhi.length >= 2) add('Adhi Yoga', 'power', `${adhi.join(' and ')} in the 6th, 7th or 8th from your Moon. Adhi yoga is linked to leadership, a comfortable life and success over rivals.`, adhi, adhi.length === 3 ? 'strong' : 'present');
-    // Amala
+    if (adhi.length >= 2) add('Leadership combination', 'power', `${adhi.join(' and ')} sit opposite your Moon. Linked to leadership, a comfortable life and winning over rivals.`, adhi, adhi.length === 3 ? 'strong' : 'present');
     const amala = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 10 || fromMoon(n) === 10);
-    if (amala.length) add('Amala Yoga', 'fame', `${amala.join(' and ')} in the 10th house. Amala means spotless: a clean, lasting reputation and work people admire.`, amala);
-    // Saraswati
+    if (amala.length) add('Clean reputation', 'fame', `${amala.join(' and ')} in your career house. A clean, lasting reputation and work people admire.`, amala);
     const good = [1, 2, 4, 5, 7, 9, 10];
     if (['Jupiter', 'Venus', 'Mercury'].every((n) => good.includes(p[n].house)) && ['exalted', 'moolatrikona', 'own', 'friend'].includes(p.Jupiter.dignity))
-      add('Saraswati Yoga', 'mind', 'Jupiter, Venus and Mercury all occupy kendras, trikonas or the 2nd house with Jupiter well disposed. Named after the goddess of learning: gifted with words, creativity and knowledge.', ['Jupiter', 'Venus', 'Mercury'], 'strong');
-    // Shubha kartari on lagna
+      add('Gift of learning', 'mind', 'Jupiter, Venus and Mercury all sit in strong houses with Jupiter well placed. Named after the goddess of learning: gifted with words, creativity and knowledge.', ['Jupiter', 'Venus', 'Mercury'], 'strong');
     const b12 = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 12), b2 = ['Jupiter', 'Venus', 'Mercury'].filter((n) => p[n].house === 2);
-    if (b12.length && b2.length) add('Shubha Kartari Yoga', 'mind', 'Benefics on both sides of your lagna protect your health, image and self-confidence.', b12.concat(b2));
-    // Vesi / Vasi / Ubhayachari
+    if (b12.length && b2.length) add('Protected self', 'mind', 'Helpful planets on both sides of your rising sign protect your health, image and confidence.', b12.concat(b2));
     const fromSun = (n) => houseFrom(p[n].sign, p.Sun.sign);
     const s2 = others.filter((n) => fromSun(n) === 2), s12 = others.filter((n) => fromSun(n) === 12);
-    if (s2.length && s12.length) add('Ubhayachari Yoga', 'fame', 'Planets on both sides of your Sun. Equal to a king in comfort, says Phaladeepika: confident, eloquent and well resourced.', s2.concat(s12));
-    else if (s2.length) add('Vesi Yoga', 'mind', `${s2.join(', ')} in the 2nd from your Sun. Truthful, balanced and steadily prosperous.`, s2);
-    else if (s12.length) add('Vasi Yoga', 'mind', `${s12.join(', ')} in the 12th from your Sun. Charitable, skilful and happy.`, s12);
+    if (s2.length && s12.length) add('Confidence and resources', 'fame', 'Planets on both sides of your Sun: confident, well spoken and well resourced.', s2.concat(s12));
+    else if (s2.length) add('Balanced success', 'mind', `${s2.join(', ')} just after your Sun. Truthful, balanced and steadily prosperous.`, s2);
+    else if (s12.length) add('Skill and generosity', 'mind', `${s12.join(', ')} just before your Sun. Skilful, generous and happy.`, s12);
     return Y;
   }
 
@@ -436,7 +420,7 @@
   const AVOID_NAK = [1, 2, 5, 8, 9, 10, 15, 17, 18, 19, 24];
   const GOOD_TITHI = [2, 3, 5, 7, 10, 11, 13];
   const BAD_TITHI = [4, 8, 9, 14, 30];
-  const TARA = ['Janma', 'Sampat', 'Vipat', 'Kshema', 'Pratyari', 'Sadhana', 'Naidhana', 'Mitra', 'Param Mitra'];
+  const TARA = ['Birth', 'Wealth', 'Danger', 'Well-being', 'Obstacle', 'Achievement', 'Loss', 'Friend', 'Best friend'];
   const RAHU_KAAL_SEG = [8, 2, 7, 5, 6, 4, 3]; // 1-indexed eighth of daytime, Sunday first
 
   function muhurtaDays(chart, opts) {
@@ -458,25 +442,25 @@
       let score = 0;
       const why = [], hard = [];
       const tNum = ti.n <= 15 ? ti.n : ti.n - 15;
-      if (ti.n === 30 || BAD_TITHI.includes(tNum)) { hard.push(ti.n === 30 ? 'Amavasya' : 'Rikta / avoided tithi'); score -= 4; }
-      else if (GOOD_TITHI.includes(tNum)) { score += 2; why.push(`${ti.paksha} ${ti.name}, an auspicious tithi`); }
+      if (ti.n === 30 || BAD_TITHI.includes(tNum)) { hard.push(ti.n === 30 ? 'new Moon' : 'unlucky lunar day'); score -= 4; }
+      else if (GOOD_TITHI.includes(tNum)) { score += 2; why.push(`${ti.paksha === 'Shukla' ? 'Waxing' : 'Waning'} Moon, lucky lunar day ${ti.n <= 15 ? ti.n : ti.n - 15}`); }
       if (ti.paksha === 'Shukla') score += 1;
       if ([3, 4, 5].includes(wd)) { score += 2; why.push(['', '', '', 'Wednesday, ruled by Mercury: commerce and deals', 'Thursday, ruled by Jupiter: growth and blessings', 'Friday, ruled by Venus: brand, beauty and money'][wd]); }
       else if (wd === 1 || wd === 0) score += 1;
       else { hard.push('Tuesday / Saturday'); score -= 3; }
-      if (BUSINESS_NAK.includes(nk)) { score += 2; why.push(`Moon in a nakshatra favoured for opening a business`); }
-      else if (AVOID_NAK.includes(nk)) { hard.push('sharp or mixed nakshatra'); score -= 2; }
-      if ([1, 3, 5, 7, 8].includes(taraN)) { score += 2; why.push(`${TARA[taraN]} tara from your birth star`); }
-      else if ([2, 4, 6].includes(taraN)) { hard.push(`${TARA[taraN]} tara`); score -= 3; }
-      if ([1, 3, 6, 7, 10, 11].includes(chandra)) { score += 1; why.push('Moon transiting a favourable house from your natal Moon (Chandrabala)'); }
-      else if (chandra === 8) { hard.push('Chandrashtama'); score -= 4; }
-      if (ti.karana === 'Vishti') { hard.push('Bhadra (Vishti karana)'); score -= 2; }
+      if (BUSINESS_NAK.includes(nk)) { score += 2; why.push(`Moon in a birth star favoured for opening a business`); }
+      else if (AVOID_NAK.includes(nk)) { hard.push('harsh star'); score -= 2; }
+      if ([1, 3, 5, 7, 8].includes(taraN)) { score += 2; why.push(`"${TARA[taraN]}" match with your birth star`); }
+      else if ([2, 4, 6].includes(taraN)) { hard.push(`${TARA[taraN]} star match`); score -= 3; }
+      if ([1, 3, 6, 7, 10, 11].includes(chandra)) { score += 1; why.push('Moon in a lucky position from your birth Moon'); }
+      else if (chandra === 8) { hard.push('Moon 8th from birth Moon'); score -= 4; }
+      if (ti.karana === 'Vishti') { hard.push('unlucky half-day'); score -= 2; }
       const dayLen = ev.set && ev.set > ev.rise ? ev.set - ev.rise : 12 * 3600000;
       const seg = dayLen / 8;
       const rk = ev.rise + (RAHU_KAAL_SEG[wd] - 1) * seg;
       const noon = ev.rise + dayLen / 2;
       out.push({
-        sunrise: ev.rise, sunset: ev.set, weekday: wd, tithi: `${ti.paksha} ${ti.name}`, nak: nk, tara: TARA[taraN], chandra,
+        sunrise: ev.rise, sunset: ev.set, weekday: wd, tithi: `${ti.paksha === 'Shukla' ? 'Waxing' : 'Waning'} Moon, day ${ti.n <= 15 ? ti.n : ti.n - 15}`, nak: nk, tara: TARA[taraN], chandra,
         score, why: why.filter(Boolean), hard, ok: hard.length === 0,
         rahuKaal: [rk, rk + seg], abhijit: wd === 3 ? null : [noon - 24 * 60000, noon + 24 * 60000],
       });
